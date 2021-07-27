@@ -1,0 +1,1 @@
+SELECT sch_identifiant, sch_references_equi FROM t_souche WHERE sch_identifiant SIMILAR TO '%2\d{5}%' AND sch_references_equi != '';
