@@ -1,0 +1,147 @@
+-- on corrige les erreurs d'orthographe genus ou de species 
+--(que des updates pas besoin de toucher à t_souche donc)
+
+UPDATE t_donneedico
+SET don_lib = 'Bacteroides'
+WHERE don_dic_id = 3755 
+AND don_lib = 'Bactéroides';
+
+UPDATE t_donneedico
+SET don_lib = 'linens'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Brevibacterium'
+AND t_donneedico.don_lib = 'limens';
+
+UPDATE t_donneedico
+SET don_lib = 'terregena'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Comamonas'
+AND t_donneedico.don_lib = 'terregana';
+
+UPDATE t_donneedico
+SET don_lib = 'testosteroni'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Comamonas'
+AND t_donneedico.don_lib = 'testosteronii';
+
+UPDATE t_donneedico
+SET don_lib = 'pseudodiphtheriticum'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Corynebacterium'
+AND t_donneedico.don_lib = 'pseudodiphtheritium';
+
+UPDATE t_donneedico
+SET don_lib = 'Cupriavidus'
+WHERE don_dic_id = 3755 
+AND don_lib = 'Cuparividus';
+
+UPDATE t_donneedico
+SET don_lib = 'Erysipelothrix'
+WHERE don_dic_id = 3755 
+AND don_lib = 'Erysipelothrine';
+
+UPDATE t_donneedico
+SET don_lib = 'rhusopathiae'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Erysipelothrix'
+AND t_donneedico.don_lib = 'rusopathiae';
+
+UPDATE t_donneedico
+SET don_lib = 'Flammeovirga'
+WHERE don_dic_id = 3755 
+AND don_lib = 'Flammeivirga';
+
+UPDATE t_donneedico
+SET don_lib = 'palleronii'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Hydrogenophaga'
+AND t_donneedico.don_lib = 'plleronii';
+
+UPDATE t_donneedico
+SET don_lib = 'pneumoniae'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Klebsiella'
+AND t_donneedico.don_lib = 'pneumaoniae';
+
+UPDATE t_donneedico
+SET don_lib = 'casei'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Lactobacillus'
+AND t_donneedico.don_lib = 'caseï';
+
+UPDATE t_donneedico
+SET don_lib = 'urethralis'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Moraxella'
+AND t_donneedico.don_lib = 'uretralis';
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(t_donneedico.don_lib, 'Mucilaginibacter ', '')
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Mucilaginibacter'
+AND t_donneedico.don_lib LIKE '%Mucilaginibacter%';
+
+UPDATE t_donneedico
+SET don_lib = 'freudenreichii'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Propionibacterium'
+AND t_donneedico.don_lib = 'freudenrichii';
+
+UPDATE t_donneedico
+SET don_lib = 'thoenii'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Propionibacterium'
+AND t_donneedico.don_lib = 'thoenii pb identification 16S';
+
+UPDATE t_donneedico
+SET don_lib = 'suberifaciens'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Rhizorhapis'
+AND t_donneedico.don_lib = 'Rhizorhapis suberifaciens';
+
+UPDATE t_donneedico
+SET don_lib = 'fermentans'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Saccharicrinis'
+AND t_donneedico.don_lib = 'Saccharicrinis fermentans';
+
+UPDATE t_donneedico
+SET don_lib = 'Schaalia'
+WHERE don_dic_id = 3755 
+AND don_lib = 'schaalii';
+
+UPDATE t_donneedico
+SET don_lib = 'ganghwensis'
+FROM t_donneedico AS tdd_genus
+WHERE t_donneedico.don_dic_id = 3755 
+AND tdd_genus.don_code = t_donneedico.don_parent 
+AND tdd_genus.don_lib = 'Thalassotalea'
+AND t_donneedico.don_lib = 'Thalassotalea ganghwensis';
