@@ -145,3 +145,103 @@ WHERE t_donneedico.don_dic_id = 3755
 AND tdd_genus.don_code = t_donneedico.don_parent 
 AND tdd_genus.don_lib = 'Thalassotalea'
 AND t_donneedico.don_lib = 'Thalassotalea ganghwensis';
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio carchariae'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio carchar V.har', 'Vibrio carchar.v.har');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio diazotrophicus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio diazotrophic.', 'Vibrio diazotrophicu');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio furnissii'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio furnissi', 'Vibrio funissii');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio harveyi'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio harveryi');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio mytili'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio mytilii');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio parahaemolyticus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio parahaemolit.', 'Vibrio parahaemolyt.', 'Vibrio parahaemolyti');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio splendidus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio spledidus', 'Vibrio spledid. like', 'Vibrio spledidus lik');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio fluvialis'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibro fuvialis');
+
+UPDATE t_donneedico
+SET don_lib = 'Sphingobacterium spiritivorum'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Sphingoba.spiritivo.');
+
+UPDATE t_donneedico
+SET don_lib = 'Sphingobacterium mizutae'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Sphingob. mizutae', 'Sphingobac. mizutae');
+
+UPDATE t_donneedico
+SET don_lib = 'Enterococcus malodoratus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Enterococcus malado', 'Enterococcus maladoratus');
+
+UPDATE t_donneedico
+SET don_lib = 'Enterococcus cecorum'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Enterococcus cicorum');
+
+UPDATE t_donneedico
+SET don_lib = 'Cytophaga johnsonae'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('cytophaga johnsonde');
+
+UPDATE t_donneedico
+SET don_lib = 'Acinetobacter'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Acinetobacteraceae');
+
+UPDATE t_donneedico
+SET don_lib = 'Achromobacter'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Archromobacter');
+
+UPDATE t_donneedico
+SET don_lib = 'Enterobacter'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Enterobacteriaceae');
+
+UPDATE t_donneedico
+SET don_lib = 'Leptotrichia'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Letrotrichia');
+
+UPDATE t_donneedico
+SET don_lib = 'Streptobacillus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Steptobacillus');
+
+UPDATE t_donneedico
+SET don_lib = 'Streptococcus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Steptococcus');
+
+UPDATE t_donneedico
+SET don_lib = 'Tumebacillus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Tumibacillus');

@@ -9,8 +9,8 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
 		t_donneedico
 	WHERE
 		don_dic_id = 3755
-		AND (don_lib NOT IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche')
-			 OR (don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche') AND don_parent = 0))
+		AND (don_lib NOT IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche', 'like')
+			 OR (don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche', 'like') AND don_parent = 0))
 	UNION
 		(SELECT
 			tdd.xxx_id, tdd.don_lib, t0.level + 1, tdd.don_code, ARRAY_APPEND(t0.name_path, tdd.xxx_id)
@@ -18,11 +18,11 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
 			t_donneedico tdd
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent
 		WHERE tdd.don_dic_id = 3755
-			AND tdd.don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche'))
+			AND tdd.don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche', 'like'))
 ) SELECT xxx_id AS sch_taxonomie, name_path[1] AS new_sch_taxonomie
 INTO TEMPORARY TABLE ids_sp_a_changer 
 FROM children
-WHERE don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche')
+WHERE don_lib IN ('sp.', 'species', 'sp', 'spp.', 'sp. pas de souche', 'sp.pas de souche', 'sp BEN 1', 'sp BEN1', 'species 3', 'Espece', ' ', 'pas de souche', 'like')
 ORDER BY new_sch_taxonomie;
 
 -- ensuite pour chacun d'entre eux on récupère la liste de ses descendants non sp
