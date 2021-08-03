@@ -4,7 +4,7 @@
 UPDATE t_donneedico
 SET don_lib = 'Bacteroides'
 WHERE don_dic_id = 3755 
-AND don_lib = 'Bactéroides';
+AND don_lib IN ('Bactéroides', 'Bacteroïdes');
 
 UPDATE t_donneedico
 SET don_lib = 'linens'
