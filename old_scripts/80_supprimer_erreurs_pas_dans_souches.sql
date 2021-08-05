@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS ids_ok;
+DROP TABLE IF EXISTS ids_pas_ok;
 
 -- d'abord on récupère la liste des ids null et du premier id ancêtre non null pour chacun d'entre eux
 WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
@@ -17,7 +17,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent
 		WHERE tdd.don_dic_id = 3755)
 ) SELECT level, xxx_id AS sch_taxonomie, don_lib, ARRAY_TO_STRING(name_path, ' > ') AS path
-INTO TEMPORARY TABLE ids_ok
+INTO TEMPORARY TABLE ids_pas_ok
 FROM children
 WHERE (level = 0 AND name_path[1] NOT IN (SELECT genus_name FROM taxonomy WHERE genus_name IS NOT NULL))
 	OR (level = 1 AND (name_path[1], name_path[2]) NOT IN (SELECT genus_name, sp_epithet FROM taxonomy WHERE genus_name IS NOT NULL AND sp_epithet IS NOT NULL))
@@ -25,15 +25,9 @@ WHERE (level = 0 AND name_path[1] NOT IN (SELECT genus_name FROM taxonomy WHERE 
 	OR level > 2
 ORDER BY level, don_lib;
 
-SELECT ids_ok.sch_taxonomie, don_lib, path, COUNT(*)
-FROM ids_ok
+DELETE FROM t_donneedico
+WHERE xxx_id IN (SELECT ids_pas_ok.sch_taxonomie
+FROM ids_pas_ok
 LEFT JOIN t_souche
-ON ids_ok.sch_taxonomie = t_souche.sch_taxonomie
-GROUP BY ids_ok.sch_taxonomie, don_lib, path, level
-ORDER BY level, COUNT(*) DESC;
-
-/*
-SELECT * 
-FROM t_souche
-WHERE sch_taxonomie IS NOT NULL;
-*/
+ON ids_pas_ok.sch_taxonomie = t_souche.sch_taxonomie
+WHERE t_souche.sch_taxonomie IS NULL);

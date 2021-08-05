@@ -30,9 +30,29 @@ FROM grp
 WHERE rn = 1 AND distance <= 2
 ORDER BY distance, mistake, correction;
 
-UPDATE t_donnedico
+UPDATE t_donneedico
 SET don_lib = correction
 FROM erreurs_genus
 WHERE don_lib = mistake
-AND mistake NOT IN ('Gluconocetobacter', 'Verratia', 'Flexispira', 'Marianus', 'Minibacterium', 
-					'Nitrobacteria', 'Nordella', 'Ristella', 'Spironema');
+AND mistake IN (
+'Anerofustis',
+'Anoxybacilllus',
+'Aquaspirullum',
+'Artrobacter',
+'Branchybacterium',
+'Edwarsiella',
+'Heptococcus',
+'Indicoccus',
+'Lactobacilus',
+'Micromonosopora',
+'Oceanibacillus',
+'Pseudoaeromonas',
+'Pseudoarcicella',
+'Rubromonas',
+'Shingomonas',
+'Acidiminas',
+'Acidovorans',
+'Natrionella',
+'Ochrobacterium',
+'Pseudosphingobacteri'
+);

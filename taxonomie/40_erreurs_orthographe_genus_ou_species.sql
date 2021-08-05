@@ -49,7 +49,7 @@ WHERE don_dic_id = 3755
 AND don_lib = 'Erysipelothrine';
 
 UPDATE t_donneedico
-SET don_lib = 'rhusopathiae'
+SET don_lib = 'rhusiopathiae'
 FROM t_donneedico AS tdd_genus
 WHERE t_donneedico.don_dic_id = 3755 
 AND tdd_genus.don_code = t_donneedico.don_parent 
@@ -132,11 +132,6 @@ WHERE t_donneedico.don_dic_id = 3755
 AND tdd_genus.don_code = t_donneedico.don_parent 
 AND tdd_genus.don_lib = 'Saccharicrinis'
 AND t_donneedico.don_lib = 'Saccharicrinis fermentans';
-
-UPDATE t_donneedico
-SET don_lib = 'Schaalia'
-WHERE don_dic_id = 3755 
-AND don_lib = 'schaalii';
 
 UPDATE t_donneedico
 SET don_lib = 'ganghwensis'
