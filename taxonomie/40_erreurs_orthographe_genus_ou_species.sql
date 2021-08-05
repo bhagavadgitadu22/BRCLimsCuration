@@ -245,3 +245,23 @@ UPDATE t_donneedico
 SET don_lib = 'Tumebacillus'
 WHERE don_dic_id = 3755 
 AND don_lib IN ('Tumibacillus');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio sp.', 'Vibrio sp', 'vibrio sp', 'Vibrio Nb 11310');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio pelagius'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio pelagius I');
+
+UPDATE t_donneedico
+SET don_lib = 'Marinitoga lauensis'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Strain LG1');
+
+UPDATE t_donneedico
+SET don_lib = 'Rhodococcus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Brodococcus');

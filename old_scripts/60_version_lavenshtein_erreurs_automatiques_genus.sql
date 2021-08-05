@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+
 DROP TABLE IF EXISTS faux_genus;
 DROP TABLE IF EXISTS vrai_genus;
 DROP TABLE IF EXISTS grp_a_changer;
@@ -19,7 +21,7 @@ FROM taxonomy;
 WITH grp AS (
 	SELECT don_lib AS mistake, genus_name as correction, 
 	levenshtein_less_equal(genus_name, don_lib, 2) AS distance,
-	RANK() OVER (PARTITION BY don_lib ORDER BY levenshtein_less_equal(genus_name, don_lib, 3)) AS rn
+	RANK() OVER (PARTITION BY don_lib ORDER BY levenshtein_less_equal(genus_name, don_lib, 2)) AS rn
 	FROM faux_genus, vrai_genus
 ) 
 SELECT mistake, correction, distance 
