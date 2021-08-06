@@ -260,3 +260,28 @@ UPDATE t_donneedico
 SET don_lib = 'Rhodococcus'
 WHERE don_dic_id = 3755 
 AND don_lib IN ('Brodococcus');
+
+UPDATE t_donneedico
+SET don_lib = 'Bacillus thuringiensis'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('B. thuringiensis asturiensis', 'thuringiensis 0.718');
+
+UPDATE t_donneedico
+SET don_lib = 'Bacillus thuringiensis fukuokaensis'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('saturation faite=fukuokaensis');
+
+UPDATE t_donneedico
+SET don_lib = 'Bacillus cereus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('cereus 0,746', 'cereus 0.613', 'cer.0,616');
+
+UPDATE t_donneedico
+SET don_lib = 'Bacillus megaterium'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('B. megaterium 0.480');
+
+UPDATE t_donneedico
+SET don_lib = 'Vibrio vulnificus'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('Vibrio vulnific. bt1');

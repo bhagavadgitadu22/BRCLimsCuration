@@ -53,7 +53,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc3")
+                                  database="new_brc5")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
@@ -71,7 +71,7 @@ try:
 
     list_totaux.append(totaux)
     
-
+    
     # On enlève les termes du type 'pas de souche' dans la taxo
     print("On enlève les termes du type 'pas de souche' dans la taxo")
     cursor.execute(open("../taxonomie/14_pas_de_souche_degage.sql", "r").read())
@@ -84,28 +84,16 @@ try:
     totaux = evolution_des_erreurs("Enlever espaces avant/après éléments taxo (trim)", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
-    # Enlever les nulls du dico
-    print("Enlever les nulls du dico")
-    cursor.execute(open("../taxonomie/20_update_champs_null.sql", "r").read())
-    totaux = evolution_des_erreurs("Enlever les nulls du dico", initial_faux_dico, initial_fausses_souches)
+    # Enlever divers éléments inutiles du dico
+    print("Enlever divers éléments inutiles du dico")
+    cursor.execute(open("../taxonomie/20_update_champs_divers.sql", "r").read())
+    totaux = evolution_des_erreurs("Enlever divers éléments inutiles du dico", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
-
-    # Enlever les champs du type sp
-    print("Enlever les champs du type sp")
-    cursor.execute(open("../taxonomie/30_update_champs_sp.sql", "r").read())
-    totaux = evolution_des_erreurs("Enlever les champs du type sp", initial_faux_dico, initial_fausses_souches)
-    list_totaux.append(totaux)
-
-    # Enlever d'autres champs divers
-    print("Enlever d'autres champs divers")
-    cursor.execute(open("../taxonomie/31_update_champs_divers.sql", "r").read())
-    totaux = evolution_des_erreurs("Enlever d'autres champs divers", initial_faux_dico, initial_fausses_souches)
-    list_totaux.append(totaux)
-
-    # Enlever les termes vides ''
-    print("Enlever les termes vides ''")
-    cursor.execute(open("../taxonomie/32_update_champs_empty.sql", "r").read())
-    totaux = evolution_des_erreurs("Enlever les termes vides ''", initial_faux_dico, initial_fausses_souches)
+    
+    # Virer les acronymes d'Enterococcus
+    print("Virer les acronymes d'Enterococcus")
+    cursor.execute(open("../taxonomie/30_enteroccus.sql", "r").read())
+    totaux = evolution_des_erreurs("Virer les acronymes d'Enterococcus", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
     # Corriger manuellement certaines erreurs d'orthographe
@@ -126,37 +114,49 @@ try:
     totaux = evolution_des_erreurs("On vire les accents", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
-    # Virer les acronymes d'Enterococcus
-    print("Virer les acronymes d'Enterococcus")
-    cursor.execute(open("../taxonomie/45_enteroccus.sql", "r").read())
-    totaux = evolution_des_erreurs("Virer les acronymes d'Enterococcus", initial_faux_dico, initial_fausses_souches)
-    list_totaux.append(totaux)
-
-    # On enlève les termes du type 'pas de souche' dans la taxo
-    print("On enlève les termes du type 'pas de souche' dans la taxo")
-    cursor.execute(open("../taxonomie/14_pas_de_souche_degage.sql", "r").read())
-    totaux = evolution_des_erreurs("On enlève les termes du type 'pas de souche' dans la taxo", initial_faux_dico, initial_fausses_souches)
+    # On ajoute les taxos qui n'existaient pas encore dans la table
+    print("On ajoute les taxos qui n'existaient pas encore dans la table")
+    cursor.execute(open("../taxonomie/50_inserer_taxos_manquantes.sql", "r").read())
+    totaux = evolution_des_erreurs("On ajoute les taxos qui n'existaient pas encore dans la table", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
     # Casser 'Genus species' en 2 termes 'Genus' et 'species'
     print("Casser 'Genus species' en 2 termes 'Genus' et 'species'")
-    cursor.execute(open("../taxonomie/50_casser_en_2_genus_species.sql", "r").read())
+    cursor.execute(open("../taxonomie/60_casser_en_2_genus_species.sql", "r").read())
     totaux = evolution_des_erreurs("Casser 'Genus species' en 2 termes 'Genus' et 'species'", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
+    
+    # Erreurs déduites de levenshtein sur les genus
+    print("Erreurs déduites de levenshtein sur les genus")
+    cursor.execute(open("../taxonomie/70_erreurs_genus_deduites_de_lehvenshtein.sql", "r").read())
+    totaux = evolution_des_erreurs("Erreurs déduites de levenshtein sur les genus'", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
 
-    # On enlève les serovar
-    print("On enlève les serovar")
-    cursor.execute(open("../taxonomie/60_virer_serovar.sql", "r").read())
-    totaux = evolution_des_erreurs("On enlève les serovar", initial_faux_dico, initial_fausses_souches)
+    # Erreurs déduites des trigrammes sur les genus
+    print("Erreurs déduites des trigrammes sur les genus")
+    cursor.execute(open("../taxonomie/71_erreurs_genus_deduites_de_trigrammes.sql", "r").read())
+    totaux = evolution_des_erreurs("Erreurs déduites des trigrammes sur les genus'", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+
+    # Supprimer les erreurs du dico qui n'étaient pas utilisées dans souches
+    print("Supprimer les erreurs du dico qui n'étaient pas utilisées dans souches")
+    cursor.execute(open("../taxonomie/80_supprimer_erreurs_pas_dans_souches.sql", "r").read())
+    totaux = evolution_des_erreurs("Supprimer les erreurs du dico qui n'étaient pas utilisées dans souches", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+
+    # Virer les serovar (notamment de Bacillus sphaericus et thuringiensis)
+    print("Virer les serovar (notamment de Bacillus sphaericus et thuringiensis)")
+    cursor.execute(open("../taxonomie/81_virer_serovar.sql", "r").read())
+    totaux = evolution_des_erreurs("Virer les serovar (notamment de Bacillus sphaericus et thuringiensis)", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
     # On vire les doublons
     print("On vire les doublons")
-    cursor.execute(open("../taxonomie/80_suppression_doublons_taxo.sql", "r").read())
+    cursor.execute(open("../taxonomie/90_suppression_doublons_taxo.sql", "r").read())
     totaux = evolution_des_erreurs("On vire les doublons", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
-
-
+    
+    
     # we write the results in an csv file
     f = open('../../output/bilan_curation_taxonomie.csv', 'w', newline='')
     writer = csv.writer(f)
