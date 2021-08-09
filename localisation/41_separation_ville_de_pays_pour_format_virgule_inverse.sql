@@ -13,7 +13,7 @@ WHERE t_donneedico.don_lib LIKE '%, %'
 GROUP BY t_donneedico.xxx_id) AS separationvirgule
 
 INNER JOIN world
-ON separationvirgule.end_str = world.name_en;
+ON separationvirgule.beginning_str = world.name_en;
 
 -- on fait la jointure avec t_souche en fonction de xxx_id
 -- puis on ajoute à précision l'ancienne valeur suivie de " ; " et de la nouvelle valeur
@@ -21,15 +21,15 @@ ON separationvirgule.end_str = world.name_en;
 UPDATE t_souche
 SET sch_lieu_precis =
 	CASE sch_lieu_precis
-		WHEN '' THEN beginning_str
-		ELSE CONCAT(sch_lieu_precis, ' ; '::text, beginning_str)
+		WHEN '' THEN end_str
+		ELSE CONCAT(sch_lieu_precis, ' ; '::text, end_str)
 	END
 FROM pays_au_format_virgule
 WHERE t_souche.sch_lieu = pays_au_format_virgule.xxx_id;
 
 -- update la valeur dans les lieux directement ensuite
 UPDATE t_donneedico AS tdd
-SET don_lib = end_str
+SET don_lib = beginning_str
 FROM pays_au_format_virgule
 WHERE tdd.xxx_id = pays_au_format_virgule.xxx_id;
 

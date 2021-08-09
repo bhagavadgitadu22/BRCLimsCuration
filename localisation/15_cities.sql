@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS cities;
+DROP TABLE IF EXISTS world_cities;
 
-CREATE TABLE cities (
+CREATE TABLE world_cities (
   id SERIAL,
   city VARCHAR(75),
   city_ascii VARCHAR(75),
@@ -16,14 +16,14 @@ CREATE TABLE cities (
   PRIMARY KEY (id)
 );
 
-COPY cities(
+COPY world_cities(
 	city, city_ascii, lat, lng, country, iso2, iso3, 
 	admin_name, capital, population, id_city)
 FROM 'C:\Users\Public\Documents\worldcities.csv'
 DELIMITER ','
 CSV HEADER;
 
-ALTER TABLE cities
+ALTER TABLE world_cities
 DROP COLUMN city, 
 DROP COLUMN lat, 
 DROP COLUMN lng, 
@@ -33,11 +33,11 @@ DROP COLUMN admin_name,
 DROP COLUMN capital, 
 DROP COLUMN id_city;
 
-UPDATE cities
+UPDATE world_cities
 SET population = '0'
 WHERE population = '';
 
-DELETE FROM cities AS c1
+DELETE FROM world_cities AS c1
 WHERE c1.population::numeric < 
-(SELECT MAX(c2.population::numeric) FROM cities AS c2 
+(SELECT MAX(c2.population::numeric) FROM world_cities AS c2 
  WHERE c1.city_ascii = c2.city_ascii);

@@ -9,9 +9,9 @@ INNER JOIN t_souche
 ON t_donneedico.xxx_id = t_souche.sch_lieu
 GROUP BY t_donneedico.xxx_id) AS lieux
 
-JOIN cities
-ON lieux.don_lib = cities.city_ascii
-WHERE cities.city_ascii NOT IN (SELECT name_en FROM world) AND cities.city_ascii != cities.country;
+JOIN world_cities
+ON lieux.don_lib = world_cities.city_ascii
+WHERE world_cities.city_ascii NOT IN (SELECT name_en FROM world) AND world_cities.city_ascii != world_cities.country;
 
 -- on fait la jointure avec t_souche en fonction de xxx_id/id_lieu
 -- puis on ajoute à précision l'ancienne valeur suivie de " ; " et de la nouvelle valeur
