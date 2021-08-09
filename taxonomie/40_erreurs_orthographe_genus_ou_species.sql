@@ -2,11 +2,6 @@
 --(que des updates pas besoin de toucher à t_souche donc)
 
 UPDATE t_donneedico
-SET don_lib = 'Bacteroides'
-WHERE don_dic_id = 3755 
-AND don_lib IN ('Bactéroides', 'Bacteroïdes');
-
-UPDATE t_donneedico
 SET don_lib = 'linens'
 FROM t_donneedico AS tdd_genus
 WHERE t_donneedico.don_dic_id = 3755 

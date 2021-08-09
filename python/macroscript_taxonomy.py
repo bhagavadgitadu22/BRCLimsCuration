@@ -53,7 +53,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc5")
+                                  database="new_brc2")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
@@ -84,6 +84,12 @@ try:
     totaux = evolution_des_erreurs("Enlever espaces avant/après éléments taxo (trim)", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
+    # On vire les accents
+    print("On vire les accents")
+    cursor.execute(open("../taxonomie/16_accents_vires.sql", "r").read())
+    totaux = evolution_des_erreurs("On vire les accents", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+    
     # Enlever divers éléments inutiles du dico
     print("Enlever divers éléments inutiles du dico")
     cursor.execute(open("../taxonomie/20_update_champs_divers.sql", "r").read())
@@ -106,12 +112,6 @@ try:
     print("Passer en majuscules les noms de genus qui ne l'étaient pas")
     cursor.execute(open("../taxonomie/41_genus_en_majuscules.sql", "r").read())
     totaux = evolution_des_erreurs("Passer en majuscules les noms de genus qui ne l'étaient pas", initial_faux_dico, initial_fausses_souches)
-    list_totaux.append(totaux)
-
-    # On vire les accents
-    print("On vire les accents")
-    cursor.execute(open("../taxonomie/42_accents_vires.sql", "r").read())
-    totaux = evolution_des_erreurs("On vire les accents", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
     # On ajoute les taxos qui n'existaient pas encore dans la table
@@ -149,7 +149,7 @@ try:
     cursor.execute(open("../taxonomie/81_virer_serovar.sql", "r").read())
     totaux = evolution_des_erreurs("Virer les serovar (notamment de Bacillus sphaericus et thuringiensis)", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
-
+    
     # On vire les doublons
     print("On vire les doublons")
     cursor.execute(open("../taxonomie/90_suppression_doublons_taxo.sql", "r").read())
