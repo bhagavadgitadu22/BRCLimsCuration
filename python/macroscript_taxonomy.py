@@ -53,7 +53,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc2")
+                                  database="new_brc4")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
