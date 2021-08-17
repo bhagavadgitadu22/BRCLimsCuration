@@ -97,23 +97,23 @@ AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'RCA', 'Central African Republic')
-WHERE don_lib = 'RCA'
+WHERE don_lib = '%RCA%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'Tanzania', 'Tanzania (United Republic of)')
-WHERE don_lib LIKE 'Tanzania'
-AND don_lib NOT LIKE 'Tanzania (United Republic of)'
+WHERE don_lib LIKE '%Tanzania%'
+AND don_lib NOT LIKE '%Tanzania (United Republic of)%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'Koweit', 'Kuwait')
-WHERE don_lib LIKE 'Koweit'
+WHERE don_lib LIKE '%Koweit%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'Macau', 'Macao')
-WHERE don_lib LIKE 'Macau'
+WHERE don_lib LIKE '%Macau%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
@@ -195,4 +195,9 @@ AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'Geece', 'Greece')
 WHERE don_lib LIKE '%Geece%'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'Cape Verde', 'Cabo Verde')
+WHERE don_lib LIKE '%Cape Verde%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
