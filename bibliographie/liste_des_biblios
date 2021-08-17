@@ -1,5 +1,0 @@
-SELECT * FROM
-(SELECT trim(unnest(string_to_array(sch_bibliographie, E'\n'))) AS doc
-FROM t_souche) AS biblio
-WHERE doc != ''
-GROUP BY doc;
