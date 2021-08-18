@@ -34,7 +34,7 @@ try:
             "volume": row[2],
             "spage": row[3]
         }
-        response = requests.get("https://doi.crossref.org/openurl", params=parameters)
+        response = requests.get("https://doi.crossref.org/openurl", params=parameters, timeout=100)
 
         dat = minidom.parseString(response.content)
         tagname = dat.getElementsByTagName('query')

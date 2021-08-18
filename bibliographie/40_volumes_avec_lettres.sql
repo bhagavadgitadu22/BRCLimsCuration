@@ -13,9 +13,12 @@ FROM
 FROM t_souche) AS a
 WHERE array_length(doc, 1) = 4) AS candidates) AS after_cut
 
-WHERE journal SIMILAR TO '%[a-zA-Z]+%'
+WHERE NOT(journal SIMILAR TO '%[a-zA-Z]+%'
 AND annee SIMILAR TO '[0-9]{4}'
 AND volume SIMILAR TO '[0-9]+'
+AND pages SIMILAR TO '[0-9]+-[0-9]+|[0-9]+')
+AND journal SIMILAR TO '%[a-zA-Z]+%'
+AND annee SIMILAR TO '[0-9]{4}'
 AND pages SIMILAR TO '[0-9]+-[0-9]+|[0-9]+'
 
 GROUP BY journal, annee, volume, pages;
