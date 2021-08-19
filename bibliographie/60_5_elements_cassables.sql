@@ -29,7 +29,7 @@ AND (last_page SIMILAR TO '[0-9]+[^0-9]*' OR last_page IS NULL);
 -- on ajoute les lignes regroupées dans la tables des bonnes biblios dont on va chercher les dois
 -- 9975 lignes après regroupement
 INSERT INTO good_documents(journal, annee, volume, first_page, last_page, sch_identifiant)
-SELECT journal, annee, volume, first_page, last_page, sch_identifiant
+SELECT DISTINCT journal, annee, volume, first_page, last_page, sch_identifiant
 FROM valid_five;
 
 -- puis on supprime les documents gérés de all_documents

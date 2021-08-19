@@ -69,39 +69,43 @@ try:
     initial_all_documents_grouped = totaux[2]
 
     list_totaux.append(totaux)
-    
 
-    # 20_basic_four_elements
-    cursor.execute(open("../bibliographie/20_basic_four_elements.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("20_basic_four_elements", initial_all_documents, initial_all_documents_grouped)
-    list_totaux.append(totaux)
-    
-    # 30_8_elements_cassables
-    cursor.execute(open("../bibliographie/30_8_elements_cassables.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("30_8_elements_cassables", initial_all_documents, initial_all_documents_grouped)
-    list_totaux.append(totaux)
-    
-    # 40_7_elements_cassables
-    cursor.execute(open("../bibliographie/40_7_elements_cassables.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("40_7_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+
+    # pmid and dois
+    cursor.execute(open("../bibliographie/20_pmid_et_dois.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("pmid and dois", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
 
-    # 60_5_elements_cassables
+    # basic_four_elements
+    cursor.execute(open("../bibliographie/30_basic_four_elements.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("basic_four_elements", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+    
+    # 8_elements_cassables
+    cursor.execute(open("../bibliographie/40_8_elements_cassables.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("8_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+    
+    # 7_elements_cassables
+    cursor.execute(open("../bibliographie/50_7_elements_cassables.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("7_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+
+    # 5_elements_cassables
     cursor.execute(open("../bibliographie/60_5_elements_cassables.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("60_5_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+    totaux = evolution_des_erreurs("5_elements_cassables", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
     
-    # 70_3_elements_cassables
+    # 3_elements_cassables
     cursor.execute(open("../bibliographie/70_3_elements_cassables.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("70_3_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+    totaux = evolution_des_erreurs("3_elements_cassables", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
     
-    # 70_bis_3_elements_cassables
+    # bis_3_elements_cassables
     cursor.execute(open("../bibliographie/70_bis_3_elements_cassables.sql", "r", encoding='utf-8').read())
-    totaux = evolution_des_erreurs("70_bis_3_elements_cassables", initial_all_documents, initial_all_documents_grouped)
+    totaux = evolution_des_erreurs("bis_3_elements_cassables", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
 
-    # Virer les erreurs d'orthographe des villes
     cursor.execute(open("../bibliographie/100_compacted_good_documents_table.sql", "r", encoding='utf-8').read())
     
     

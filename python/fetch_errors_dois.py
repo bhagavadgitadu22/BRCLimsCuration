@@ -17,7 +17,7 @@ try:
     cursor = connection.cursor()
 
     # initialization
-    cursor.execute(open("../bibliographie/30_avec_souches_origines.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../bibliographie/old_stuff/30_avec_souches_origines.sql", "r", encoding='utf-8').read())
 
     mobile_records = cursor.fetchall()
 
@@ -40,16 +40,42 @@ try:
         if elmt[:4] not in references_good:
             references_bad.append(elmt)
 
-    # we write the results in an csv file
-    f = open('../../output/bilan_erreurs_dois.csv', 'w', newline='')
-    writer = csv.writer(f)
+    list_dois = []
+    erreurs = 0
+    i = 0
 
-    # write the rows to the csv file
-    writer.writerow(['Title', 'Year', 'Volume', 'First page', 'Identifiants'])
-    writer.writerows(references_bad)
+    for row in references_bad:
+        parameters = {
+            "redirect": "false",
+            "pid": "martinboutroux@outlook.fr",
+            "title": row[0],
+            "date": row[1],
+            "volume": row[2],
+            "spage": row[3]
+        }
+        response = requests.get("https://doi.crossref.org/openurl", params=parameters, timeout=100)
 
-    # close the file
-    f.close()
+        dat = minidom.parseString(response.content)
+        tagname = dat.getElementsByTagName('query')
+
+        if tagname[0].attributes['status'].value != "unresolved":
+            tagdoi = dat.getElementsByTagName('doi')
+            doi = tagdoi[0].firstChild.nodeValue
+
+            elmt = []
+            elmt.append(row[0])
+            elmt.append(row[1])
+            elmt.append(row[2])
+            elmt.append(row[3])
+            elmt.append(doi)
+            elmt.append(row[4])
+            list_dois.append(elmt)
+        else :
+            erreurs += 1
+
+        i += 1
+        if i%10 == 0:
+            print(str(i)+" (erreurs : "+str(erreurs)+")")
 
 except (Exception, Error) as error:
     print("Error while connecting to PostgreSQL", error)
