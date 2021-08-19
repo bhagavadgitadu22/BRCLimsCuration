@@ -8,8 +8,8 @@ sch_identifiant
 FROM 
 
 (SELECT sch_identifiant, 
- doc[1] AS c1, doc[2] AS c2, doc[3] AS c3, (REGEXP_MATCHES(doc[4], '([0-9]+(-|–| and )[0-9]+).*'))[1] AS c4, 
- (REGEXP_MATCHES(doc[4], '[0-9]+(-|–| and )[0-9]+(.*)'))[2] AS c5, doc[5] AS c6, doc[6] AS c7, doc[7] AS c8 FROM
+ doc[1] AS c1, doc[2] AS c2, doc[3] AS c3, (REGEXP_MATCHES(full_trim(doc[4]), '^([0-9]+(-|–| and )[0-9]+|[0-9]+).*'))[1] AS c4, 
+ (REGEXP_MATCHES(full_trim(doc[4]), '^([0-9]+(-|–| and )[0-9]+|[0-9]+)(.*)'))[3] AS c5, doc[5] AS c6, doc[6] AS c7, doc[7] AS c8 FROM
 
 (SELECT sch_identifiant, doc FROM
 (SELECT sch_identifiant,
