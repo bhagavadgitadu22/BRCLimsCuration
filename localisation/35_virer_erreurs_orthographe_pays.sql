@@ -178,8 +178,18 @@ WHERE don_lib LIKE '%Thaïland%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
-SET don_lib = REPLACE(don_lib, 'Antartic ocean', 'Antarctic ocean')
+SET don_lib = REPLACE(don_lib, 'Antartic ocean', 'Antarctic Ocean')
 WHERE don_lib LIKE '%Antartic ocean%'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'Southern ocean', 'Antarctic Ocean')
+WHERE don_lib LIKE '%Southern ocean%'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'Antarctic sea', 'Antarctic Ocean')
+WHERE don_lib LIKE '%Antarctic sea%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
 
 UPDATE t_donneedico
@@ -201,3 +211,69 @@ UPDATE t_donneedico
 SET don_lib = REPLACE(don_lib, 'Cape Verde', 'Cabo Verde')
 WHERE don_lib LIKE '%Cape Verde%'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'Saint Vincent Island', 'Saint Vincent and the Grenadines')
+WHERE don_lib LIKE '%Saint Vincent Island%'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'Antarctic mountains', 'Antarctic mountains, Antarctica')
+WHERE don_lib LIKE '%Antarctic mountains%'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = 'Mid Atlantic Ridge, Atlantic Ocean'
+WHERE don_lib = 'Deep sea hydrothermal Vert MAR'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Magadi Lake, Kenya'
+WHERE don_lib = 'East Africa'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Kalahari, Namibia'
+WHERE don_lib = 'Kalahari, Africa'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Guanajuato, Mexico'
+WHERE don_lib = 'North America'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Sahara desert, Tunisia'
+WHERE don_lib = 'Sahara desert, Morocco and Tunisia'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'National Park Durmitor, Montenegro'
+WHERE don_lib = 'Serbia and Montenegro'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Penola Strait, Antarctica'
+WHERE don_lib = 'Antarctic penninsula'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'East, Taiwan (Province of China)'
+WHERE don_lib = 'East Taiwan (Province of China)'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Atlantic Ocean'
+WHERE don_lib = 'North Atlantic Ridge'
+OR don_lib = 'Mid Atlantic Ridge'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Isla Cristina, Spain'
+WHERE don_lib = 'Sapin'
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = 'Baekryung Island, Korea (Republic of)'
+WHERE don_lib = 'Baekryung Island, yellow sea'
+AND don_dic_id IN (3758);

@@ -69,7 +69,7 @@ try:
 
     
     print("Construction de la table des villes")
-    #cursor.execute(open("../localisation/15_cities.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../localisation/15_cities.sql", "r", encoding='utf-8').read())
 
     list_totaux = []
 
@@ -128,6 +128,12 @@ try:
     totaux = evolution_des_erreurs("Virer les erreurs d'orthographe multiples", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
+    # Peaufiner par souche
+    print("Peaufiner par souche")
+    cursor.execute(open("../localisation/39_peaufinage_par_souches.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("Peaufiner par souche", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+
     # On enlève les dates des noms de lieux
     print("On enlève les dates des noms de lieux")
     cursor.execute(open("../localisation/40_virer_les_dates.sql", "r", encoding='utf-8').read())
@@ -176,9 +182,15 @@ try:
     totaux = evolution_des_erreurs("On gère les pays encore entourés d'autres infos", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
+    # On vire les lieux inconnus et on met NULL comme lieu à la place
+    print("On vire les lieux inconnus et on met NULL comme lieu à la place")
+    cursor.execute(open("../localisation/75_lieux_inconnus.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("On vire les lieux inconnus et on met NULL comme lieu à la place", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+    
     # On vire les doublons de lieux
     print("On vire les doublons de lieux")
-    #cursor.execute(open("../localisation/80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../localisation/80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("On vire les doublons de lieux", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
     
@@ -193,6 +205,7 @@ try:
 
     # close the file
     f.close()
+    
 
 except (Exception, Error) as error:
     print("Error while connecting to PostgreSQL", error)

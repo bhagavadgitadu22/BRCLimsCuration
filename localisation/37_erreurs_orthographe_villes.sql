@@ -132,3 +132,13 @@ UPDATE t_donneedico
 SET don_lib = 'Beirut, Lebanon'
 WHERE don_lib = 'Beyrouth'
 AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = 'Mentakab, Malaysia'
+WHERE don_lib = 'Mentekab, Malaya'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
+
+UPDATE t_donneedico
+SET don_lib = 'Easter Island, Chile'
+WHERE don_lib = 'Easter Island'
+AND don_dic_id IN (3758, 4236195, 554373, 54117, 593885);
