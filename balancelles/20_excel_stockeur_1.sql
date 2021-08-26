@@ -3,9 +3,7 @@ DROP TABLE IF EXISTS stockeur_1;
 CREATE TABLE stockeur_1 (
   first_strain varchar(75),
   last_strain varchar(75),
-  balancelle varchar(75),
-  id_first_strain int,
-  id_last_strain int
+  balancelle varchar(75)
 );
 
 COPY stockeur_1 (first_strain, last_strain, balancelle)
@@ -24,13 +22,3 @@ WHERE last_strain LIKE '%A %';
 UPDATE stockeur_1
 SET first_strain = CONCAT('CIP ', first_strain),
 	last_strain = CONCAT('CIP ', last_strain);
-	
-UPDATE stockeur_1
-SET id_first_strain = id
-FROM souches_triees
-WHERE stockeur_1.first_strain = souches_triees.sch_identifiant;
-
-UPDATE stockeur_1
-SET id_last_strain = id
-FROM souches_triees
-WHERE stockeur_1.last_strain = souches_triees.sch_identifiant;

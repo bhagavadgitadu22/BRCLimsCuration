@@ -1,4 +1,0 @@
-SELECT lot_id, souches_lyophilisees.sch_identifiant, id
-FROM souches_lyophilisees
-JOIN souches_triees
-ON souches_lyophilisees.sch_identifiant = souches_triees.sch_identifiant
