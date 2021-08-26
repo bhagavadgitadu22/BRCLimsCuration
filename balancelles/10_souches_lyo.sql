@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS souches_lyophilisees;
 
 SELECT t_lot.xxx_id AS lot_id, sch_identifiant, lst_nom
+INTO TABLE souches_lyophilisees
 FROM t_lot
 
 JOIN t_souche
