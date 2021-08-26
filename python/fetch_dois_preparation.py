@@ -51,7 +51,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc4")
+                                  database="new_brc5")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
@@ -60,6 +60,11 @@ try:
     
     # initialization
     cursor.execute(open("../bibliographie/0_full_trim.sql", "r", encoding='utf-8').read())
+
+    # on_enleve_points_virgules_en_trop
+    cursor.execute(open("../bibliographie/5_on_enleve_points_virgules_en_trop.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../bibliographie/5_on_ajoute_points_virgules_manquants.sql", "r", encoding='utf-8').read())
+
     cursor.execute(open("../bibliographie/10_global_script.sql", "r", encoding='utf-8').read())
 
     list_totaux = []
@@ -70,10 +75,14 @@ try:
 
     list_totaux.append(totaux)
 
-
     # pmid and dois
     cursor.execute(open("../bibliographie/20_pmid_et_dois.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("pmid and dois", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+
+    # epuration_docs_d_elements_vides
+    cursor.execute(open("../bibliographie/25_epuration_docs_d_elements_vides.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("epuration_docs_d_elements_vides", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
 
     # basic_four_elements
@@ -106,6 +115,7 @@ try:
     totaux = evolution_des_erreurs("bis_3_elements_cassables", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
 
+    cursor.execute(open("../bibliographie/80_suppression_submitted.sql", "r", encoding='utf-8').read())
     cursor.execute(open("../bibliographie/100_compacted_good_documents_table.sql", "r", encoding='utf-8').read())
     
     

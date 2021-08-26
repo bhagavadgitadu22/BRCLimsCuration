@@ -16,10 +16,10 @@ CREATE TABLE all_documents (
 INSERT INTO all_documents(sch_identifiant, doc, string_doc, full_doc)
 SELECT DISTINCT sch_identifiant,
 string_to_array(trim(unnest(
-	string_to_array(regexp_replace(sch_bibliographie, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029]+', ' ', 'g'), ';')
+	string_to_array(regexp_replace(sch_bibliographie, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+( [\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+)*', ';', 'g'), ';')
 )), ',') AS doc,
 trim(unnest(
-	string_to_array(regexp_replace(sch_bibliographie, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029]+', ' ', 'g'), ';')
+	string_to_array(regexp_replace(sch_bibliographie, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+( [\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+)*', ';', 'g'), ';')
 )) AS string_doc,
 sch_bibliographie AS full_doc
 FROM t_souche;

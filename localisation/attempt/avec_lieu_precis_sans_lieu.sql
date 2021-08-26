@@ -5,8 +5,7 @@ ON t_donneedico.xxx_id = sch_lieu
 WHERE t_donneedico.xxx_id IS NULL
 AND sch_lieu_precis IS NOT NULL
 AND sch_lieu_precis != ''
-AND NOT(sch_identifiant LIKE '%SB%'
-OR sch_identifiant LIKE '%CIP%'
+AND (sch_identifiant LIKE '%CIP%'
 OR sch_identifiant LIKE '%CRBIP%')
 
 -- 1889 SB

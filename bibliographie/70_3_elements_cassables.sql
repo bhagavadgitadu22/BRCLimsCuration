@@ -26,6 +26,53 @@ AND annee SIMILAR TO '[0-9]{4}'
 AND first_page SIMILAR TO '[0-9]+'
 AND (last_page SIMILAR TO '[0-9]+[^0-9]*' OR last_page IS NULL);
 
+-- on ajoute les éléments à 3 sans volume déclaré
+INSERT INTO valid_three
+SELECT id, sch_identifiant, journal, volume, annee, first_page, last_page
+FROM
+
+(SELECT id, sch_identifiant, 
+full_trim(doc[1]) AS journal,
+full_trim(doc[2]) AS annee,
+NULL AS volume,
+full_trim((regexp_split_to_array(doc[3], '-|–| and '))[1]) AS first_page,
+full_trim((regexp_split_to_array(doc[3], '-|–| and '))[2]) AS last_page
+FROM 
+
+(SELECT id, sch_identifiant, doc 
+FROM all_documents
+WHERE array_length(doc, 1) = 3
+) AS five_elements
+
+) AS after_cut
+WHERE journal SIMILAR TO '%[a-zA-Z]+%'
+AND annee SIMILAR TO '[0-9]{4}'
+AND first_page SIMILAR TO '[0-9]+'
+AND last_page SIMILAR TO '[0-9]+[^0-9]*';
+
+-- on ajoute les éléments sans année
+INSERT INTO valid_three
+SELECT id, sch_identifiant, journal, volume, annee, first_page, last_page
+FROM
+
+(SELECT id, sch_identifiant, 
+full_trim(doc[1]) AS journal,
+NULL AS annee,
+full_trim(doc[2]) AS volume,
+full_trim((regexp_split_to_array(doc[3], '-|–| and '))[1]) AS first_page,
+full_trim((regexp_split_to_array(doc[3], '-|–| and '))[2]) AS last_page
+FROM 
+
+(SELECT id, sch_identifiant, doc 
+FROM all_documents
+WHERE array_length(doc, 1) = 3
+) AS five_elements
+
+) AS after_cut
+WHERE journal SIMILAR TO '%[a-zA-Z]+%'
+AND first_page SIMILAR TO '[0-9]+'
+AND last_page SIMILAR TO '[0-9]+[^0-9]*';
+
 -- on ajoute les lignes regroupées dans la tables des bonnes biblios dont on va chercher les dois
 -- 9975 lignes après regroupement
 INSERT INTO good_documents(journal, annee, volume, first_page, last_page, sch_identifiant)
