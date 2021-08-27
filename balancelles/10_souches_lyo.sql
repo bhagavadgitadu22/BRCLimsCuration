@@ -15,7 +15,7 @@ LEFT JOIN t_lieustockage
 ON t_lieustockage.xxx_id = t_lot_casestockage.lts_lst_id
 
 WHERE don_lib = 'Stockage Lyophilisat'
-AND sch_identifiant SIMILAR TO 'CIP A[0-9]+T?'
+AND (sch_identifiant SIMILAR TO 'CIP A[0-9]+T?'
 OR sch_identifiant SIMILAR TO 'CIP [0-9]{2}.[0-9]+T?'
 OR sch_identifiant SIMILAR TO 'CIP [0-9]{1}.[0-9]+T?'
-OR sch_identifiant SIMILAR TO 'CIP 1[0-9]{5}';
+OR sch_identifiant SIMILAR TO 'CIP 1[0-9]{5}');
