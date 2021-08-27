@@ -277,3 +277,17 @@ UPDATE t_donneedico
 SET don_lib = 'Baekryung Island, Korea (Republic of)'
 WHERE don_lib = 'Baekryung Island, yellow sea'
 AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'ocean', 'Ocean')
+WHERE (don_lib LIKE '%[^a-zA-Z]ocean'
+OR don_lib LIKE 'ocean[^a-zA-Z]%'
+OR don_lib LIKE '%[^a-zA-Z]ocean[^a-zA-Z]%')
+AND don_dic_id IN (3758);
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(don_lib, 'sea', 'Sea')
+WHERE (don_lib SIMILAR TO '%[^a-zA-Z]sea'
+OR don_lib SIMILAR TO 'sea[^a-zA-Z]%'
+OR don_lib SIMILAR TO '%[^a-zA-Z]sea[^a-zA-Z]%')
+AND don_dic_id IN (3758);

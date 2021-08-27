@@ -14,12 +14,9 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.ext.automap import name_for_collection_relationship
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session
-from sqlalchemy.sql.schema import MetaData, Table
 
-from mirri.entities.date_range import DateRange
 from mirri.entities.growth_medium import GrowthMedium
-from mirri.entities.sequence import GenomicSequence
-from mirri.entities.strain import StrainMirri, OrganismType, StrainId
+from mirri.entities.strain import StrainMirri, OrganismType
 from mirri.io.writers.mirri_excel import write_mirri_excel
 from mirri.settings import (COMMERCIAL_USE_WITH_AGREEMENT, ONLY_RESEARCH,
                             NAGOYA_PROBABLY_SCOPE, NAGOYA_NO_RESTRICTIONS,

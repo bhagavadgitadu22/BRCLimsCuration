@@ -53,7 +53,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc4")
+                                  database="new_brc5")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
@@ -69,7 +69,7 @@ try:
 
     
     print("Construction de la table des villes")
-    cursor.execute(open("../localisation/15_cities.sql", "r", encoding='utf-8').read())
+    #cursor.execute(open("../localisation/15_cities.sql", "r", encoding='utf-8').read())
 
     list_totaux = []
 
@@ -190,7 +190,7 @@ try:
     
     # On vire les doublons de lieux
     print("On vire les doublons de lieux")
-    cursor.execute(open("../localisation/80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
+    #cursor.execute(open("../localisation/80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("On vire les doublons de lieux", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
     
