@@ -63,7 +63,8 @@ try:
 
     # on_enleve_points_virgules_en_trop
     cursor.execute(open("../bibliographie/5_on_enleve_points_virgules_en_trop.sql", "r", encoding='utf-8').read())
-    cursor.execute(open("../bibliographie/5_on_ajoute_points_virgules_manquants.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../bibliographie/6_on_ajoute_points_virgules_manquants.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../bibliographie/7_correction_de_csv.sql", "r", encoding='utf-8').read())
 
     cursor.execute(open("../bibliographie/10_global_script.sql", "r", encoding='utf-8').read())
 
@@ -88,6 +89,16 @@ try:
     # basic_four_elements
     cursor.execute(open("../bibliographie/30_basic_four_elements.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("basic_four_elements", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+
+    # four_elements_e_page
+    cursor.execute(open("../bibliographie/35_four_elements_e_page.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("four_elements_e_page", initial_all_documents, initial_all_documents_grouped)
+    list_totaux.append(totaux)
+
+    # four_elements_s_page
+    cursor.execute(open("../bibliographie/38_four_elements_s_page.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("four_elements_s_page", initial_all_documents, initial_all_documents_grouped)
     list_totaux.append(totaux)
     
     # 8_elements_cassables

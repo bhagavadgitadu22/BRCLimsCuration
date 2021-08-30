@@ -1,4 +1,6 @@
-SELECT don_lib, don_dic_id, array_to_string(array_agg(sch_identifiant), ', '), COUNT(*) 
+SELECT don_lib, don_dic_id, array_to_string(array_agg(sch_identifiant), ', '), 
+array_to_string(array_agg(sch_lieu_precis), ', '), array_to_string(array_agg(sch_references_equi), ', '), 
+array_to_string(array_agg(sch_bibliographie), ', '), COUNT(*) 
 FROM t_donneedico
 JOIN t_souche
 ON sch_lieu = t_donneedico.xxx_id
