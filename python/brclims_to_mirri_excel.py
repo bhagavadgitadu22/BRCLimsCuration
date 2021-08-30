@@ -104,7 +104,7 @@ def main():
     password = args['password']
     host = args['host']
     port = args['port']
-    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/test2")
+    engine = create_engine(f"postgresql://{user}:{password}@{host}:{port}/new_brc5")
 
     tables = get_table_objects(engine)
 
