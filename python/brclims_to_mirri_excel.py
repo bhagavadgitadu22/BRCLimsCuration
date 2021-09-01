@@ -23,6 +23,8 @@ from mirri.settings import (COMMERCIAL_USE_WITH_AGREEMENT, ONLY_RESEARCH,
                             NAGOYA_DOCS_AVAILABLE)
 from mirri.validation.entity_validators import validate_strain
 
+import psycopg2
+
 CCS = ['ATCC', 'CAIM', 'CCUG', 'DSM', 'NCIMB', 'NCPPB', 'NCTC', 'NRRL', 'VTT',
        'CIP']
 
@@ -123,13 +125,37 @@ def main():
 
 
 def get_strains(engine, tables, log_fhand=None):
+    # on récupère la liste des identifiants valides
+    connection = psycopg2.connect(user="postgres",
+                                  password="hercule1821",
+                                  host="localhost",
+                                  port="5432",
+                                  database="new_brc5")
+    connection.autocommit = True
+
+    # Create a cursor to perform database operations
+    cursor = connection.cursor()
+
+    # initialization
+    cursor.execute(open("../mirri/conservation_max_souches_bonnes.sql", "r").read())
+    records = cursor.fetchall()
+
+    identifiants = []
+    for record in records:
+        identifiants.append(record[0])
+
     Strains = tables['bacteria']
 
     with Session(bind=engine, future=True) as session:
-        statement = select(Strains).filter(Strains.xxx_id.in_([192410, 192644, 193553, 350145, 372219, 535200, 536686, 537806]))
+        statement = select(Strains).filter(Strains.xxx_id.in_(identifiants))
         
         # statement = select(strains_table).where(strains_table.c.cect==20831)
+        i = 0
         for strain in session.execute(statement):
+            if i%10 == 0:
+                print("Strain n°"+str(i))
+            i += 1
+            
             strain = serialize_strain(strain, session=session, tables=tables, log_fhand=log_fhand)
             if strain is not None:
                 yield strain
@@ -233,8 +259,26 @@ def serialize_strain(row, session, tables, log_fhand):
 
     # "collect.location", "label": "Geographic origin"},
     country = _get_country(row.t_souche.sch_lieu, session, tables)
-    pyinstance = pycountry.countries.get(name=country)
-    strain.collect.location.country = pyinstance.alpha_3
+    if country == 'United States of America':
+        country = 'United States'
+    if country == 'Korea (Republic of)':
+        country = 'Korea, Republic of'
+    if country == 'Venezuela (Bolivarian Republic of)':
+        country = 'Venezuela, Bolivarian Republic of'
+    if country == 'Iran (Islamic Republic of)':
+        country = 'Iran, Islamic Republic of'
+    if country == 'Bolivia (Plurinational State of)':
+        country = 'Bolivia, Plurinational State of'
+    if country == 'Tanzania (United Republic of)':
+        country = 'Tanzania, United Republic of'
+    try:
+        pyinstance = pycountry.countries.get(name=country)
+        strain.collect.location.country = pyinstance.alpha_3
+    except AttributeError:
+        print(country)
+        print(row.t_souche.sch_lieu)
+    
+    
     # TODO: aclararse con el collect site
     strain.collect.location.site = row.t_souche.sch_lieu_precis
 
