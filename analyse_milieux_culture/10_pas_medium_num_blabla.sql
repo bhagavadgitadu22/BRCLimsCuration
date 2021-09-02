@@ -1,5 +1,9 @@
-SELECT xxx_id, mil_designation_en
+SELECT t_milieu.xxx_id, mil_designation_en, array_remove(ARRAY_AGG(sch_identifiant), NULL)
 FROM t_milieu
+LEFT JOIN t_milieu_souche
+ON msc_mil_id = t_milieu.xxx_id
+LEFT JOIN t_souche
+ON t_souche.xxx_id = msc_sch_id
 WHERE mil_clg_id = 401
 AND mil_designation_en NOT SIMILAR TO '%MEDIUM [0-9]+ -%'
-GROUP BY xxx_id, mil_designation_en;
+GROUP BY t_milieu.xxx_id, mil_designation_en, mil_clg_id;

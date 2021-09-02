@@ -15,7 +15,7 @@ def redimension_cell_width(ws):
 
 def borders_cells(sheet):
     thin = Side(border_style="thin", color="000000")
-    
+
     for col in sheet.rows:
         for cell in col:
             if cell.value:
@@ -38,12 +38,11 @@ def designations_doublees(wb, cursor):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Désignations doublées")
-    sheet.append(["Nom du milieu dupliqué", "IDs BDD"])
+    sheet.append(["Nom du milieu dupliqué", "Souches"])
 
     for record in records:
         row = [record[1]]
-        for id in record[0]:
-            row.append(str(id))
+        row.append(str(record[2]))
         sheet.append(row)
 
     style_sheet(sheet)
@@ -53,11 +52,11 @@ def noms_pas_conformes(wb, cursor):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Noms pas conformes")
-    sheet.append(["Nom du milieu pas conforme", "ID BDD"])
+    sheet.append(["Nom du milieu pas conforme", "Souches"])
 
     for record in records:
         row = [record[1]]
-        row.append(str(record[0]))
+        row.append(str(record[2]))
         sheet.append(row)
 
     style_sheet(sheet)
@@ -67,12 +66,12 @@ def commentaires_delateurs(wb, cursor):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Commentaires délateurs")
-    sheet.append(["Nom du milieu", "Commentaire l'incriminant", "ID BDD"])
+    sheet.append(["Nom du milieu", "Commentaire l'incriminant", "Souches"])
 
     for record in records:
         row = [record[1]]
         row.append(record[2])
-        row.append(str(record[0]))
+        row.append(str(record[3]))
         sheet.append(row)
 
     style_sheet(sheet)
@@ -82,11 +81,13 @@ def sheet_error(wb, cursor, file, name):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet(name)
-    sheet.append(["Erreur", "Nom des milieux"])
+    sheet.append(["Erreur", "Nom des milieux", "Souches"])
 
     n_ligne = 2
     for record in records:
         row = []
+
+        # pour les sources d'erreur
         if isinstance(record[2], str):
             row.append(record[2])
         else :
@@ -97,8 +98,11 @@ def sheet_error(wb, cursor, file, name):
                 chaine += str(erreur)
             row.append(chaine)
         
+        # pour les noms de milieux et les souches qui en relèvent
         for nom in record[1]:
-            sheet.append(row+[str(nom)])
+            for key in nom.keys():
+                sheet.append(row+[str(key)]+[str(nom[key])])
+            
             n_ligne += 1
 
         sheet.merge_cells(start_row=n_ligne-len(record[1]), start_column=1, end_row=n_ligne-1, end_column=1)
