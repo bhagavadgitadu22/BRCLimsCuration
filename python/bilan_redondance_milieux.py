@@ -29,21 +29,26 @@ def style_sheet(sheet):
     header = list(sheet.rows)[0]
     for cell in header:
         cell.font  = Font(bold=True)
-    borders_cells(sheet)
+    
     wrap_lines(sheet)
     redimension_cell_width(sheet)
+    borders_cells(sheet)
 
 def designations_doublees(wb, cursor):
     cursor.execute(open("../analyse_milieux_culture/0_doublons_mil_designation_en.sql", "r").read())
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Désignations doublées")
-    sheet.append(["Nom du milieu dupliqué", "Souches"])
+    sheet.append(["Nom du milieu dupliqué", "IDs BDD", "Souches"])
 
+    n_ligne = 2
     for record in records:
-        row = [record[1]]
-        row.append(str(record[2]))
-        sheet.append(row)
+        for id in record[0]:
+            sheet.append([record[1], str(id), str(record[2])])
+            n_ligne += 1
+
+        sheet.merge_cells(start_row=n_ligne-len(record[0]), start_column=1, end_row=n_ligne-1, end_column=1)
+        sheet.merge_cells(start_row=n_ligne-len(record[0]), start_column=3, end_row=n_ligne-1, end_column=3)
 
     style_sheet(sheet)
 
@@ -52,10 +57,11 @@ def noms_pas_conformes(wb, cursor):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Noms pas conformes")
-    sheet.append(["Nom du milieu pas conforme", "Souches"])
+    sheet.append(["Nom du milieu pas conforme", "ID BDD", "Souches"])
 
     for record in records:
         row = [record[1]]
+        row.append(str(record[0]))
         row.append(str(record[2]))
         sheet.append(row)
 
@@ -66,11 +72,12 @@ def commentaires_delateurs(wb, cursor):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet("Commentaires délateurs")
-    sheet.append(["Nom du milieu", "Commentaire l'incriminant", "Souches"])
+    sheet.append(["Nom du milieu", "Commentaire l'incriminant", "ID BDD", "Souches"])
 
     for record in records:
         row = [record[1]]
         row.append(record[2])
+        row.append(str(record[0]))
         row.append(str(record[3]))
         sheet.append(row)
 
