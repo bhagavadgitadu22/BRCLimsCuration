@@ -2,7 +2,7 @@ SELECT ARRAY_AGG(xxx_id), ARRAY_AGG(mil_designation_en), recette, COUNT(*) FROM
 
 (SELECT xxx_id, mil_designation_en, ARRAY_AGG(full_ingredient ORDER BY full_ingredient) AS recette FROM
  
-(SELECT a.xxx_id, a.mil_designation_en, CONCAT(a.ingredient, ', ', a.quantite, ', ', a.unite) AS full_ingredient FROM
+(SELECT a.xxx_id, a.mil_designation_en, CONCAT(a.ingredient, ' : ', a.quantite, ' ', a.unite) AS full_ingredient FROM
  
 (SELECT t_milieu.xxx_id,
 t_milieu.mil_designation_en,
@@ -21,3 +21,4 @@ WHERE mil_clg_id = 401) AS a) AS b
 GROUP BY xxx_id, mil_designation_en) AS c
 GROUP BY recette
 HAVING COUNT(*) > 1
+ORDER BY ARRAY_AGG(mil_designation_en);

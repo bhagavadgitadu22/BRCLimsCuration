@@ -11,4 +11,5 @@ WHERE mil_clg_id = 401
 GROUP BY t_milieu.xxx_id, mil_designation_en) AS a
 
 GROUP BY arr
-HAVING COUNT(*) > 1;
+HAVING COUNT(*) > 1
+ORDER BY ARRAY_AGG(mil_designation_en);

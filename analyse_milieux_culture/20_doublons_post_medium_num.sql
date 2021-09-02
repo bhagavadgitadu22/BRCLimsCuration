@@ -6,4 +6,5 @@ WHERE mil_clg_id = 401
 AND mil_designation_en SIMILAR TO '%MEDIUM [0-9]+ -%') AS a
 
 GROUP BY arr
-HAVING COUNT(*) > 1;
+HAVING COUNT(*) > 1
+ORDER BY ARRAY_AGG(mil_designation_en);

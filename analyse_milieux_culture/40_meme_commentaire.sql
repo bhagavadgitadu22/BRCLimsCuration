@@ -7,4 +7,5 @@ AND mil_commentaire_compo != ''
 ORDER BY xxx_id) AS a
 
 GROUP BY ref_equi
-HAVING COUNT(*) > 1;
+HAVING COUNT(*) > 1
+ORDER BY ARRAY_AGG(mil_designation_en);
