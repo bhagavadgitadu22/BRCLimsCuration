@@ -1,22 +1,37 @@
 from openpyxl.workbook.workbook import Workbook
 import psycopg2
-from openpyxl.styles import Border, Side
+from openpyxl.styles import Border, Side, Alignment, Font
 
 def redimension_cell_width(ws):
     dims = {}
     for row in ws.rows:
         for cell in row:
             if cell.value:
-                max_ = max((dims.get(cell.column_letter, 0), len(str(cell.value))))
+                line_max = max([len(str(elmt)) for elmt in cell.value.split('\n')])
+                max_ = max((dims.get(cell.column_letter, 0), line_max))
                 dims[cell.column_letter] = max_
     for col, value in dims.items():
         ws.column_dimensions[col].width = value
 
 def borders_cells(sheet):
+    thin = Side(border_style="thin", color="000000")
+    
     for col in sheet.rows:
         for cell in col:
-            thin = Side(border_style="thin", color="000000")
-            cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
+            if cell.value:
+                cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
+
+def wrap_lines(sheet):
+    for col in sheet.rows:
+        col[0].alignment = Alignment(wrapText=True)
+
+def style_sheet(sheet):
+    header = list(sheet.rows)[0]
+    for cell in header:
+        cell.font  = Font(bold=True)
+    borders_cells(sheet)
+    wrap_lines(sheet)
+    redimension_cell_width(sheet)
 
 def designations_doublees(wb, cursor):
     cursor.execute(open("../analyse_milieux_culture/0_doublons_mil_designation_en.sql", "r").read())
@@ -31,7 +46,7 @@ def designations_doublees(wb, cursor):
             row.append(str(id))
         sheet.append(row)
 
-    redimension_cell_width(sheet)
+    style_sheet(sheet)
 
 def noms_pas_conformes(wb, cursor):
     cursor.execute(open("../analyse_milieux_culture/10_pas_medium_num_blabla.sql", "r").read())
@@ -45,7 +60,7 @@ def noms_pas_conformes(wb, cursor):
         row.append(str(record[0]))
         sheet.append(row)
 
-    redimension_cell_width(sheet)
+    style_sheet(sheet)
 
 def commentaires_delateurs(wb, cursor):
     cursor.execute(open("../analyse_milieux_culture/15_milieu_double_mis_dans_commentaire.sql", "r").read())
@@ -60,7 +75,7 @@ def commentaires_delateurs(wb, cursor):
         row.append(str(record[0]))
         sheet.append(row)
 
-    redimension_cell_width(sheet)
+    style_sheet(sheet)
 
 def sheet_error(wb, cursor, file, name):
     cursor.execute(open("../analyse_milieux_culture/"+file, "r").read())
@@ -69,6 +84,7 @@ def sheet_error(wb, cursor, file, name):
     sheet = wb.create_sheet(name)
     sheet.append(["Erreur", "Nom des milieux"])
 
+    n_ligne = 2
     for record in records:
         row = []
         if isinstance(record[2], str):
@@ -77,16 +93,17 @@ def sheet_error(wb, cursor, file, name):
             chaine = ""
             for erreur in record[2]:
                 if chaine != "":
-                    chaine += ", "
+                    chaine += "\n- "
                 chaine += str(erreur)
             row.append(chaine)
         
         for nom in record[1]:
-            row.append(str(nom))
-        sheet.append(row)
+            sheet.append(row+[str(nom)])
+            n_ligne += 1
 
-    borders_cells(sheet)
-    redimension_cell_width(sheet)
+        sheet.merge_cells(start_row=n_ligne-len(record[1]), start_column=1, end_row=n_ligne-1, end_column=1)
+
+    style_sheet(sheet)
 
 def create_excel(path):
     # on récupère la liste des identifiants valides
