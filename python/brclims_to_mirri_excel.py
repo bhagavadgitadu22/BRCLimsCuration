@@ -229,9 +229,11 @@ def serialize_strain(row, session, tables, log_fhand):
     strain.id.collection = 'CIP'
     strain.id.number = str(brclims_id)
 
-    strain.restriction_on_use = ONLY_RESEARCH
+    # restrictions on use compulsory so necessary to discuss the value to give it, dépend de catalogue ou non ?
+    #strain.restriction_on_use = ONLY_RESEARCH
 
-    strain.nagoya_protocol = NAGOYA_NO_RESTRICTIONS
+    # nagoya compulsory but mainly not available so far
+    #strain.nagoya_protocol = NAGOYA_NO_RESTRICTIONS
 
     # "risk_group", "label": "Risk Group"},
     strain.risk_group = _get_risk_group(row.t_souche.sch_pto_id, session, tables)
