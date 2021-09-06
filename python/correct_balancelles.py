@@ -7,7 +7,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc5")
+                                  database="new_brc2")
     connection.autocommit = True
 
     # create a cursor to perform database operations
@@ -39,10 +39,10 @@ try:
     cursor.execute(open("../balancelles/50_correspondance_lots_balancelles_stockeur_2.sql", "r", encoding='utf-8').read())
 
     print('60_update_stockeur')
-    cursor.execute(open("../balancelles/60_update_stockeur.sql", "r", encoding='utf-8').read())
+    #cursor.execute(open("../balancelles/60_update_stockeur.sql", "r", encoding='utf-8').read())
 
     print('70_supprimer_lieux_stockage_vides')
-    cursor.execute(open("../balancelles/70_supprimer_lieux_stockage_vides.sql", "r", encoding='utf-8').read())
+    #cursor.execute(open("../balancelles/70_supprimer_lieux_stockage_vides.sql", "r", encoding='utf-8').read())
 
 except (Exception, Error) as error:
     print("Error while connecting to PostgreSQL", error)
