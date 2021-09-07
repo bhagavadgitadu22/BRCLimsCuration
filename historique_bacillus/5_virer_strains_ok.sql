@@ -1,5 +1,5 @@
 UPDATE t_souche
-SET sch_historique = regexp_replace(historiques_bacillus.sch_historique, E' [\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+', '', 'g')
+SET sch_historique = regexp_replace(historiques_bacillus.sch_historique, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+', '', 'g')
 FROM historiques_bacillus
 WHERE t_souche.xxx_id = historiques_bacillus.xxx_id
 AND historiques_bacillus.sch_historique SIMILAR TO '%<-%'

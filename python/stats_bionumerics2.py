@@ -7,14 +7,11 @@ connections = [line.split('	') for line in f][1:]
 struct_time = []
 struct_time_debut = []
 for conn in connections:
-    date_debut = conn[6]
-    temps_debut = conn[0]
-
-    date_fin = conn[7]
-    temps_fin = conn[1]
+    date_debut = conn[0]
+    date_fin = conn[1]
     
-    struct_time.append([time.strptime(date_debut+";;;"+temps_debut, "%d/%m/%Y;;;%H:%M:%S"), time.strptime(date_fin+";;;"+temps_fin, "%d/%m/%Y;;;%H:%M:%S"), conn[3]])
-    struct_time_debut.append(time.strptime(date_debut+";;;"+temps_debut, "%d/%m/%Y;;;%H:%M:%S"))
+    struct_time.append([time.strptime(date_debut, "%Y-%m-%d %H:%M:%S"), time.strptime(date_fin, "%Y-%m-%d %H:%M:%S"), conn[4]])
+    struct_time_debut.append(time.strptime(date_debut, "%Y-%m-%d %H:%M:%S"))
 
 dates_ordonnees = sorted(struct_time_debut)
 
@@ -57,16 +54,13 @@ for d_max in dates_max:
 
     c_max = []
     for conn in connections:
-        date_debut = conn[6]
-        temps_debut = conn[0]
-
-        date_fin = conn[7]
-        temps_fin = conn[1]
+        date_debut = conn[0]
+        date_fin = conn[1]
 
         for tm in t_max:
-            if time.strptime(date_debut+";;;"+temps_debut, "%d/%m/%Y;;;%H:%M:%S") == tm[0] and time.strptime(date_fin+";;;"+temps_fin, "%d/%m/%Y;;;%H:%M:%S") == tm[1]:
+            if time.strptime(date_debut, "%Y-%m-%d %H:%M:%S") == tm[0] and time.strptime(date_fin, "%Y-%m-%d %H:%M:%S") == tm[1]:
                 c_max.append(conn)
-                print(conn[5]+'   '+conn[3])
+                print(conn[5]+'   '+conn[4])
 
 _ = plt.hist(nb_users, bins='auto')  # arguments are passed to np.histogram
 plt.title("Simultaneous users")

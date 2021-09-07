@@ -6,9 +6,12 @@ CASE
 	ELSE str
 END AS new_historique 
 INTO new_historiques FROM
+
 (SELECT xxx_id, string_agg(CONCAT(bonne_annee, ', ', texte), ' <- ' ORDER BY numero DESC) AS str
 FROM lines_bacillus
+WHERE texte != ''
 GROUP BY xxx_id) AS a
+
 LEFT JOIN strains_bacillus
 ON a.xxx_id = strains_bacillus.xxx_id;
 
