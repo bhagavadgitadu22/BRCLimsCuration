@@ -5,4 +5,5 @@ regexp_replace(sch_historique, E'[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029;]+', ';;
 INTO TABLE historiques_bacillus
 FROM t_souche
 WHERE sch_historique != ''
-AND LOWER(sch_denomination) LIKE '%bacillus%';
+AND LOWER(sch_denomination) LIKE '%bacillus%'
+AND sch_historique SIMILAR TO E'%[\\n\\r\\f\\u000B\\u0085\\u2028\\u2029]+[^\\n\\r\\f\\u000B\\u0085\\u2028\\u2029]+%';
