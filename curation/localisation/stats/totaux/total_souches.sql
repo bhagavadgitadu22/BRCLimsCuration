@@ -1,0 +1,4 @@
+SELECT COUNT(*) FROM
+(SELECT * 
+FROM t_souche
+WHERE sch_lieu IS NOT NULL) AS a;

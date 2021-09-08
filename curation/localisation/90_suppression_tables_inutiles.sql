@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS world_en;
+DROP TABLE IF EXISTS world_fr;
+DROP TABLE IF EXISTS world;
+DROP TABLE IF EXISTS world_cities;

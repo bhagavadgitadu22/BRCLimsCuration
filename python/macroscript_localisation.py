@@ -193,6 +193,9 @@ try:
     cursor.execute(open("../localisation/80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("On vire les doublons de lieux", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
+
+    # Suppression des tables inutiles
+    cursor.execute(open("../localisation/90_suppression_tables_inutiles.sql", "r", encoding='utf-8').read())
     
     
     # we write the results in an csv file
