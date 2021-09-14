@@ -60,5 +60,3 @@ DELETE FROM t_donneedico WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_doubl
 DROP TABLE IF EXISTS genealogie;
 DROP TABLE ids_doubles;
 DROP TABLE IF EXISTS parents_doubles;
-
-DROP TABLE IF EXISTS taxonomy;

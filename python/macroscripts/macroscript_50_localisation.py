@@ -81,7 +81,23 @@ try:
     initial_fausses_souches = totaux[7]
 
     list_totaux.append(totaux)
-    
+
+    """ à laisser tant que les problèmes de gestion de la corée ne sont pas résolus
+    # On crée tables des villes coréennes
+    cursor.execute(open(local_dir+"korea/0_south_korean_cities.sql", "r", encoding='utf-8').read())
+
+    # On corrige les noms de lieux coréens erronés
+    cursor.execute(open(local_dir+"korea/10_corrections.sql", "r", encoding='utf-8').read())
+
+    # On réaffecte les souches vers Korea
+    cursor.execute(open(local_dir+"korea/20_vers_south_korea_for_cities.sql", "r", encoding='utf-8').read())
+
+    # On met à Corée du Sud toutes les souches post 1960
+    print("On corrige les erreurs coréennes")
+    cursor.execute(open(local_dir+"korea/30_isolees_apres_1960.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("On corrige les erreurs coréennes", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+    """
 
     # Enlever espaces avant/après localisation (trim)
     print("Enlever espaces avant/après localisation (trim)")
@@ -195,6 +211,12 @@ try:
     print("On vire les doublons de lieux")
     cursor.execute(open(local_dir+"80_suppression_doublons_de_lieux.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("On vire les doublons de lieux", initial_faux_dico, initial_fausses_souches)
+    list_totaux.append(totaux)
+
+    # On vire les doublons de lieux
+    print("On vire les éléments inutilisées du dico")
+    cursor.execute(open(local_dir+"85_suppression_elements_dico_inutilises.sql", "r", encoding='utf-8').read())
+    totaux = evolution_des_erreurs("On vire les éléments inutilisées du dico", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
 
     # Suppression des tables inutiles

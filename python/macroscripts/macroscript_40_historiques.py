@@ -35,17 +35,21 @@ try:
     print("15_lines_historique")
     cursor.execute(open(local_dir+"15_lines_historique.sql", "r").read())
 
-    # 16_correct_lines
-    print("16_correct_lines")
-    cursor.execute(open(local_dir+"16_correct_lines.sql", "r").read())
+    # 20_on_vire_partie_cip
+    print("20_on_vire_partie_cip")
+    cursor.execute(open(local_dir+"20_on_vire_partie_cip.sql", "r").read())
 
-    # 20_new_historiques
-    print("20_new_historiques")
-    cursor.execute(open(local_dir+"20_new_historiques.sql", "r").read())
+    # 30_correct_lines
+    print("30_correct_lines")
+    cursor.execute(open(local_dir+"30_correct_lines.sql", "r").read())
 
-    # 25_suppression_tables
-    print("25_suppression_tables")
-    cursor.execute(open(local_dir+"25_suppression_tables.sql", "r").read())
+    # 40_new_historiques
+    print("40_new_historiques")
+    cursor.execute(open(local_dir+"40_new_historiques.sql", "r").read())
+
+    # 50_suppression_tables
+    print("50_suppression_tables")
+    cursor.execute(open(local_dir+"50_suppression_tables.sql", "r").read())
 
 except (Exception, Error) as error:
     print("Error while connecting to PostgreSQL", error)

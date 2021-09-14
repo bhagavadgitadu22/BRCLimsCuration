@@ -55,7 +55,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="new_brc5")
+                                  database="brc_db")
     connection.autocommit = True
 
     # Create a cursor to perform database operations
@@ -158,6 +158,9 @@ try:
     cursor.execute(open(local_dir+"90_suppression_doublons_taxo.sql", "r").read())
     totaux = evolution_des_erreurs("On vire les doublons", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
+
+    # Suppression des tables inutiles
+    cursor.execute(open(local_dir+"100_suppression_table_taxonomy.sql", "r", encoding='utf-8').read())
     
     
     # we write the results in an csv file
