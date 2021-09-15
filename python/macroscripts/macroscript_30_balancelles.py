@@ -7,7 +7,7 @@ try:
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="brc_db")
+                                  database="brc_db2")
     connection.autocommit = True
 
     # create a cursor to perform database operations
