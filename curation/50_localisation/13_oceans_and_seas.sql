@@ -1,6 +1,6 @@
 -- on ajoute au mix les mers, les océans et les continents
 COPY world (name_en)
-FROM 'C:\Users\Public\Documents\complete_seas_and_oceans.csv'
+FROM '/var/lib/pgsql/brclimscuration/csv_utiles/complete_seas_and_oceans.csv'
 DELIMITER ';';
 
 INSERT INTO world (name_en) VALUES

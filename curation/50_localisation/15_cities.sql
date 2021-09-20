@@ -20,7 +20,7 @@ CREATE TABLE world_cities (
 COPY world_cities(
 	city, city_ascii, lat, lng, country, iso2, iso3, 
 	admin_name, capital, population, id_city)
-FROM 'C:\Users\Public\Documents\worldcities.csv'
+FROM '/var/lib/pgsql/brclimscuration/csv_utiles/worldcities.csv'
 DELIMITER ','
 CSV HEADER;
 

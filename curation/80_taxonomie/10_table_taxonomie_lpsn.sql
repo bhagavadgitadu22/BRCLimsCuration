@@ -23,7 +23,7 @@ CREATE TEMPORARY TABLE t (
 );
 
 COPY t (genus_name,sp_epithet,subsp_epithet,reference,status,authors,address,risk_grp,nomenclatural_type,record_no,record_lnk)
-FROM 'C:/Users/Public/Documents/lpsn_gss_2021-07-27.csv'
+FROM '/var/lib/pgsql/brclimscuration/csv_utiles/lpsn_gss_2021-07-27.csv'
 CSV HEADER;
 
 INSERT INTO taxonomy (genus_name,sp_epithet,subsp_epithet,record_no,record_lnk)

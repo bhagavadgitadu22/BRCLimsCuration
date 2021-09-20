@@ -8,7 +8,7 @@ CREATE TABLE stockeur_2 (
 );
 
 COPY stockeur_2 (first_strain, last_strain, balancelle)
-FROM 'C:/Users/Public/Documents/rangement_stockeur_2.csv'
+FROM '/var/lib/pgsql/brclimscuration/csv_utiles/rangement_stockeur_2.csv'
 DELIMITER ';'
 CSV;
 
