@@ -23917,4 +23917,3 @@ INSERT INTO public.world_cities (id, city_ascii, country, population) VALUES (94
 INSERT INTO public.world_cities (id, city_ascii, country, population) VALUES (9472, 'Bujanovac', 'Serbia', '0');
 INSERT INTO public.world_cities (id, city_ascii, country, population) VALUES (9473, 'Kitamilo', 'Uganda', '0');
 INSERT INTO public.world_cities (id, city_ascii, country, population) VALUES (9474, 'Tarrafal', 'Cabo Verde', '0');
- 
