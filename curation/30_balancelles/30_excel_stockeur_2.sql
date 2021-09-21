@@ -1,25 +1,106 @@
 -- on lit l'excel contenant les bonnes positions des lots dans le stockeur 2
 DROP TABLE IF EXISTS stockeur_2;
 
-CREATE TABLE stockeur_2 (
+CREATE TABLE public.stockeur_2 (
   first_strain varchar(75),
   last_strain varchar(75),
   balancelle varchar(75)
 );
 
-COPY stockeur_2 (first_strain, last_strain, balancelle)
-FROM 'C:/Users/Public/Documents/rangement_stockeur_2.csv'
-DELIMITER ';'
-CSV;
-
-UPDATE stockeur_2
-SET first_strain = REPLACE(first_strain, 'A ', 'A')
-WHERE first_strain LIKE '%A %';
-
-UPDATE stockeur_2
-SET last_strain = REPLACE(last_strain, 'A ', 'A')
-WHERE last_strain LIKE '%A %';
-
-UPDATE stockeur_2
-SET first_strain = CONCAT('CIP ', first_strain),
-	last_strain = CONCAT('CIP ', last_strain);
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 105758', 'CIP 105833', '001');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 105837', 'CIP 105928', '002');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 105929', 'CIP 105989', '003');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 105990', 'CIP 106045', '004');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106045', 'CIP 106111', '005');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106112', 'CIP 106180', '006');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106181', 'CIP 106257', '007');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106258', 'CIP 106340', '008');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106341', 'CIP 106405', '009');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106408', 'CIP 106468', '010');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106470', 'CIP 106535', '011');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106536', 'CIP 106590', '012');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106591', 'CIP 106648', '013');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106649', 'CIP 106712', '014');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106713', 'CIP 106775', '015');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106776', 'CIP 106839', '016');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106840', 'CIP 106920', '017');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 106921', 'CIP 106994', '018');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107000', 'CIP 107070', '019');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107071', 'CIP 107131', '020');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107132', 'CIP 107214', '021');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107215', 'CIP 107276', '022');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107277', 'CIP 107347', '023');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107348', 'CIP 107408', '024');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107409', 'CIP 107465', '025');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107466', 'CIP 107524', '026');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107525', 'CIP 107579', '027');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107580', 'CIP 107639', '028');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107640', 'CIP 107699', '029');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107700', 'CIP 107761', '030');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107762', 'CIP 107823', '031');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107824', 'CIP 107882', '032');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107883', 'CIP 107950', '033');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 107951', 'CIP 108014', '034');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108015', 'CIP 108069', '035');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108070', 'CIP 108124', '036');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108125', 'CIP 108179', '037');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108180', 'CIP 108235', '038');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108236', 'CIP 108290', '039');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108291', 'CIP 108345', '040');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108346', 'CIP 108400', '041');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108401', 'CIP 108455', '042');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108456', 'CIP 108510', '043');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108511', 'CIP 108565', '044');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108566', 'CIP 108620', '045');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108621', 'CIP 108675', '046');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108676', 'CIP 108730', '047');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108731', 'CIP 108785', '048');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108786', 'CIP 108840', '049');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108841', 'CIP 108895', '050');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108896', 'CIP 108950', '051');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 108951', 'CIP 109005', '052');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109006', 'CIP 109060', '053');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109061', 'CIP 109115', '054');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109116', 'CIP 109170', '055');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109171', 'CIP 109225', '056');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109226', 'CIP 109280', '057');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109281', 'CIP 109335', '058');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109336', 'CIP 109390', '059');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109391', 'CIP 109445', '060');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109446', 'CIP 109500', '061');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109501', 'CIP 109555', '062');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109556', 'CIP 109610', '063');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109611', 'CIP 109665', '064');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109666', 'CIP 109720', '065');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109721', 'CIP 109775', '066');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109776', 'CIP 109830', '067');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109831', 'CIP 109885', '068');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109886', 'CIP 109940', '069');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109941', 'CIP 109995', '070');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 109996', 'CIP 110050', '071');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110051', 'CIP 110105', '072');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110106', 'CIP 110160', '073');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110161', 'CIP 110215', '074');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110216', 'CIP 110270', '075');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110271', 'CIP 110325', '076');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110326', 'CIP 110390', '077');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110391', 'CIP 110445', '078');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110446', 'CIP 110500', '079');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110501', 'CIP 110555', '080');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110556', 'CIP 110610', '081');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110611', 'CIP 110665', '082');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110666', 'CIP 110720', '083');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110721', 'CIP 110775', '084');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110776', 'CIP 110830', '085');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110831', 'CIP 110885', '086');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110886', 'CIP 110940', '087');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110941', 'CIP 110995', '088');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 110996', 'CIP 111050', '089');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111051', 'CIP 111105', '090');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111106', 'CIP 111247', '091');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111285', 'CIP 111491', '092');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111492', 'CIP 111642', '093');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111643', 'CIP 111697', '094');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111698', 'CIP 111801', '095');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111802', 'CIP 111863', '096');
+INSERT INTO public.stockeur_2 (first_strain, last_strain, balancelle) VALUES ('CIP 111864', 'CIP 111918', '097');
