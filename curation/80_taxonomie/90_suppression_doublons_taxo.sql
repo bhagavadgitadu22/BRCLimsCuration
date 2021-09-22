@@ -26,7 +26,7 @@ SELECT genealogie.xxx_id AS id1, id2
 INTO TEMPORARY TABLE ids_doubles
 FROM genealogie JOIN
 
-(SELECT name_path, PERCENTILE_DISC(0) WITHIN GROUP (ORDER BY xxx_id) AS id2, COUNT(*)
+(SELECT name_path, (array_agg(xxx_id))[1] AS id2, COUNT(*)
 FROM genealogie
 GROUP BY name_path
 HAVING COUNT(*) > 1) AS duplicates

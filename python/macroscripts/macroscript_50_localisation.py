@@ -68,7 +68,6 @@ try:
     cursor.execute(open(local_dir+"10_english_world.sql", "r", encoding='utf-8').read())
     cursor.execute(open(local_dir+"11_french_world.sql", "r", encoding='utf-8').read())
     cursor.execute(open(local_dir+"12_mixed_world.sql", "r", encoding='utf-8').read())
-    cursor.execute(open(local_dir+"13_oceans_and_seas.sql", "r", encoding='utf-8').read())
 
     
     print("Construction de la table des villes")
@@ -194,7 +193,7 @@ try:
     cursor.execute(open(local_dir+"35_virer_erreurs_orthographe_pays.sql", "r", encoding='utf-8').read())
     totaux = evolution_des_erreurs("Virer les erreurs d'orthographe des pays (second try)", initial_faux_dico, initial_fausses_souches)
     list_totaux.append(totaux)
-
+    """
     # On gère les pays encore entourés d'autres infos
     print("On gère les pays encore entourés d'autres infos")
     cursor.execute(open(local_dir+"70_pays_restants_dans_lieux.sql", "r", encoding='utf-8').read())
@@ -233,6 +232,7 @@ try:
 
     # close the file
     f.close()
+    """
     
 
 except (Exception, Error) as error:

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS pays_perdu_dans_lieu;
 
 -- on récupère les lieux où un pays est présent
-SELECT a.xxx_id, don_lib, percentile_disc(0) WITHIN GROUP (ORDER BY a.name_en) AS pays
+SELECT a.xxx_id, don_lib, (array_agg(a.name_en))[1] AS pays
 
 INTO TEMPORARY TABLE pays_perdu_dans_lieu
 

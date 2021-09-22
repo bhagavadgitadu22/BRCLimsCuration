@@ -40,11 +40,9 @@ def get_table_objects(engine):
 
     Souche = Base.classes.t_souche
     Dico = Base.classes.t_donneedico
-    MilieuDeSouche = Base.classes.t_milieu_souche
-    Milieu = Base.classes.t_milieu
-    Patho = Base.classes.t_pathogenicite
+    Collection = Base.classes.t_collection
 
-    return {'souche': Souche, 'dico': Dico, 'milieudesouche': MilieuDeSouche, 'milieu': Milieu, 'patho': Patho}
+    return {'souche': Souche, 'dico': Dico, 'collection': Collection}
 
 def main():
     # initialisation
@@ -61,15 +59,36 @@ def main():
     for xxx_id in liste_ids_curated:
         if xxx_id not in liste_ids:
             print("Un id de plus une fois la base curée ce n'est vraiment pas normal...")
+            return False
+
+    # on ne garde que souches de cip
+    # en vérifiant d'abord que les autres n'ont pas été modifiées
+    collections_cip = []
+    Collection = tables['collection']
+    with Session(bind=engine, future=True) as session:
+        statement = select(Collection).where(Collection.col_clg_id == 401)
+
+        for row in session.execute(statement):
+            collections_cip.append(row.t_collection.xxx_id)
 
     ids_deleted = []
     for xxx_id in liste_ids:
         if xxx_id in liste_ids_curated:
-            comparaison_souches(xxx_id)
+            souche = get_souche(xxx_id, engine, tables)
+            souche_curated = get_souche(xxx_id, engine_curated, tables_curated)
+
+            if souche != souche_curated:
+                # checker si ça fait bien partie de la collection de la cip
+                if souche["sch_col_id"] not in collections_cip or souche_curated["sch_col_id"] not in collections_cip:
+                    print("Erreur : une souche hors de la CIP a été modifié")
+                    return False
+
+                else:
+                    comparaison_souche(xxx_id, engine, tables, engine_curated, tables_curated)
+
         else:
             # on garde la trace des ids_supprimes, qui doivent correspondre à des ids 2xxxxx
             ids_deleted.append(xxx_id)
-
 
 def liste_ids_souches(engine, tables):
     Souche = tables['souche']
@@ -83,6 +102,9 @@ def liste_ids_souches(engine, tables):
             liste_ids.append(xxx_id)
 
     return liste_ids
+
+def get_souche(xxx_id, engine, tables):
+    
 
 def comparaison_souches(xxx_id, engine, tables, engine_curated, tables_curated):
     elmt = get_caracs_souche(xxx_id, engine, tables)

@@ -9,7 +9,7 @@ INTO TEMPORARY TABLE ids_a_changer
 FROM t_donneedico JOIN
 
 (SELECT a.don_lib, 
- percentile_disc(0) WITHIN GROUP (ORDER BY a.xxx_id) AS id2, 
+ (array_agg(a.xxx_id))[1] AS id2, 
  COUNT(*) AS number_of_duplicates FROM 
  
 (SELECT t_donneedico.xxx_id, t_donneedico.don_lib, 
