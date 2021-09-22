@@ -47,24 +47,31 @@ def get_table_objects(engine):
     return {'souche': Souche, 'dico': Dico, 'milieudesouche': MilieuDeSouche, 'milieu': Milieu, 'patho': Patho}
 
 def main():
+    # initialisation
     engine = create_engine(f"postgresql://postgres:hercule1821@localhost:5432/brc_db")
     tables = get_table_objects(engine)
-    liste_ids = liste_souches(engine, tables)
 
     engine_curated = create_engine(f"postgresql://postgres:hercule1821@localhost:5432/brc_db")
     tables_curated = get_table_objects(engine_curated)
-    liste_ids_curated = liste_souches(engine_curated, tables_curated)
 
-    if len(liste_ids) != len(liste_ids_curated):
-        return "Pas le même nombre de souches dans les deux listes !"
-    
-    for i in range(len(liste_ids)):
-        if liste_ids[i] != liste_ids_curated[i]:
-            return "Pas les mêmes souches dans les deux listes ! L'id "+str(liste_ids[i])+" ne correspond pas à l'id "+str(liste_ids_curated[i])
+    # on récupère tous les ids de souches puis on les parcourt un à un
+    liste_ids = liste_ids_souches(engine, tables)
+    liste_ids_curated = liste_ids_souches(engine_curated, tables_curated)
 
-    print("Il y a bien le même nombre d'ids et dans le même ordre.")
+    for xxx_id in liste_ids_curated:
+        if xxx_id not in liste_ids:
+            print("Un id de plus une fois la base curée ce n'est vraiment pas normal...")
 
-def liste_souches(engine, tables):
+    ids_deleted = []
+    for xxx_id in liste_ids:
+        if xxx_id in liste_ids_curated:
+            comparaison_souches(xxx_id)
+        else:
+            # on garde la trace des ids_supprimes, qui doivent correspondre à des ids 2xxxxx
+            ids_deleted.append(xxx_id)
+
+
+def liste_ids_souches(engine, tables):
     Souche = tables['souche']
 
     with Session(bind=engine, future=True) as session:
@@ -72,15 +79,45 @@ def liste_souches(engine, tables):
         
         liste_ids = []
         for souche in session.execute(statement):
-            elmt = {'xxx_id': souche.t_souche.xxx_id, 
-                    'sch_taxonomie': souche.t_souche.sch_taxonomie, 
-                    'sch_lieu': souche.t_souche.sch_lieu, 
-                    'sch_lieu_precis': souche.t_souche.sch_lieu_precis, 
-                    'sch_lieu_precis': souche.t_souche.sch_lieu_precis, 
-                }
-
-            liste_ids.append(souche.t_souche.xxx_id)
+            xxx_id = souche.t_souche.xxx_id
+            liste_ids.append(xxx_id)
 
     return liste_ids
+
+def comparaison_souches(xxx_id, engine, tables, engine_curated, tables_curated):
+    elmt = get_caracs_souche(xxx_id, engine, tables)
+    elmt_curated = get_caracs_souche(xxx_id, engine_curated, tables_curated)
+
+def get_caracs_souche(xxx_id, engine, tables):
+    Souche = tables['souche']
+    Dico = tables['dico']
+
+    with Session(bind=engine, future=True) as session:
+        statement = select(Souche).where(Souche.xxx_id == xxx_id)
+        souche = session.execute(statement).one()
+
+        xxx_id = souche.t_souche.xxx_id
+
+        rows_lieu = select(Dico).where(Dico.xxx_id == souche.t_souche.sch_lieu)
+        row_lieu = session.execute(rows_lieu).one()
+
+        rows_patho = select(Dico).where(Dico.xxx_id == souche.t_souche.sch_patho_animal)
+        row_patho = session.execute(rows_patho).one()
+
+        elmt = {'sch_identifiant': souche.t_souche.sch_identifiant, 
+
+                'sch_historique': souche.t_souche.sch_historique, 
+
+                'dico_lieu': row_lieu.t_donneedico.don_lib, 
+                'sch_lieu_precis': souche.t_souche.sch_lieu_precis, 
+                'sch_dat_acquisition': souche.t_souche.sch_dat_acquisition, 
+
+                'dico_patho_animal' : row_patho.t_donneedico.don_lib, 
+                
+                'sch_taxonomie': souche.t_souche.sch_taxonomie, 
+                
+                'sch_temperature_incubation': souche.t_souche.sch_temperature_incubation}
+
+    return elmt
 
 main()
