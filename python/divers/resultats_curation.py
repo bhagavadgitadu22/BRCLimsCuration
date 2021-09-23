@@ -50,6 +50,8 @@ def main():
     tables_curated = get_table_objects(engine_curated)
 
     # on récupère tous les ids de souches puis on les parcourt un à un
+    print("On vérifie que plus d'ids avant curation que après curation")
+    
     liste_ids = liste_ids_souches(engine, tables)
     liste_ids_curated = liste_ids_souches(engine_curated, tables_curated)
 
@@ -60,6 +62,8 @@ def main():
 
     # on ne garde que souches de cip
     # en vérifiant d'abord que les autres n'ont pas été modifiées
+    print("On récupère la liste des souches de la cip")
+
     collections_cip = []
     Collection = tables['collection']
     with Session(bind=engine, future=True) as session:
@@ -72,6 +76,8 @@ def main():
     taxo = arbre_taxo("brc_db")
     taxo_curated = arbre_taxo("brc_db_curated")
 
+    print("On parcourt les souches pour trouver les identifiants supprimés")
+
     ids_changes = []
     ids_deleted = []
     for xxx_id in liste_ids:
@@ -82,8 +88,10 @@ def main():
             # seul "problème", ça ne tient pas compte de différence éventuelle dans les parents à défaut des enfants pour taxonomie
             if souche != souche_curated:
                 # checker si ça fait bien partie de la collection de la cip
-                if souche["sch_col_id"] not in collections_cip or souche_curated["sch_col_id"] not in collections_cip:
+                if souche.t_souche.sch_col_id not in collections_cip or souche_curated.t_souche.sch_col_id not in collections_cip:
                     print("Erreur : une souche hors de la CIP a été modifié")
+                    print(souche.t_souche.sch_identifiant)
+                    print(souche.t_souche_curated.sch_identifiant)
                     return None
                 else:
                     ids_changes.append(xxx_id)
@@ -91,7 +99,10 @@ def main():
             # on garde la trace des ids_supprimes, qui doivent correspondre à des ids 2xxxxx
             ids_deleted.append(xxx_id)
     
+    print("On parcourt les "+str(len(ids_changes))+" souches avec des modifs pour trouver lesquelles ont été faites")
     differents_historiques, differents_lieux, differents_lieux_avec_date, differentes_pathos, differentes_taxonomies, differentes_temperatures = comparaison_souches(ids_changes, engine, tables, taxo, engine_curated, tables_curated, taxo_curated)
+    
+    print("On crée l'Excel final")
     create_excel(differents_historiques, differents_lieux, differents_lieux_avec_date, differentes_pathos, differentes_taxonomies, differentes_temperatures)
 
 
@@ -129,12 +140,12 @@ def arbre_taxo(nom_bdd):
     cursor = connection.cursor()
 
     # initialization
-    cursor.execute(open("../../curation/80_taxonomie/stats/parentele_de_toutes_taxonomies.sql ", "r").read())
+    cursor.execute(open("../curation/80_taxonomie/stats/parentele_de_toutes_taxonomies.sql ", "r").read())
     records = cursor.fetchall()
 
     paths_taxo = {}
     for record in records:
-        paths_taxo[record.sch_taxonomie] = record.path
+        paths_taxo[record[1]] = record[3]
 
     return paths_taxo
 
@@ -146,6 +157,7 @@ def comparaison_souches(all_ids, engine, tables, taxo, engine_curated, tables_cu
     differentes_taxonomies = []
     differentes_temperatures = []
 
+    i = 0
     for xxx_id in all_ids:
         elmt = get_caracs_souche(xxx_id, engine, tables, taxo)
         elmt_curated = get_caracs_souche(xxx_id, engine_curated, tables_curated, taxo_curated)
@@ -174,6 +186,10 @@ def comparaison_souches(all_ids, engine, tables, taxo, engine_curated, tables_cu
 
             if elmt["sch_temperature_incubation"] != elmt_curated["sch_temperature_incubation"]:
                 differentes_temperatures.append([elmt["sch_identifiant"], elmt["sch_temperature_incubation"], elmt_curated["sch_temperature_incubation"]])
+
+        i += 1
+        if i%100 == 0:
+            print(str(i)+" souches traitées")
     
     return differents_historiques, differents_lieux, differents_lieux_avec_date, differentes_pathos, differentes_taxonomies, differentes_temperatures
 
