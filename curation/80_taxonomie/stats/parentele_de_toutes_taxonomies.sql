@@ -7,7 +7,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
 	FROM
 		t_donneedico
 	WHERE
-		don_dic_id IN (3755)
+		don_dic_id = 3755
 		AND don_parent = 0
 	UNION
 		(SELECT
@@ -15,7 +15,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path) AS (
 		FROM
 			t_donneedico tdd
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent
-		WHERE tdd.don_dic_id IN (3755))
+		WHERE tdd.don_dic_id = 3755)
 ) SELECT level, xxx_id AS sch_taxonomie, don_lib, ARRAY_TO_STRING(name_path, ' > ') AS path
 FROM children
 ORDER BY level, don_lib;
