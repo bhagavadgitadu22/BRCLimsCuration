@@ -61,30 +61,49 @@ def main():
     print("ids_supprimes_hors_cip")
     print([elmt[1] for elmt in schs_supprimes_hors_cip])
 
+    souches_a_garder = []
+    for sch in souches:
+        if sch not in schs_supprimes and sch not in schs_supprimes_hors_cip:
+            souches_a_garder.append(sch)
+
+    souches_a_garder_curated = []
+    for sch_c in souches_curated:
+        if sch_c not in schs_apparus:
+            souches_a_garder_curated.append(sch_c)
+
+    print("de "+str(len(souches))+" souches à "+str(len(souches_a_garder)))
+    print("de "+str(len(souches_curated))+" souches curées à "+str(len(souches_a_garder_curated)))
+
     # et qu'aucun id hors de cip n'a été modifié
     # et pour récupérer les ids de cip modifiés et supprimés
-    str_where = ' WHERE t_souche.xxx_id NOT IN ('
+    souches_modifiees = []
+    souches_modifiees_hors_cip = []
+
+    str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
+
     i = 0
-    for sch in schs_apparus:
-        if i>0:
-            str_where += ','
-        str_where += str(sch[0])
+    for sch in souches_a_garder:
+        xxx_id = sch[0]
+        cursor.execute(str_base+" WHERE t_souche.xxx_id = "+str(xxx_id))
+        record = cursor.fetchone()
+
+        cursor_curated.execute(str_base+" WHERE t_souche.xxx_id = "+str(xxx_id))
+        record_curated = cursor_curated.fetchone()
+
+        if record != record_curated:
+            if record[len(record)-1] != 401 or record_curated[len(record_curated)-1] != 401:
+                souches_modifiees_hors_cip.append(record)
+            else:
+                souches_modifiees.append(record_curated)
+
+        if i%1000 == 0:
+            print(str(i)+" souches traitees")
         i+=1
-    for sch in schs_supprimes:
-        if i>0:
-            str_where += ','
-        str_where += str(sch[0])
-        i+=1
-    for sch in schs_supprimes_hors_cip:
-        if i>0:
-            str_where += ','
-        str_where += str(sch[0])
-        i+=1
-    str_where += ')'
 
     print("")
-    print(open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()+str_where)
-
-    schs_modifies_hors_cip = []
+    print(str(len(souches_modifiees))+" modifiees")
+    print("")
+    print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
+    print(souches_modifiees_hors_cip)
 
 main()
