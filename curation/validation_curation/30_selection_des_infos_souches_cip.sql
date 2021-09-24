@@ -17,4 +17,4 @@ WHERE (country.don_dic_id IS NULL
 AND (patho.don_dic_id IS NULL 
 	 OR patho.don_dic_id IN (SELECT xxx_id FROM t_dico WHERE dic_grp_collection = '[401]' AND dic_nom = 'Pathogéncité Animal'))
 AND (chemins_taxonomie.grp_collection IS NULL 
-	 OR chemins_taxonomie.grp_collection = 401);
+	 OR chemins_taxonomie.grp_collection = 401)

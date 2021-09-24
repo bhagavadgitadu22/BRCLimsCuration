@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS ids_ok;
+DROP TABLE IF EXISTS chemins_taxonomie;
 
 -- d'abord on récupère la liste des ids null et du premier id ancêtre non null pour chacun d'entre eux
 WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path, don_dic_id) AS (
