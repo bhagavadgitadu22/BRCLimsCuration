@@ -80,31 +80,42 @@ def main():
 
     ids_changes = []
     ids_deleted = []
+
+    erreurs = []
     for xxx_id in liste_ids:
         if xxx_id in liste_ids_curated:
             souche = get_souche(xxx_id, engine, tables)
             souche_curated = get_souche(xxx_id, engine_curated, tables_curated)
+
+            print(souche)
+            print(souche_curated)
+            print(compare(souche, souche_curated))
             
             # seul "problème", ça ne tient pas compte de différence éventuelle dans les parents à défaut des enfants pour taxonomie
-            if souche != souche_curated:
+            if souche = souche_curated:
+                ids_changes.append(xxx_id)
+            else:
                 # checker si ça fait bien partie de la collection de la cip
                 if souche.t_souche.sch_col_id not in collections_cip or souche_curated.t_souche.sch_col_id not in collections_cip:
+                    print(souche)
+                    print(souche_curated)
                     print("Erreur : une souche hors de la CIP a été modifié")
-                    print(souche.t_souche.sch_identifiant)
-                    print(souche.t_souche_curated.sch_identifiant)
-                    return None
-                else:
-                    ids_changes.append(xxx_id)
+                    erreurs.append(souche.t_souche.sch_identifiant)
+                    
         else:
             # on garde la trace des ids_supprimes, qui doivent correspondre à des ids 2xxxxx
             ids_deleted.append(xxx_id)
+
+    print(str(len(erreurs)))
+    print(erreurs)
+    print(str(len(ids_changes)))
+    return None
     
     print("On parcourt les "+str(len(ids_changes))+" souches avec des modifs pour trouver lesquelles ont été faites")
     differents_historiques, differents_lieux, differents_lieux_avec_date, differentes_pathos, differentes_taxonomies, differentes_temperatures = comparaison_souches(ids_changes, engine, tables, taxo, engine_curated, tables_curated, taxo_curated)
     
     print("On crée l'Excel final")
     create_excel(differents_historiques, differents_lieux, differents_lieux_avec_date, differentes_pathos, differentes_taxonomies, differentes_temperatures)
-
 
 def liste_ids_souches(engine, tables):
     Souche = tables['souche']
