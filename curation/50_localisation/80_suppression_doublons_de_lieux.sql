@@ -21,7 +21,8 @@ GROUP BY a.don_lib
 HAVING COUNT(*) > 1) AS duplicates
 
 ON t_donneedico.don_lib = duplicates.don_lib
-WHERE t_donneedico.xxx_id != id2
+WHERE don_dic_id IN (3758)
+AND t_donneedico.xxx_id != id2
 ORDER BY duplicates.don_lib;
 
 /* dans la table t_souches on repointe tous les ids de lieux valant un id1 vers le id2 correspondant */

@@ -1,4 +1,5 @@
 import psycopg2
+import csv
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
@@ -15,13 +16,13 @@ def get_all_souches(cursor):
 
     cursor.execute(open("../curation/validation_curation/20_toutes_souches.sql", "r").read())
     records = cursor.fetchall()
-
+    
     return records
 
 def main():
     # on établit les connections avec les 2 bdds
     cursor = get_cursor("brc_db")
-    cursor_curated = get_cursor("brc_db_curated")
+    cursor_curated = get_cursor("new_brc")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -91,7 +92,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-1] != 401 or record_curated[len(record_curated)-1] != 401:
+            if record[len(record)-7] != 401 or record_curated[len(record_curated)-7] != 401:
                 souches_modifiees_hors_cip.append(record)
             else:
                 souches_modifiees.append(record_curated)
@@ -104,6 +105,12 @@ def main():
     print(str(len(souches_modifiees))+" modifiees")
     print("")
     print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
+    print("")
     print(souches_modifiees_hors_cip)
+
+    f = open('../../output/hors_cip_modifies.csv', 'w', newline='')
+    writer = csv.writer(f, delimiter=';')
+    writer.writerows(souches_modifiees)
+    f.close()
 
 main()

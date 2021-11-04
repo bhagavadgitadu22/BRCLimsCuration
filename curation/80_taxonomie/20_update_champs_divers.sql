@@ -51,25 +51,29 @@ ORDER BY new_sch_taxonomie;
 UPDATE t_souche
 SET sch_taxonomie = new_sch_taxonomie
 FROM ids_divers_a_changer
-WHERE sch_taxonomie = id_divers
+WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+AND sch_taxonomie = id_divers
 AND sch_taxonomie != new_sch_taxonomie;
 
 UPDATE t_souche
 SET sch_taxonomie = NULL
 FROM ids_divers_a_changer
-WHERE sch_taxonomie = id_divers
+WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+AND sch_taxonomie = id_divers
 AND sch_taxonomie = new_sch_taxonomie;
 
 -- on redirige les don_parent des enfants de null vers les parents de null
 UPDATE t_donneedico
 SET don_parent = new_don_parent
 FROM ids_divers_a_changer
-WHERE don_parent = old_don_parent
+WHERE don_dic_id = 3755
+AND don_parent = old_don_parent
 AND don_lib NOT IN (SELECT * FROM elements_inutiles);
 
 -- puis on supprime les vieux ids valant NULL dans t_donneedico
 DELETE FROM t_donneedico
-WHERE xxx_id IN (SELECT id_divers FROM ids_divers_a_changer);
+WHERE don_dic_id = 3755
+AND xxx_id IN (SELECT id_divers FROM ids_divers_a_changer);
 
 DROP TABLE IF EXISTS elements_inutiles;
 DROP TABLE IF EXISTS ids_divers_a_changer;
