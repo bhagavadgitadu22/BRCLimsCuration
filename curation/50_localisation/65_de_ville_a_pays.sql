@@ -8,6 +8,7 @@ INTO TEMPORARY TABLE ids_lieux_villes
 FROM (SELECT t_donneedico.xxx_id AS id_lieu, don_lib
 FROM t_donneedico
 WHERE don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
 GROUP BY t_donneedico.xxx_id) AS lieux
 
 JOIN world_cities
@@ -24,7 +25,8 @@ SET sch_lieu_precis =
 		ELSE CONCAT(sch_lieu_precis, ' ; '::text, city_ascii)
 	END
 FROM ids_lieux_villes
-WHERE t_souche.sch_lieu = ids_lieux_villes.id_lieu;
+WHERE t_souche.sch_lieu = ids_lieux_villes.id_lieu
+AND t_souche.xxx_sup_dat IS NULL;
 
 -- update la valeur dans les lieux directement ensuite
 UPDATE t_donneedico AS tdd

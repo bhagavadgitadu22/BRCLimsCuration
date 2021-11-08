@@ -6,4 +6,5 @@ FROM t_souche
 WHERE sch_col_id IN
 (SELECT xxx_id
 FROM t_collection
-WHERE col_clg_id = 401);
+WHERE col_clg_id = 401)
+AND xxx_sup_dat IS NULL;

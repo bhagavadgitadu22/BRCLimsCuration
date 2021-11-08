@@ -30,6 +30,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, don_parent, name_path
 		t_donneedico
 	WHERE
 		don_dic_id = 3755
+		AND xxx_sup_dat IS NULL
 		AND (don_lib NOT IN (SELECT * FROM elements_inutiles)
 			 OR (don_lib IN (SELECT * FROM elements_inutiles) AND don_parent = 0))
 	UNION
@@ -39,6 +40,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, don_parent, name_path
 			t_donneedico tdd
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent
 		WHERE tdd.don_dic_id = 3755
+		 	AND tdd.xxx_sup_dat IS NULL
 			AND tdd.don_lib IN (SELECT * FROM elements_inutiles))
 ) SELECT xxx_id AS id_divers, name_path[1] AS new_sch_taxonomie, 
 don_code AS old_don_parent, don_parent AS new_don_parent
@@ -67,11 +69,14 @@ UPDATE t_donneedico
 SET don_parent = new_don_parent
 FROM ids_divers_a_changer
 WHERE don_dic_id = 3755
+AND xxx_sup_dat IS NULL
 AND don_parent = old_don_parent
 AND don_lib NOT IN (SELECT * FROM elements_inutiles);
 
 -- puis on supprime les vieux ids valant NULL dans t_donneedico
-DELETE FROM t_donneedico
+UPDATE t_donneedico
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE don_dic_id = 3755
 AND xxx_id IN (SELECT id_divers FROM ids_divers_a_changer);
 

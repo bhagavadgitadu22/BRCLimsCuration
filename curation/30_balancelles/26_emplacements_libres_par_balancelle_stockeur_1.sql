@@ -8,6 +8,7 @@ JOIN t_lot_casestockage
 ON t_casestockage.xxx_id = lts_cst_id
 JOIN ids_balancelles_1
 ON ids_balancelles_1.xxx_id = lts_lst_id
+WHERE t_casestockage.xxx_sup_dat IS NULL
 GROUP BY cst_tst_id;
 
 SELECT id_balancelle, lst_nom, 
@@ -26,7 +27,8 @@ FROM t_casestockage
 JOIN t_lot_casestockage
 ON t_casestockage.xxx_id = lts_cst_id
 JOIN ids_balancelles_1
-ON ids_balancelles_1.xxx_id = lts_lst_id) AS a
+ON ids_balancelles_1.xxx_id = lts_lst_id
+WHERE t_casestockage.xxx_sup_dat IS NULL) AS a
 ORDER BY lst_nom, cst_numero;
 
 DROP TABLE IF EXISTS id_boite_180;

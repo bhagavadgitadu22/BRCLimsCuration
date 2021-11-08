@@ -7,6 +7,7 @@ SELECT t_donneedico.xxx_id, don_lib,
 INTO TEMPORARY TABLE lieux_avec_dates
 FROM t_donneedico
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND don_lib SIMILAR TO '%, (([0-9]+\/[0-9]+\/[0-9]+)|([0-9]+\/[0-9]+)|([0-9]{4}))%';
 
 ALTER TABLE lieux_avec_dates ADD COLUMN date_formatted timestamp without time zone;
@@ -36,13 +37,15 @@ AND date_non_formatted IS NULL;
 UPDATE t_souche
 SET sch_dat_acquisition = date_formatted
 FROM lieux_avec_dates
-WHERE t_souche.sch_lieu = lieux_avec_dates.xxx_id;
+WHERE t_souche.sch_lieu = lieux_avec_dates.xxx_id
+AND t_souche.xxx_sup_dat IS NULL;
 
 -- update la valeur dans les lieux directement ensuite
 UPDATE t_donneedico
 SET don_lib = REPLACE(lieux_avec_dates.don_lib, CONCAT(', ', date_non_formatted), '')
 FROM lieux_avec_dates
-WHERE t_donneedico.xxx_id = lieux_avec_dates.xxx_id;
+WHERE t_donneedico.xxx_id = lieux_avec_dates.xxx_id
+AND xxx_sup_dat IS NULL;
 
 
 -- on récupère les souches où la localisation était juste une année
@@ -50,7 +53,8 @@ SELECT xxx_id, don_lib
 INTO TEMPORARY TABLE lieu_egal_annee
 FROM t_donneedico
 WHERE don_dic_id IN (3758)
-AND don_lib SIMILAR TO '[0-9]{4}';
+AND don_lib SIMILAR TO '[0-9]{4}'
+AND xxx_sup_dat IS NULL;
 
 -- on fait la jointure avec t_souche en fonction de xxx_id
 -- puis on met comme date la date récupérée
@@ -58,10 +62,13 @@ UPDATE t_souche
 SET sch_dat_acquisition = TO_TIMESTAMP(don_lib, 'YYYY'),
 	sch_lieu = NULL
 FROM lieu_egal_annee
-WHERE t_souche.sch_lieu = lieu_egal_annee.xxx_id;
+WHERE t_souche.sch_lieu = lieu_egal_annee.xxx_id
+AND t_souche.xxx_sup_dat IS NULL;
 
 -- update la valeur dans les lieux directement ensuite
-DELETE FROM t_donneedico
+UPDATE t_donneedico
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE xxx_id IN (SELECT xxx_id FROM lieu_egal_annee);
 
 DROP TABLE IF EXISTS lieux_avec_dates;

@@ -44,7 +44,9 @@ FROM old_ids_doubles
 WHERE mec_sch_id = old_id
 AND (new_id, mec_rang) NOT IN (SELECT mec_sch_id, mec_rang FROM t_miseenculture);
 
-DELETE FROM t_miseenculture
+UPDATE t_miseenculture
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE mec_sch_id IN (SELECT old_id FROM old_ids_doubles);
 
 UPDATE t_sequence
@@ -53,10 +55,14 @@ FROM old_ids_doubles
 WHERE seq_sch_id = old_id
 AND (xxx_brc_id, seq_type, new_id) NOT IN (SELECT xxx_brc_id, seq_type, seq_sch_id FROM t_sequence);
 
-DELETE FROM t_sequence
+UPDATE t_sequence
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE seq_sch_id IN (SELECT old_id FROM old_ids_doubles);
 
-DELETE FROM t_souche
+UPDATE t_souche
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE sch_identifiant IN (SELECT ref_equi FROM old_souches_doublees);
 
 DROP TABLE IF EXISTS old_souches_doublees;

@@ -13,6 +13,7 @@ WHERE taxonomy.genus_name IS NULL
 AND genus.don_dic_id = 3755
 AND genus.don_parent = 0
 AND genus.don_lib NOT LIKE '% %'
+AND genus.xxx_sup_dat IS NULL
 ORDER BY genus.don_lib;
 
 SELECT DISTINCT genus_name
@@ -35,7 +36,9 @@ UPDATE t_donneedico
 SET don_lib = correction
 FROM grp_a_changer
 WHERE don_lib = mistake
-AND mistake IN ('Arcticbacteria');
+AND mistake IN ('Arcticbacteria')
+AND t_donneedico.don_dic_id = 3755
+AND t_donneedico.xxx_sup_dat IS NULL;;
 
 DROP TABLE IF EXISTS faux_genus;
 DROP TABLE IF EXISTS vrai_genus;

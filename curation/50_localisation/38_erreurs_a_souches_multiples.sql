@@ -8,12 +8,15 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib = 'United States of America/WI'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'United States of America'
 WHERE don_lib = 'United States of America/WI'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 
 -- on vire les dérivés de Paris
@@ -26,7 +29,9 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib = 'Paris joseph'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_lieu_precis =
@@ -37,7 +42,8 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib = 'Paris pitie'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_lieu_precis =
@@ -48,22 +54,27 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib = 'Hôpital Necker'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'France'
 WHERE don_lib IN ('Paris joseph', 'Paris pitie', 'Paris, necker', 'Paris beaujon(clichy)')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'Paris, France'
 WHERE don_lib IN ('Paris,France', 'Paris ,France')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'Versailles, France'
 WHERE don_lib IN ('Versailles, Paris')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 
 -- mycetoma
@@ -83,7 +94,9 @@ AND don_lib IN ('mycetoma', 'MYCETOMA', 'mycetoma (Alger, Algeria)',
 'mycetoma, (Nancy, France)', 'MYCETOMA, (Tunis)', 'MYCETOMA, (Uganda)', 'MYCETOMA,(Djibouti)',
 'mycetoma,(Fort-Lamy, Chad)', 'MYCETOMA,(Mexico)', 'MYCETOMA,(Mogadiscio)', 'mycetoma,(Morocco)',
 'mycetoma, (Dakar, Senegal, 195', 'mycetoma, (Maracaibo, Vénézuel')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_lieu_precis =
@@ -94,7 +107,9 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib IN ('mycetoma of arm')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_lieu_precis =
@@ -105,7 +120,9 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib IN ('MYCETOMA OF FOOT, (Cameroon)', 'MYCETOMA OF FOOT,(Uganda)')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 -- on met null pour les souches où il y avait juste mycetoma comme lieu
 -- puis on supprime ces lieux du dico
@@ -114,11 +131,14 @@ SET sch_lieu = NULL
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib IN ('mycetoma', 'MYCETOMA', 'mycetoma of arm')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 DELETE FROM t_donneedico
 WHERE don_lib IN ('mycetoma', 'MYCETOMA', 'mycetoma of arm')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 -- on met les bons lieux à la place de mycetoma dans le dico
 UPDATE t_donneedico
@@ -131,17 +151,20 @@ WHERE don_lib IN ('mycetoma (Alger, Algeria)',
 'mycetoma, (Nancy, France)', 'MYCETOMA, (Tunis)', 'MYCETOMA, (Uganda)', 'MYCETOMA,(Djibouti)',
 'mycetoma,(Fort-Lamy, Chad)', 'MYCETOMA,(Mexico)', 'MYCETOMA,(Mogadiscio)', 'mycetoma,(Morocco)',
 'MYCETOMA OF FOOT, (Cameroon)', 'MYCETOMA OF FOOT,(Uganda)')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'Dakar, Senegal'
 WHERE don_lib IN ('mycetoma, (Dakar, Senegal, 195')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'Maracaibo, Venezuela (Bolivarian Republic of)'
 WHERE don_lib IN ('mycetoma, (Maracaibo, Vénézuel')
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;
 
 
 -- on gère les tsukamura
@@ -154,7 +177,9 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib LIKE '%Tsukamura%'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'Japan'
@@ -172,9 +197,12 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib SIMILAR TO '%(Scotland|England)%'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
 SET don_lib = 'United Kingdom of Great Britain and Northern Ireland'
 WHERE don_lib SIMILAR TO '%(Scotland|England)%'
-AND don_dic_id IN (3758);
+AND don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL;

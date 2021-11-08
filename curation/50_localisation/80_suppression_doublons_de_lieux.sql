@@ -15,6 +15,7 @@ FROM t_donneedico JOIN
 (SELECT t_donneedico.xxx_id, t_donneedico.don_lib, 
 COUNT(*) AS number_of_uses FROM t_donneedico 
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 GROUP BY t_donneedico.xxx_id) AS a
  
 GROUP BY a.don_lib
@@ -22,6 +23,7 @@ HAVING COUNT(*) > 1) AS duplicates
 
 ON t_donneedico.don_lib = duplicates.don_lib
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND t_donneedico.xxx_id != id2
 ORDER BY duplicates.don_lib;
 
@@ -29,10 +31,14 @@ ORDER BY duplicates.don_lib;
 UPDATE t_souche AS sch
 SET sch_lieu = id2
 FROM ids_a_changer
-WHERE sch.sch_lieu = ids_a_changer.id1;
+WHERE sch.sch_lieu = ids_a_changer.id1
+AND sch.xxx_sup_dat IS NULL;
 
 /* puis on peut supprimer les id1 dans la table t_donneedico */
-DELETE FROM t_donneedico WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_a_changer);
+UPDATE t_donneedico 
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
+WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_a_changer);
 
 /* enfin on supprime la table temporaire où l'on stockait ces id1 et 2 */
 DROP TABLE IF EXISTS ids_a_changer;

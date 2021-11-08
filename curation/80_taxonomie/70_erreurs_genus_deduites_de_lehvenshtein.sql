@@ -12,6 +12,7 @@ ON genus.don_lib = taxonomy.genus_name
 WHERE taxonomy.genus_name IS NULL
 AND genus.don_dic_id = 3755
 AND genus.don_parent = 0
+AND genus.xxx_sup_dat IS NULL
 ORDER BY genus.don_lib;
 
 SELECT DISTINCT genus_name
@@ -55,7 +56,9 @@ AND mistake IN (
 'Natrionella',
 'Ochrobacterium',
 'Pseudosphingobacteri'
-);
+)
+AND t_donneedico.don_dic_id = 3755
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 DROP TABLE IF EXISTS faux_genus;
 DROP TABLE IF EXISTS vrai_genus;

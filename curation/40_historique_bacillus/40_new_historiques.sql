@@ -19,4 +19,5 @@ ON a.xxx_id = strains_bacillus.xxx_id;
 UPDATE t_souche
 SET sch_historique = new_historique 
 FROM new_historiques
-WHERE t_souche.xxx_id = new_historiques.xxx_id;
+WHERE t_souche.xxx_id = new_historiques.xxx_id
+AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);

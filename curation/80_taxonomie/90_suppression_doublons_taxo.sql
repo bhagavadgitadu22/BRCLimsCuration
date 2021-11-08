@@ -9,14 +9,14 @@ WITH RECURSIVE children (xxx_id, don_lib, don_code, don_parent, name_path) AS (
 	FROM
 		t_donneedico
 	WHERE
-		don_dic_id = 3755 AND don_parent = 0
+		don_dic_id = 3755 AND xxx_sup_dat IS NULL AND don_parent = 0
 	UNION
 		(SELECT
 			tdd.xxx_id, tdd.don_lib, tdd.don_code, tdd.don_parent, ARRAY_APPEND(t0.name_path, tdd.don_lib::text)
 		FROM
 			t_donneedico tdd
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent
-		WHERE tdd.don_dic_id = 3755)
+		WHERE tdd.don_dic_id = 3755 AND tdd.xxx_sup_dat IS NULL)
 ) SELECT xxx_id, name_path
 INTO TEMPORARY TABLE genealogie
 FROM children;
@@ -45,7 +45,8 @@ WHERE (tdd1.xxx_id, tdd2.xxx_id) IN (SELECT id1, id2 FROM ids_doubles);
 UPDATE t_souche
 SET sch_taxonomie = id2
 FROM ids_doubles
-WHERE sch_taxonomie = id1;
+WHERE sch_taxonomie = id1
+AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
 
 -- et on associe les enfants des id1 aux id2
 UPDATE t_donneedico
@@ -54,7 +55,9 @@ FROM parents_doubles
 WHERE don_parent = old_don_parent;
 
 /* puis on peut supprimer les id1 dans la table t_donneedico */
-DELETE FROM t_donneedico WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_doubles);
+UPDATE t_donneedico 
+WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_doubles)
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 /* enfin on supprime la table temporaire où l'on stockait ces id1 et 2 */
 DROP TABLE IF EXISTS genealogie;

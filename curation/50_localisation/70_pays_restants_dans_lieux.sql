@@ -10,6 +10,7 @@ FROM t_donneedico
 JOIN world
 ON don_lib LIKE CONCAT('%', name_en, '%')
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND don_lib != name_en
 AND don_lib NOT SIMILAR TO CONCAT('%', name_en, '[a-zA-Z]%')
 AND don_lib NOT SIMILAR TO CONCAT('%[a-zA-Z]', name_en, '%')) AS a
@@ -28,7 +29,8 @@ SET sch_lieu_precis =
 	END
 FROM pays_perdu_dans_lieu
 WHERE t_souche.sch_lieu = pays_perdu_dans_lieu.xxx_id
-AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
+AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+AND t_souche.xxx_sup_dat IS NULL;
 
 -- update la valeur dans les lieux directement ensuite
 UPDATE t_donneedico

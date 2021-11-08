@@ -5,6 +5,7 @@ UPDATE t_donneedico
 SET don_lib = name_en
 FROM world
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND LOWER(unaccent(don_lib)) = LOWER(unaccent(name_en))
 AND don_lib != name_en;
 
@@ -12,6 +13,7 @@ UPDATE t_donneedico
 SET don_lib = name_en
 FROM world
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND LOWER(unaccent(don_lib)) = LOWER(unaccent(name_fr))
 AND don_lib != name_fr;
 
@@ -20,5 +22,6 @@ UPDATE t_donneedico
 SET don_lib = city_ascii
 FROM world_cities
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND LOWER(unaccent(don_lib)) = LOWER(unaccent(city_ascii))
 AND don_lib != city_ascii;

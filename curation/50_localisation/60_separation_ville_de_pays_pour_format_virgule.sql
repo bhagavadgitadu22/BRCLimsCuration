@@ -10,6 +10,7 @@ TRIM(substring(don_lib, '[^,]*')) AS beginning_str,
 TRIM(substring(don_lib, '[^,]*$')) AS end_str
 FROM t_donneedico 
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND don_lib LIKE '%, %'
 GROUP BY xxx_id) AS separationvirgule
 
@@ -26,7 +27,8 @@ SET sch_lieu_precis =
 		ELSE CONCAT(sch_lieu_precis, ' ; '::text, beginning_str)
 	END
 FROM pays_au_format_virgule
-WHERE t_souche.sch_lieu = pays_au_format_virgule.xxx_id;
+WHERE t_souche.sch_lieu = pays_au_format_virgule.xxx_id
+AND t_souche.xxx_sup_dat IS NULL;
 
 -- update la valeur dans les lieux directement ensuite
 UPDATE t_donneedico AS tdd

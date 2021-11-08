@@ -8,6 +8,7 @@ FROM t_donneedico
 JOIN world
 ON t_donneedico.don_lib LIKE CONCAT('%', world.name_fr, '%')
 WHERE don_dic_id IN (3758)
+AND xxx_sup_dat IS NULL
 AND world.name_en NOT LIKE CONCAT('%', world.name_fr, '%');
 
 -- on remplace les noms français par des noms anglais dans la liste des lieux dans t_donneedico

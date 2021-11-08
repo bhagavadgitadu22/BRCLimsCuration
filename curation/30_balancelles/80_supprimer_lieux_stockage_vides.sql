@@ -11,5 +11,7 @@ AND n_utilisations = 1
 AND (lieu IN (SELECT DISTINCT old_id_balancelle FROM lots_et_balancelles_1)
 OR lieu IN (SELECT DISTINCT old_id_balancelle FROM lots_et_balancelles_2));
 
-DELETE FROM t_lieustockage
+UPDATE t_lieustockage
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
 WHERE xxx_id IN (SELECT lieu FROM old_lieux_stockage);
