@@ -106,11 +106,11 @@ def main():
     print("")
     print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
     print("")
-    print(souches_modifiees_hors_cip)
+    print([elem[0] for elem in souches_modifiees_hors_cip])
 
     f = open('../../output/hors_cip_modifies.csv', 'w', newline='')
     writer = csv.writer(f, delimiter=';')
-    writer.writerows(souches_modifiees)
+    writer.writerows(map(lambda x: [x], [elem[0] for elem in souches_modifiees]))
     f.close()
 
 main()
