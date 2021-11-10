@@ -56,8 +56,9 @@ WHERE don_parent = old_don_parent;
 
 /* puis on peut supprimer les id1 dans la table t_donneedico */
 UPDATE t_donneedico 
-WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_doubles)
-AND t_donneedico.xxx_sup_dat IS NULL;
+SET xxx_sup_dat = now()::timestamp,
+	xxx_sup_usr_id = 1
+WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_doubles);
 
 /* enfin on supprime la table temporaire où l'on stockait ces id1 et 2 */
 DROP TABLE IF EXISTS genealogie;
