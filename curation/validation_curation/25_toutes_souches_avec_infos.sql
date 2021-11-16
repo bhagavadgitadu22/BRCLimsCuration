@@ -7,3 +7,6 @@ AND tdd.don_dic_id = 3758
 LEFT JOIN chemins_taxonomie
 ON t_souche.sch_taxonomie = chemins_taxonomie.sch_taxonomie
 AND tc.col_clg_id = chemins_taxonomie.grp_collection
+LEFT JOIN (SELECT xxx_id, don_lib, don_dic_id FROM t_donneedico) AS tdd2
+ON t_souche.sch_patho_animal = tdd2.xxx_id
+AND tdd2.don_dic_id IN (SELECT xxx_id FROM t_dico WHERE dic_grp_collection = '[401]')

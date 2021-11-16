@@ -110,7 +110,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-10] == 401 and record_curated[len(record_curated)-10] == 401:
+            if record[len(record)-13] == 401 and record_curated[len(record_curated)-13] == 401:
                 if record[7] is None:
                     souches_modifiees.append(record)
                 else:

@@ -11,6 +11,12 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
+def write_csv(name, dico):
+    fcsv = open('../../output/'+name+'_modifie.csv', 'w', newline='')
+    writer = csv.writer(fcsv, delimiter=';')
+    writer.writerows(dico)
+    fcsv.close()
+
 def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
@@ -42,10 +48,9 @@ def main():
             print(str(i)+" souches traitees")
         i+=1
 
-    f2 = open('../../output/cip_ce_qui_a_ete_modifie.csv', 'w', newline='')
-    writer2 = csv.writer(f2, delimiter=';')
-    writer2.writerows(differences["temperature"])
-    f.close()
+    name = ['temperature', 'historique']
+    for elmt in name:
+        write_csv(elmt, differences[elmt])
 
     f.close()
 
