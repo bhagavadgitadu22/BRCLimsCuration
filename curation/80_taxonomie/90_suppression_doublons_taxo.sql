@@ -52,7 +52,9 @@ AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
 UPDATE t_donneedico
 SET don_parent = new_don_parent
 FROM parents_doubles
-WHERE don_parent = old_don_parent;
+WHERE don_parent = old_don_parent
+AND t_donneedico.don_dic_id = 3755
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 /* puis on peut supprimer les id1 dans la table t_donneedico */
 UPDATE t_donneedico 

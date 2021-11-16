@@ -11,8 +11,8 @@ WITH RECURSIVE rangement (xxx_id, level, lst_nom, name_path) AS (
 
     SELECT  t1.xxx_id, t0.level + 1, t1.lst_nom, ARRAY_APPEND(t0.name_path, t1.lst_nom::text)
     FROM    t_lieustockage t1
-	WHERE t1.xxx_sup_dat IS NULL
     INNER JOIN rangement t0 ON t0.xxx_id = t1.lst_pere_id
+	WHERE t1.xxx_sup_dat IS NULL
 )
 
 SELECT xxx_id, lst_nom

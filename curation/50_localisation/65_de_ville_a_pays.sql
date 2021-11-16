@@ -5,11 +5,11 @@ SELECT id_lieu, city_ascii, country
 
 INTO TEMPORARY TABLE ids_lieux_villes
 
-FROM (SELECT t_donneedico.xxx_id AS id_lieu, don_lib
+FROM (SELECT xxx_id AS id_lieu, don_lib
 FROM t_donneedico
 WHERE don_dic_id IN (3758)
-AND t_souche.xxx_sup_dat IS NULL
-GROUP BY t_donneedico.xxx_id) AS lieux
+AND xxx_sup_dat IS NULL
+GROUP BY xxx_id) AS lieux
 
 JOIN world_cities
 ON lieux.don_lib = world_cities.city_ascii

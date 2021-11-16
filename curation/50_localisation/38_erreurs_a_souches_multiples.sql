@@ -43,7 +43,8 @@ FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib = 'Paris pitie'
 AND don_dic_id IN (3758)
-AND xxx_sup_dat IS NULL;
+AND t_souche.xxx_sup_dat IS NULL
+AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_lieu_precis =
