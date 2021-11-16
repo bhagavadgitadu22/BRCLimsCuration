@@ -21,8 +21,8 @@ def get_all_souches(cursor):
 
 def main():
     # on établit les connections avec les 2 bdds
-    cursor = get_cursor("brc_db")
-    cursor_curated = get_cursor("new_brc3")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -34,6 +34,7 @@ def main():
     ids_curated = [record[0] for record in souches_curated]
 
     schs_apparus = []
+
     i = 0
     for id_c in ids_curated:
         if id_c not in ids:
@@ -43,14 +44,10 @@ def main():
     # on récupère les ids_supprimés de la cip
     # on lève une erreur s'il y a un id supprimé pas de cip
     schs_supprimes = []
-    schs_supprimes_hors_cip = []
     i = 0
     for id in ids:
         if id not in ids_curated:
-            if souches[i][2] == 401:
-                schs_supprimes.append(souches[i])
-            else:
-                schs_supprimes_hors_cip.append(souches[i])
+            schs_supprimes.append(souches[i])
         i += 1
 
     print("ids_apparus")
@@ -59,12 +56,32 @@ def main():
     print("ids_supprimes")
     print([elmt[1] for elmt in schs_supprimes])
     print("")
-    print("ids_supprimes_hors_cip")
-    print([elmt[1] for elmt in schs_supprimes_hors_cip])
+
+    # puis l'on prend la liste de ce que l'on a archivé
+    schs_archives = []
+    schs_archives_hors_cip = []
+    i = 0
+    for id in ids:
+        i_curated = ids_curated.index(id)
+
+        if souches[i][3] is None and souches_curated[i_curated][3] is not None:
+            if souches[i][2] == 401 and souches_curated[i_curated][2] == 401:
+                schs_archives.append(souches[i])
+            else:
+                schs_archives_hors_cip.append(souches[i])
+        i += 1
+
+
+    print("ids_archives")
+    print([elmt[1] for elmt in schs_archives])
+    print("")
+    print("ids_archives_hors_cip")
+    print([elmt[1] for elmt in schs_archives_hors_cip])
+    print("")
 
     souches_a_garder = []
     for sch in souches:
-        if sch not in schs_supprimes and sch not in schs_supprimes_hors_cip:
+        if sch not in schs_supprimes and sch not in schs_archives and sch not in schs_archives_hors_cip:
             souches_a_garder.append(sch)
 
     souches_a_garder_curated = []
@@ -78,6 +95,7 @@ def main():
     # et qu'aucun id hors de cip n'a été modifié
     # et pour récupérer les ids de cip modifiés et supprimés
     souches_modifiees = []
+    souches_archives_modifiees = []
     souches_modifiees_hors_cip = []
 
     str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
@@ -92,10 +110,13 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-7] != 401 or record_curated[len(record_curated)-7] != 401:
-                souches_modifiees_hors_cip.append(record)
+            if record[len(record)-10] == 401 and record_curated[len(record_curated)-10] == 401:
+                if record[7] is None:
+                    souches_modifiees.append(record)
+                else:
+                    souches_archives_modifiees.append(record)
             else:
-                souches_modifiees.append(record_curated)
+                souches_modifiees_hors_cip.append(record_curated)
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")
@@ -104,11 +125,13 @@ def main():
     print("")
     print(str(len(souches_modifiees))+" modifiees")
     print("")
-    print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
+    print(str(len(souches_archives_modifiees))+" archives modifiees")
+    print([elem[0] for elem in souches_archives_modifiees])
     print("")
+    print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
     print([elem[0] for elem in souches_modifiees_hors_cip])
 
-    f = open('../../output/hors_cip_modifies.csv', 'w', newline='')
+    f = open('../../output/cip_modifies.csv', 'w', newline='')
     writer = csv.writer(f, delimiter=';')
     writer.writerows(map(lambda x: [x], [elem[0] for elem in souches_modifiees]))
     f.close()
