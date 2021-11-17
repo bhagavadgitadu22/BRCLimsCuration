@@ -1,5 +1,43 @@
 import psycopg2
 import csv
+from openpyxl.workbook.workbook import Workbook
+from openpyxl.styles import Border, Side, Alignment, Font
+
+def redimension_cell_width(ws):
+    dims = {}
+    for row in ws.rows:
+        for cell in row:
+            if cell.value:
+                # longueur max parmi != lignes de cellule
+                line_max = max([len(str(elmt)) for elmt in cell.value.split('\n')])
+                # cell.column_letter correspond à la taille que ça a de par les lignes précédentes déjà analysées
+                # on garde donc max taille entre cellules précédentes et celle analysée
+                max_ = max((dims.get(cell.column_letter, 0), line_max))
+                dims[cell.column_letter] = min(max_, 100)
+    for col, value in dims.items():
+        ws.column_dimensions[col].width = value
+
+def borders_cells(sheet):
+    thin = Side(border_style="thin", color="000000")
+
+    for row in sheet.rows:
+        for cell in row:
+            if cell.value:
+                cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
+
+def wrap_lines(sheet):
+    for row in sheet.rows:
+        for cell in row:
+            cell.alignment = Alignment(wrapText=True)
+
+def style_sheet(sheet):
+    header = list(sheet.rows)[0]
+    for cell in header:
+        cell.font  = Font(bold=True)
+    
+    wrap_lines(sheet)
+    redimension_cell_width(sheet)
+    borders_cells(sheet)
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
@@ -22,7 +60,7 @@ def get_all_souches(cursor):
 def main():
     # on établit les connections avec les 2 bdds
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -71,13 +109,26 @@ def main():
                 schs_archives_hors_cip.append(souches[i])
         i += 1
 
-
     print("ids_archives")
     print([elmt[1] for elmt in schs_archives])
     print("")
     print("ids_archives_hors_cip")
     print([elmt[1] for elmt in schs_archives_hors_cip])
     print("")
+
+    # on sauvegarde les ids archivés dans un excel
+    wb = Workbook()
+
+    sheet = wb.create_sheet("ids_archives")
+    sheet.append(["Identifiant CIP"])
+
+    for elmt in schs_archives:
+        sheet.append([elmt[1]])
+
+    style_sheet(sheet)
+
+    del wb["Sheet"]
+    wb.save(str(r"C:\Users\Public\Documents\ids_archives_lors_de_curation.xlsx"))
 
     souches_a_garder = []
     for sch in souches:

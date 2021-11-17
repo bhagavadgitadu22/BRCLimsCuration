@@ -9,7 +9,8 @@ FROM (SELECT xxx_id, don_lib, name_en
 FROM t_donneedico
 JOIN world
 ON don_lib LIKE CONCAT('%', name_en, '%')
-WHERE don_dic_id IN (3758)
+WHERE don_lib NOT IN (SELECT name_en FROM world)
+AND don_dic_id IN (3758)
 AND xxx_sup_dat IS NULL
 AND don_lib != name_en
 AND don_lib NOT SIMILAR TO CONCAT('%', name_en, '[a-zA-Z]%')
