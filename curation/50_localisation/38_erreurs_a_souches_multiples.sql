@@ -198,6 +198,7 @@ SET sch_lieu_precis =
 FROM t_donneedico
 WHERE t_souche.sch_lieu = t_donneedico.xxx_id
 AND don_lib SIMILAR TO '%(Scotland|England)%'
+AND don_lib NOT LIKE '%United Kingdom of Great Britain and Northern Ireland%'
 AND don_dic_id IN (3758)
 AND t_souche.xxx_sup_dat IS NULL
 AND t_donneedico.xxx_sup_dat IS NULL;
@@ -205,5 +206,6 @@ AND t_donneedico.xxx_sup_dat IS NULL;
 UPDATE t_donneedico
 SET don_lib = 'United Kingdom of Great Britain and Northern Ireland'
 WHERE don_lib SIMILAR TO '%(Scotland|England)%'
+AND don_lib NOT LIKE '%United Kingdom of Great Britain and Northern Ireland%'
 AND don_dic_id IN (3758)
 AND xxx_sup_dat IS NULL;

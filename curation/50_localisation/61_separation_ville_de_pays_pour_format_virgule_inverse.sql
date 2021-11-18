@@ -6,7 +6,7 @@ SELECT xxx_id, beginning_str, end_str
 INTO TEMPORARY TABLE pays_au_format_virgule
 
 FROM (SELECT xxx_id,
-TRIM(substring(don_lib, '[^,]*')) AS beginning_str,
+TRIM(substring(don_lib, '^(.*),')) AS beginning_str,
 TRIM(substring(don_lib, '[^,]*$')) AS end_str
 FROM t_donneedico 
 WHERE don_dic_id IN (3758)
