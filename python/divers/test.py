@@ -12,20 +12,9 @@ def get_cursor(db_name):
     return conn.cursor()
 
 def main():
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("db")
 
-    cursor.execute("SELECT * FROM t_souche WHERE xxx_id = 490145")
-    record = cursor.fetchone()
-
-    cursor_curated.execute("SELECT * FROM t_souche WHERE t_souche.xxx_id = 247071")
-    record_curated = cursor_curated.fetchone()
-
-    print("coucou")
-    print(record)
-    print(record[7])
-
-    if record[7] is None:
-        print(True)
+    local_dir = "../curation/90_temperature/"
+    cursor.execute(open(local_dir+"vers_de_vrais_nombres.sql", "r", encoding='utf-8').read())
 
 main()

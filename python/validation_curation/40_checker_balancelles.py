@@ -59,8 +59,8 @@ def write_sheet(wb, name, dico):
     style_sheet(sheet)
 
 def main():
-    cursor = get_cursor("restart_db_pure4")
-    cursor_curated = get_cursor("restart_db_cured4")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     cursor.execute(open("../curation/validation_curation/40_emplacements_lots.sql", "r").read())
     souches = cursor.fetchall()

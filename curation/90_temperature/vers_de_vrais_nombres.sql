@@ -1,11 +1,11 @@
 UPDATE t_souche
-SET sch_temperature_incubation = REPLACE(sch_temperature_incubation, '°C', '')
-WHERE sch_temperature_incubation LIKE '%°C%'
+SET sch_temperature_incubation = REPLACE(sch_temperature_incubation, CONCAT(CHR(176), 'C'), '')
+WHERE sch_temperature_incubation LIKE CONCAT('%', CHR(176), 'C%')
 AND xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
 
 UPDATE t_souche
-SET sch_temperature_incubation = REPLACE(sch_temperature_incubation, '°', '')
-WHERE sch_temperature_incubation LIKE '%°%'
+SET sch_temperature_incubation = REPLACE(sch_temperature_incubation, CHR(176), '')
+WHERE sch_temperature_incubation LIKE CONCAT('%', CHR(176), '%')
 AND xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
 
 UPDATE t_souche

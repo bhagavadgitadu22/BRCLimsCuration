@@ -92,8 +92,8 @@ def main():
     name = ["localisation", "pathogenicite", "taxonomie"]
     dicos = {}
 
-    cursor = get_cursor("restart_db_pure4")
-    cursor_curated = get_cursor("restart_db_cured4")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # localisation
     cursor.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 3758")

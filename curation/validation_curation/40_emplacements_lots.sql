@@ -15,20 +15,18 @@ WITH RECURSIVE rangement (xxx_id, level, lst_nom, name_path) AS (
 	WHERE t1.xxx_sup_dat IS NULL
 )
 
-SELECT sch_identifiant, col_clg_id, 
-t_lot.xxx_id, lot_numero, 
-t_lieustockage.xxx_id, array_to_string(name_path, ' > '), array_to_string(array_agg(cst_numero ORDER BY cst_numero), ', ')
-FROM t_souche
-JOIN t_collection
-ON sch_col_id = t_collection.xxx_id
-JOIN t_lot
+SELECT DISTINCT t_lot.xxx_id
+FROM t_lot
+LEFT JOIN t_souche
 ON lot_sch_id = t_souche.xxx_id
-JOIN t_lot_casestockage
+LEFT JOIN t_collection
+ON sch_col_id = t_collection.xxx_id
+LEFT JOIN t_lot_casestockage
 ON lts_lot_id = t_lot.xxx_id
-JOIN t_lieustockage
+LEFT JOIN t_lieustockage
 ON lts_lst_id = t_lieustockage.xxx_id
-JOIN rangement
+LEFT JOIN rangement
 ON t_lieustockage.xxx_id = rangement.xxx_id
-JOIN t_casestockage
+LEFT JOIN t_casestockage
 ON lts_cst_id = t_casestockage.xxx_id
 GROUP BY t_souche.xxx_id, t_lot.xxx_id, sch_identifiant, col_clg_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > ');

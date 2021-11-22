@@ -1,5 +1,3 @@
-\cd curation
-
 \cd 10_fonctions
 \echo 10_fonctions
 \i 0_full_trim.sql
@@ -52,7 +50,6 @@
 \i 37_erreurs_orthographe_villes.sql
 \i 38_erreurs_a_souches_multiples.sql
 \i 39_peaufinage_par_souches.sql
-\i 40_virer_les_dates.sql
 \i 60_separation_ville_de_pays_pour_format_virgule.sql
 \i 61_separation_ville_de_pays_pour_format_virgule_inverse.sql
 \i 62_extraction_de_parentheses.sql
