@@ -71,16 +71,16 @@ def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("brc_db")
+    cursor_curated = get_cursor("brc_db2")
 
-    name = ["historique", "localisation", "pathogenicite", "taxonomie", "temperature"]
+    name = ["historique", "localisation", "pathogenicite", "taxonomie", "temperature", "bibliographie"]
     legendes = {}
     differences = {}
     for elmt in name:
         legendes[elmt] = ["Identifiant CIP", "Ancienne valeur", "Nouvelle valeur"]
         differences[elmt] = []
-    legendes["localisation"] = ["Identifiant CIP", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis", "Ancienne date d'acquisition", "Nouvelle date d'acquisition"]
+    legendes["localisation"] = ["Identifiant CIP", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
     str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
 
@@ -101,15 +101,12 @@ def main():
             differences["historique"].append([identifiant_cip, record[68], record_curated[68]])
 
         # 50_localisation
-        if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47] or record[31] != record_curated[31]:
+        if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47]:
             rep = [identifiant_cip, record[len(record)-11], record_curated[len(record)-11], "", "", "", ""]
 
             if record[47] != record_curated[47]:
                 rep[3] = record[47]
                 rep[4] = record_curated[47]
-            if record[31] != record_curated[31]:
-                rep[5] = str(record[31])
-                rep[6] = str(record_curated[31])
 
             differences["localisation"].append(rep)
 
@@ -124,6 +121,10 @@ def main():
         # 90_temperature
         if record[44] != record_curated[44]:
             differences["temperature"].append([identifiant_cip, str(record[44]), str(record_curated[44])])
+
+        # 100_bibliographie
+        if record[59] != record_curated[59]:
+            differences["bibliographie"].append([identifiant_cip, str(record[59]), str(record_curated[59])])
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")
@@ -140,7 +141,7 @@ def main():
         for diff in differences[elmt]:
             if diff[1:] not in differences_uniques[elmt]:
                 differences_uniques[elmt].append(diff[1:])
-    legendes_uniques["localisation"] = ["Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis", "Ancienne date d'acquisition", "Nouvelle date d'acquisition"]
+    legendes_uniques["localisation"] = ["Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")
 

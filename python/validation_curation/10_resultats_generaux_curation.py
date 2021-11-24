@@ -59,8 +59,8 @@ def get_all_souches(cursor):
 
 def main():
     # on établit les connections avec les 2 bdds
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("brc_db")
+    cursor_curated = get_cursor("brc_db2")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
