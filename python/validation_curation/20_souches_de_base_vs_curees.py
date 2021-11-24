@@ -123,7 +123,7 @@ def main():
             differences["temperature"].append([identifiant_cip, str(record[44]), str(record_curated[44])])
 
         # 100_bibliographie
-        if record[59] != record_curated[59]:
+        if record[59].replace(" ", "").replace("\n", "").replace("\r", "") != record_curated[59].replace(" ", "").replace("\n", "").replace("\r", ""):
             differences["bibliographie"].append([identifiant_cip, str(record[59]), str(record_curated[59])])
 
         if i%1000 == 0:
