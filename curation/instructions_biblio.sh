@@ -1,0 +1,30 @@
+\cd 10_fonctions
+\echo 10_fonctions
+\i 0_full_trim.sql
+
+\cd ../20_collections_de_cip
+\echo 20_collections_de_cip
+\i liste_souches_bon_brclims.sql
+
+\cd ../100_bibliographie
+\echo 100_bibliographie
+\i 0_array_unique_stable.sql
+\i 5_points_virgules_en_trop.sql
+\i 10_biblios_plus_propres.sql
+\i 15_quelques_corrections_manuelles.sql
+\i 20_separation_des_biblios.sql
+\i 25_pmid_et_dois.sql
+\i 26_epuration_docs_d_elements_vides.sql
+\i 27_virer_ibid.sql
+\i 28_couper_annee_de_journal.sql
+\i 29_couper_volumes_pages.sql
+\i 30_basic_four_elements.sql
+\i 35_four_elements_e_page.sql
+\i 38_four_elements_s_page.sql
+\i 40_8_elements_cassables.sql
+\i 50_7_elements_cassables.sql
+\i 60_5_elements_cassables.sql
+\i 70_3_elements_cassables.sql
+\i 70_bis_3_elements_cassables.sql
+\i 80_suppression_submitted.sql
+\i 100_compacted_good_documents_table.sql

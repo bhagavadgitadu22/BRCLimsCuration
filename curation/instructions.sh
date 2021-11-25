@@ -100,6 +100,13 @@
 \i 10_biblios_plus_propres.sql
 \i 20_quelques_corrections_manuelles.sql
 
+\cd ../100_bibliographie
+\echo 100_bibliographie
+\i 0_array_unique_stable.sql
+\i 5_points_virgules_en_trop.sql
+\i 10_biblios_plus_propres.sql
+\i 15_quelques_corrections_manuelles.sql
+
 \cd ../20_collections_de_cip
 \echo 20_collections_de_cip
 \i suppression_table_inutile.sql

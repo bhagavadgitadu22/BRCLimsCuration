@@ -34,7 +34,8 @@ CREATE TABLE good_documents (
 	volume text,
 	first_page text,
 	last_page text,
-	sch_identifiant varchar(32)
+	sch_identifiant varchar(32),
+	n_ligne integer
 );
 
 -- la même mais avec sch_identifiants regroupés
@@ -45,5 +46,6 @@ CREATE TABLE good_documents_grouped (
 	volume text,
 	first_page text,
 	last_page text,
-	sch_identifiants varchar[]
+	sch_identifiants varchar[],
+	n_lignes integer[]
 );

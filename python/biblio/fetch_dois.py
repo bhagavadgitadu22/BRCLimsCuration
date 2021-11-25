@@ -1,5 +1,4 @@
 import psycopg2
-from psycopg2 import Error
 import requests
 from xml.dom import minidom
 import csv
@@ -38,6 +37,7 @@ def try_dois(records, writer_good, writer_bad):
             elmt.append(row[3])
             elmt.append(doi)
             elmt.append(row[4])
+            elmt.append(row[5])
             writer_good.writerow(elmt)
         else :
             writer_bad.writerow(row)
@@ -53,27 +53,27 @@ def main():
                                   password="hercule1821",
                                   host="localhost",
                                   port="5432",
-                                  database="brc_db")
+                                  database="db")
     conn.autocommit = True
 
     # Create a cursor to perform database operations
     cursor = conn.cursor()
 
     # initialization
-    cursor.execute(open("../en_preparation/bibliographie/1000_python_request.sql", "r", encoding='utf-8').read())
+    cursor.execute(open("../curation/100_bibliographie/1000_python_request.sql", "r", encoding='utf-8').read())
 
-    #mobile_records = cursor.fetchmany(20)
+    #mobile_records = cursor.fetchmany(10)
     mobile_records = cursor.fetchall()
 
     # we write the results in an csv file
     f_good = open('../../output/dois_recuperees_11_2021.csv', 'a', newline='')
     writer_good = csv.writer(f_good, delimiter='|')
-    #writer_good.writerow(['Title', 'Year', 'Volume', 'First page', 'DOI', 'Identifiants'])
+    #writer_good.writerow(['Title', 'Year', 'Volume', 'First page', 'DOI', 'Identifiants', 'Lignes'])
 
     # we write the results in an csv file
     f_bad = open('../../output/dois_echouees_11_2021.csv', 'a', newline='')
     writer_bad = csv.writer(f_bad, delimiter='|')
-    #writer_bad.writerow(['Title', 'Year', 'Volume', 'First page', 'Identifiants'])
+    #writer_bad.writerow(['Title', 'Year', 'Volume', 'First page', 'Identifiants', 'Lignes'])
 
     # first try with crossref
     try_dois(mobile_records, writer_good, writer_bad)
