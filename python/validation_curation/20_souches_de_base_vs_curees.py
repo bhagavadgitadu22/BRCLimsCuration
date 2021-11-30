@@ -71,8 +71,8 @@ def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
-    cursor = get_cursor("brc_db2")
-    cursor_curated = get_cursor("brc_db")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     name = ["historique", "localisation", "pathogenicite", "taxonomie", "temperature", "bibliographie"]
     legendes = {}

@@ -19,9 +19,10 @@ INSERT INTO all_documents(sch_identifiant, full_doc, string_doc, doc, n_ligne)
 SELECT DISTINCT sch_identifiant, full_doc, trim(arr[nr]) AS string_doc, string_to_array(trim(arr[nr]), ',') AS doc, nr AS n_ligne
 FROM (
    SELECT *, generate_subscripts(arr, 1) AS nr
-   FROM (SELECT sch_identifiant, sch_bibliographie AS full_doc,
+   FROM (SELECT DISTINCT ON (sch_identifiant) sch_identifiant, sch_bibliographie AS full_doc,
 		  string_to_array(regexp_replace(sch_bibliographie, E'[\\n\\r]+', '|', 'g'), '|') AS arr 
 		 FROM t_souche
-		WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)) t
+		WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+		ORDER  BY sch_identifiant, sch_version DESC) t
    ) sub
 ORDER BY sch_identifiant, nr;
