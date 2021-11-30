@@ -25,27 +25,3 @@ FROM (
 		WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)) t
    ) sub
 ORDER BY sch_identifiant, nr;
-
--- on crée aussi une table qu'on remplira au fur et à mesure avec les bons documents
-CREATE TABLE good_documents (
-    id serial,
-	journal text,
-	annee text,
-	volume text,
-	first_page text,
-	last_page text,
-	sch_identifiant varchar(32),
-	n_ligne integer
-);
-
--- la même mais avec sch_identifiants regroupés
-CREATE TABLE good_documents_grouped (
-    id serial,
-	journal text,
-	annee text,
-	volume text,
-	first_page text,
-	last_page text,
-	sch_identifiants varchar[],
-	n_lignes integer[]
-);

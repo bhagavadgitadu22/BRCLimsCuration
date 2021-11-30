@@ -3,7 +3,7 @@ import psycopg2
 
 xls = pd.ExcelFile(r'C:\Users\Public\Documents\Panels_WGS.xlsx')
 
-dict = ['Teaching', 'ECOR', 'EUCAST', 'WDCM', 'Ecoli receivers', 'colicins']
+dict = ['Teaching', 'ECOR', 'EUCAST', 'WDCM','Ecoli receivers', 'colicins']
 
 # connect to an existing database
 connection = psycopg2.connect(user="postgres",

@@ -23,25 +23,27 @@ def try_dois(records, writer_good, writer_bad):
         dat = minidom.parseString(response.content)
         tagname = dat.getElementsByTagName('query')
 
-        if tagname[0].attributes['status'].value != "unresolved":
-            if tagname[0].attributes['status'].value == "multiresolved":
-                multi += 1
+        if len(tagname) != 0:
+            if tagname[0].hasAttribute('status'):
+                if tagname[0].attributes['status'].value != "unresolved":
+                    if tagname[0].attributes['status'].value == "multiresolved":
+                        multi += 1
 
-            tagdoi = dat.getElementsByTagName('doi')
-            doi = tagdoi[0].firstChild.nodeValue
+                    tagdoi = dat.getElementsByTagName('doi')
+                    doi = tagdoi[0].firstChild.nodeValue
 
-            elmt = []
-            elmt.append(row[0])
-            elmt.append(row[1])
-            elmt.append(row[2])
-            elmt.append(row[3])
-            elmt.append(doi)
-            elmt.append(row[4])
-            elmt.append(row[5])
-            writer_good.writerow(elmt)
-        else :
-            writer_bad.writerow(row)
-            erreurs += 1
+                    elmt = []
+                    elmt.append(row[0])
+                    elmt.append(row[1])
+                    elmt.append(row[2])
+                    elmt.append(row[3])
+                    elmt.append(doi)
+                    elmt.append(row[4])
+                    elmt.append(row[5])
+                    writer_good.writerow(elmt)
+                else :
+                    writer_bad.writerow(row)
+                    erreurs += 1
 
         i += 1
         if i%10 == 0:

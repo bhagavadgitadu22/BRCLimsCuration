@@ -1,4 +1,4 @@
-SELECT sch_identifiant, COUNT(*), (REGEXP_MATCH(sch_references_equi, 'WDCM ?([0-9]+)'))[1]
+SELECT sch_identifiant, array_to_string(ARRAY_AGG(DISTINCT sch_denomination), ' ; '), COUNT(*), (REGEXP_MATCH(sch_references_equi, 'WDCM ?([0-9]+)'))[1]
 FROM t_commande
 JOIN t_client
 ON cmd_clt_id = t_client.xxx_id
