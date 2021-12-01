@@ -1,3 +1,2 @@
-SELECT journal, annee, volume, first_page, sch_identifiants, n_lignes
-FROM good_documents_grouped
-ORDER BY random();
+SELECT journal, annee, volume, first_page, xxx_ids, n_lignes
+FROM good_documents_grouped;
