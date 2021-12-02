@@ -15,7 +15,7 @@ WITH RECURSIVE rangement (xxx_id, level, lst_nom, name_path) AS (
 	WHERE t1.xxx_sup_dat IS NULL
 )
 
-SELECT DISTINCT t_lot.xxx_id
+SELECT sch_identifiant, col_clg_id, t_lot.xxx_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > '), array_to_string(array_agg(cst_numero ORDER BY cst_numero), ', ')
 FROM t_lot
 LEFT JOIN t_souche
 ON lot_sch_id = t_souche.xxx_id

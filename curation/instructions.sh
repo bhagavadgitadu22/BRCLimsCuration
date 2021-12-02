@@ -96,16 +96,15 @@
 
 \cd ../100_bibliographie
 \echo 100_bibliographie
-\i 5_points_virgules_en_trop.sql
-\i 10_biblios_plus_propres.sql
-\i 20_quelques_corrections_manuelles.sql
-
-\cd ../100_bibliographie
-\echo 100_bibliographie
 \i 0_array_unique_stable.sql
 \i 5_points_virgules_en_trop.sql
 \i 10_biblios_plus_propres.sql
 \i 15_quelques_corrections_manuelles.sql
+\i 20_separation_des_biblios_simple.sql
+\i 25_trim_lignes.sql
+\i 30_import_infos_csv.sql
+\i 40_update_biblios.sql
+\i 50_update_sch_biblios.sql
 
 \cd ../20_collections_de_cip
 \echo 20_collections_de_cip
