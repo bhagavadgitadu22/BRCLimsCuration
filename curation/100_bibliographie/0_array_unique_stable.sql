@@ -1,6 +1,6 @@
 /* ### TAINT there ought to be a simpler, declarative solution */
 CREATE OR REPLACE FUNCTION array_unique_stable( text[] )
-  returns text[] immutable strict parallel safe language plpgsql as $$
+  returns text[] language plpgsql as $$
   declare
     R         text[] = '{}';
     ¶element  text;
