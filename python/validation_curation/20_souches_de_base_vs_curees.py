@@ -78,9 +78,9 @@ def main():
     legendes = {}
     differences = {}
     for elmt in name:
-        legendes[elmt] = ["Identifiant CIP", "Ancienne valeur", "Nouvelle valeur"]
+        legendes[elmt] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
         differences[elmt] = []
-    legendes["localisation"] = ["Identifiant CIP", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
+    legendes["localisation"] = ["Identifiant CIP", "Version", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
     str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
 
@@ -95,14 +95,15 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         identifiant_cip = record[22]
+        version = str(record[28])
 
         # 40_historique_bacillus
         if record[68] != record_curated[68]:
-            differences["historique"].append([identifiant_cip, record[68], record_curated[68]])
+            differences["historique"].append([identifiant_cip, version, record[68], record_curated[68]])
 
         # 50_localisation
         if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47]:
-            rep = [identifiant_cip, record[len(record)-11], record_curated[len(record)-11], "", "", "", ""]
+            rep = [identifiant_cip, version, record[len(record)-11], record_curated[len(record)-11], "", "", "", ""]
 
             if record[47] != record_curated[47]:
                 rep[3] = record[47]
@@ -112,19 +113,19 @@ def main():
 
         # 60_pathogenicite
         if record[len(record)-2] != record_curated[len(record)-2]:
-            differences["pathogenicite"].append([identifiant_cip, str(record[len(record)-2]), str(record_curated[len(record_curated)-2])])
+            differences["pathogenicite"].append([identifiant_cip, version, str(record[len(record)-2]), str(record_curated[len(record_curated)-2])])
 
         # 80_taxonomie
         if record[len(record)-6] != record_curated[len(record)-6]:
-            differences["taxonomie"].append([identifiant_cip, record[len(record)-6], record_curated[len(record_curated)-6]])
+            differences["taxonomie"].append([identifiant_cip, version, record[len(record)-6], record_curated[len(record_curated)-6]])
 
         # 90_temperature
         if record[44] != record_curated[44]:
-            differences["temperature"].append([identifiant_cip, str(record[44]), str(record_curated[44])])
+            differences["temperature"].append([identifiant_cip, version, str(record[44]), str(record_curated[44])])
 
         # 100_bibliographie
         if record[59].replace(" ", "").replace("\n", "").replace("\r", "") != record_curated[59].replace(" ", "").replace("\n", "").replace("\r", ""):
-            differences["bibliographie"].append([identifiant_cip, str(record[59]), str(record_curated[59])])
+            differences["bibliographie"].append([identifiant_cip, version, str(record[59]), str(record_curated[59])])
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")
