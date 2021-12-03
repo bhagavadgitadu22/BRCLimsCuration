@@ -96,6 +96,18 @@ def main():
     differences = []
     differences_accidentelles = []
 
+    chaine_ids = '('+str(ids).strip('[]')+')'
+    print("chaine_ids")
+    print(chaine_ids)
+    cursor.execute("SELECT sch_identifiant FROM t_souche WHERE sch_identifiant IN "+chaine_ids+" ORDER BY custom_order(sch_identifiant")
+    ids_new = cursor.fetchall()
+
+    print(len(ids))
+    print(len(ids_new))
+    if len(ids)!=len(ids_new):
+        print("ERREUR !!!")
+    print("")
+
     for id in ids:
         if id not in ids_lots_disparus and id not in ids_lots_apparus:
             idx_pure = ids.index(id)
