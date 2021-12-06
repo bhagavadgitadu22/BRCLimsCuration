@@ -19,8 +19,6 @@
 \i 40_correspondance_lots_balancelles_stockeur_1.sql
 \i 50_correspondance_lots_balancelles_stockeur_2.sql
 \i 60_update_stockeur.sql
-\i 70_differents_rangements.sql
-\i 80_supprimer_lieux_stockage_vides.sql
 \i 90_supprimer_tables_inutiles.sql
 
 \cd ../40_historique_bacillus
