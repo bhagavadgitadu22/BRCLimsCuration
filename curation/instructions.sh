@@ -9,6 +9,7 @@
 
 \cd ../30_balancelles
 \echo 30_balancelles
+\i 0_supprimer_lots_de_mot.sql
 \i 10_souches_lyo.sql
 \i 20_excel_stockeur_1.sql
 \i 25_ids_balancelles_stockeur_1.sql
