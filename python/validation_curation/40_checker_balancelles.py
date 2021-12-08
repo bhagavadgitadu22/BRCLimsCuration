@@ -51,7 +51,7 @@ def get_cursor(db_name):
 
 def write_sheet(wb, name, dico):
     sheet = wb.create_sheet(name)
-    sheet.append(["Identifiant", "Numéro de lot", "Ancien lieu", "Ancienne case", "Nouveau lieu", "Nouvelle case"])
+    sheet.append(["Identifiant", "Numéro de lot", "Ancien lieu", "Ancienne case", "Nouveau lieu", "Nouvelle case", "Ancien type de stockage", "Nouveau type de stockage"])
 
     for elmt in dico:
         sheet.append(elmt)
@@ -61,6 +61,9 @@ def write_sheet(wb, name, dico):
 def main():
     cursor = get_cursor("restart_db_pure")
     cursor_curated = get_cursor("restart_db_cured")
+
+    cursor.execute(open("../curation/10_fonctions/10_custom_order.sql", "r").read())
+    cursor_curated.execute(open("../curation/10_fonctions/10_custom_order.sql", "r").read())
 
     cursor.execute(open("../curation/validation_curation/40_emplacements_lots.sql", "r").read())
     souches = cursor.fetchall()
@@ -80,33 +83,27 @@ def main():
     ids_lots_disparus = []
     ids_lots_apparus = []
 
+    """
     for id_c in ids_curated:
         if id_c not in ids:
             ids_lots_disparus.append(id_c)
+
+    print("ids_lots_disparus")
+    print(ids_lots_disparus)
+    print("")
 
     for id in ids:
         if id not in ids_curated:
             ids_lots_apparus.append(id)
 
-    print(ids_lots_disparus)
+    print("ids_lots_apparus")
     print(ids_lots_apparus)
     print("")
+    """
 
     # puis l'on compare les éléments un par un
     differences = []
     differences_accidentelles = []
-
-    chaine_ids = '('+str(ids).strip('[]')+')'
-    print("chaine_ids")
-    print(chaine_ids)
-    cursor.execute("SELECT sch_identifiant FROM t_souche WHERE sch_identifiant IN "+chaine_ids+" ORDER BY custom_order(sch_identifiant")
-    ids_new = cursor.fetchall()
-
-    print(len(ids))
-    print(len(ids_new))
-    if len(ids)!=len(ids_new):
-        print("ERREUR !!!")
-    print("")
 
     for id in ids:
         if id not in ids_lots_disparus and id not in ids_lots_apparus:
@@ -118,15 +115,32 @@ def main():
 
             if record_pure != record_cured:
                 if record_pure[1] != 401 or record_cured[1] != 401:
-                    differences_accidentelles.append([record_pure[0], record_pure[3], record_pure[5], record_pure[6], record_cured[5], str(record_cured[6])])
+                    differences_accidentelles.append([record_pure[0], record_pure[3], record_pure[5], record_pure[6], record_cured[5], str(record_cured[6]), record_pure[7], record_cured[7]])
                 else:
-                    differences.append([record_pure[0], record_pure[3], record_pure[5], record_pure[6], record_cured[5], str(record_cured[6])])
+                    differences.append([record_pure[0], record_pure[3], record_pure[5], record_pure[6], record_cured[5], str(record_cured[6]), record_pure[7], record_cured[7]])
 
+    print("differences_accidentelles")
     print(differences_accidentelles)
+    print("")
+
+    ids = []
+    for elmt in differences:
+        if elmt[0] not in ids:
+            ids.append(elmt[0])
+    chaine_ids = '('+str(ids).strip('[]')+')'
+    cursor.execute("SELECT sch_identifiant FROM t_souche WHERE sch_identifiant IN "+chaine_ids+" GROUP BY sch_identifiant ORDER BY custom_sort(sch_identifiant::text)")
+    records = cursor.fetchall()
+    ids_new = [record[0] for record in records]
+
+    new_differences = []
+    for id_new in ids_new:
+        for diff in differences:
+            if diff[0] == id_new:
+                new_differences.append(diff)
     
     wb = Workbook()
-    write_sheet(wb, "emplacements", differences)
+    write_sheet(wb, "emplacements", new_differences)
     del wb["Sheet"]
-    wb.save(str(r"C:\Users\Public\Documents\changements_emplacements_lots.xlsx"))
+    wb.save(str("../../output/changements_emplacements_lots.xlsx"))
 
 main()

@@ -65,7 +65,7 @@ def write_excel(name, legendes, differences, filename):
         write_sheet(wb, elmt, legendes[elmt], differences[elmt])
 
     del wb["Sheet"]
-    wb.save(str(r"C:\Users\Public\Documents\\"+filename+".xlsx"))
+    wb.save(str("../../output/"+filename+".xlsx"))
 
 def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
@@ -103,11 +103,7 @@ def main():
 
         # 50_localisation
         if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47]:
-            rep = [identifiant_cip, version, record[len(record)-11], record_curated[len(record)-11], "", "", "", ""]
-
-            if record[47] != record_curated[47]:
-                rep[3] = record[47]
-                rep[4] = record_curated[47]
+            rep = [identifiant_cip, version, record[len(record)-11], record_curated[len(record)-11], record[47], record_curated[47]]
 
             differences["localisation"].append(rep)
 
@@ -140,8 +136,8 @@ def main():
         differences_uniques[elmt] = []
     for elmt in name:
         for diff in differences[elmt]:
-            if diff[1:] not in differences_uniques[elmt]:
-                differences_uniques[elmt].append(diff[1:])
+            if diff[2:] not in differences_uniques[elmt]:
+                differences_uniques[elmt].append(diff[2:])
     legendes_uniques["localisation"] = ["Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")

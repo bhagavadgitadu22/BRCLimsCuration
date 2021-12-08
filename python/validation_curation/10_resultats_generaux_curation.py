@@ -128,7 +128,7 @@ def main():
     style_sheet(sheet)
 
     del wb["Sheet"]
-    wb.save(str(r"C:\Users\Public\Documents\ids_archives_lors_de_curation.xlsx"))
+    wb.save(str("../../output/ids_archives_lors_de_curation.xlsx"))
 
     souches_a_garder = []
     for sch in souches:

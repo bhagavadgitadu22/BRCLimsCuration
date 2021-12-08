@@ -15,7 +15,7 @@ WITH RECURSIVE rangement (xxx_id, level, lst_nom, name_path) AS (
 	WHERE t1.xxx_sup_dat IS NULL
 )
 
-SELECT sch_identifiant, col_clg_id, t_lot.xxx_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > '), array_to_string(array_agg(cst_numero ORDER BY cst_numero), ', ')
+SELECT sch_identifiant, col_clg_id, t_lot.xxx_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > '), array_to_string(array_agg(cst_numero ORDER BY cst_numero), ', '), t_donneedico.don_lib
 FROM t_lot
 LEFT JOIN t_souche
 ON lot_sch_id = t_souche.xxx_id
@@ -29,4 +29,6 @@ LEFT JOIN rangement
 ON t_lieustockage.xxx_id = rangement.xxx_id
 LEFT JOIN t_casestockage
 ON lts_cst_id = t_casestockage.xxx_id
-GROUP BY t_souche.xxx_id, t_lot.xxx_id, sch_identifiant, col_clg_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > ');
+LEFT JOIN t_donneedico
+ON t_donneedico.xxx_id = lot_type_stockage
+GROUP BY t_souche.xxx_id, t_lot.xxx_id, sch_identifiant, col_clg_id, lot_numero, t_lieustockage.xxx_id, array_to_string(name_path, ' > '), t_donneedico.don_lib;

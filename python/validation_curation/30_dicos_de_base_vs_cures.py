@@ -65,7 +65,7 @@ def write_excel(name, dicos, filename):
         write_sheet(wb, elmt, dicos[elmt])
 
     del wb["Sheet"]
-    wb.save(str(r"C:\Users\Public\Documents\\"+filename+".xlsx"))
+    wb.save(str("../../output/"+filename+".xlsx"))
 
 def create_dico(name, records, records_curated):
     dico = []
