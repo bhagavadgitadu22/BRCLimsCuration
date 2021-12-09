@@ -12,7 +12,7 @@ def get_cursor(db_name):
     return conn.cursor()
 
 def main():
-    cursor = get_cursor("db")
+    cursor = get_cursor("restart_db_pure")
 
     local_dir = "../curation/90_temperature/"
     cursor.execute(open(local_dir+"vers_de_vrais_nombres.sql", "r", encoding='utf-8').read())

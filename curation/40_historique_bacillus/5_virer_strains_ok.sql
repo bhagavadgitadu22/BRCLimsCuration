@@ -59,3 +59,7 @@ WHERE t_souche.xxx_id = 154378;
 UPDATE t_souche
 SET sch_historique = regexp_replace(t_souche.sch_historique, E'France:[\\n\\r]+strain  Piyasena', 'France: strain Piyasena', 'g')
 WHERE t_souche.xxx_id = 532688;
+
+UPDATE t_souche
+SET sch_historique = regexp_replace(t_souche.sch_historique, E'[ ]*[\\n\\r]+J-Y Riou', ' <- J-Y Riou', 'g')
+WHERE sch_historique != regexp_replace(t_souche.sch_historique, E'[ ]*[\\n\\r]+J-Y Riou', ' <- J-Y Riou', 'g');

@@ -1,3 +1,4 @@
+\cd 100_bibliographie
 \i 20_separation_des_biblios_simple.sql
 \i 25_trim_lignes.sql
 \i 30_import_infos_csv.sql
