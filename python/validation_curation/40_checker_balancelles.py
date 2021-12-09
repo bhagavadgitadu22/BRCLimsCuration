@@ -83,7 +83,6 @@ def main():
     ids_lots_disparus = []
     ids_lots_apparus = []
 
-    """
     for id_c in ids_curated:
         if id_c not in ids:
             ids_lots_disparus.append(id_c)
@@ -99,7 +98,6 @@ def main():
     print("ids_lots_apparus")
     print(ids_lots_apparus)
     print("")
-    """
 
     # puis l'on compare les éléments un par un
     differences = []
