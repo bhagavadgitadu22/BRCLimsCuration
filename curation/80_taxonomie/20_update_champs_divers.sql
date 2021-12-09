@@ -20,7 +20,12 @@ INSERT INTO elements_inutiles (column_list) VALUES
 ('ESSAI 100001'), ('Genre'), ('Ommited'), ('Unnamed bacterium'), ('jetÇe'),
 ('Unidentified'), ('SP group'), ('pas d''ampoule'), ('PAS DE SOUCHE'), ('Uncertain'),
 ('Unknown acetogenic'), ('proche'), ('ungrouped 1271'), ('ungrouped 640'), ('strain'), 
-('Coryneformes'), ('Cryneformes');
+('Coryneformes'), ('Cryneformes'), 
+
+('F1 132 95'), ('Serum PBt53,(titre 25600)sature par H17:'), ('Fait 2 lapins en intra-dermique=0'),
+('B. th. 0,767   test api 271099 ATTENTION'), ('676'), ('E. coli en 16s + Pb phenotypiques'), ('Strain LG1'), 
+('thuringiensis 0.718'), ('saturation faite=fukuokaensis'), ('thermobacterium'), ('betabacterium'),
+('jk'), ('2b'), ('2f'), ('4c-2'), ('ef4'), ('m5'), ('hb-5'), ('ve-2');
 
 -- d'abord on récupère la liste des dérivés de species et du premier id ancêtre non species pour chacun d'entre eux
 WITH RECURSIVE children (xxx_id, don_lib, level, don_code, don_parent, name_path) AS (

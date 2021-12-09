@@ -6,7 +6,8 @@ INTO TEMPORARY TABLE souches_sans_souches
 FROM t_donneedico
 JOIN t_souche
 ON t_donneedico.xxx_id = sch_taxonomie
-WHERE don_lib LIKE '%pas de souche%' AND sch_denomination NOT LIKE '%pas de souche%'
+WHERE don_lib LIKE '%pas de souche%' 
+AND sch_denomination NOT LIKE '%pas de souche%'
 AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
 AND t_donneedico.xxx_sup_dat IS NULL;
 

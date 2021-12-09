@@ -287,12 +287,6 @@ AND don_lib IN ('Vibrio pelagius I')
 AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
-SET don_lib = 'Marinitoga lauensis'
-WHERE don_dic_id = 3755 
-AND don_lib IN ('Strain LG1')
-AND t_donneedico.xxx_sup_dat IS NULL;
-
-UPDATE t_donneedico
 SET don_lib = 'Rhodococcus'
 WHERE don_dic_id = 3755 
 AND don_lib IN ('Brodococcus')
@@ -301,13 +295,7 @@ AND t_donneedico.xxx_sup_dat IS NULL;
 UPDATE t_donneedico
 SET don_lib = 'Bacillus thuringiensis'
 WHERE don_dic_id = 3755 
-AND don_lib IN ('B. thuringiensis asturiensis', 'thuringiensis 0.718')
-AND t_donneedico.xxx_sup_dat IS NULL;
-
-UPDATE t_donneedico
-SET don_lib = 'Bacillus thuringiensis fukuokaensis'
-WHERE don_dic_id = 3755 
-AND don_lib IN ('saturation faite=fukuokaensis')
+AND don_lib IN ('B. thuringiensis asturiensis')
 AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_donneedico
@@ -326,4 +314,16 @@ UPDATE t_donneedico
 SET don_lib = 'Vibrio vulnificus'
 WHERE don_dic_id = 3755 
 AND don_lib IN ('Vibrio vulnific. bt1')
+AND t_donneedico.xxx_sup_dat IS NULL;
+
+UPDATE t_donneedico
+SET don_lib = 'dentocariosa'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('dentocariosa I', 'dentocariosa II')
+AND t_donneedico.xxx_sup_dat IS NULL;
+
+UPDATE t_donneedico
+SET don_lib = 'avium'
+WHERE don_dic_id = 3755 
+AND don_lib IN ('intra-avium')
 AND t_donneedico.xxx_sup_dat IS NULL;

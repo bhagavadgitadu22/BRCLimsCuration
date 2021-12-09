@@ -76,6 +76,7 @@
 \i 14_pas_de_souche_degage.sql
 \i 15_trim_elements_taxo.sql
 \i 16_accents_vires.sql
+\i 19_bacillus_proches.sql
 \i 20_update_champs_divers.sql
 \i 30_enteroccus.sql
 \i 40_erreurs_orthographe_genus_ou_species.sql
@@ -86,6 +87,7 @@
 \i 71_erreurs_genus_deduites_de_trigrammes.sql
 \i 80_supprimer_erreurs_pas_dans_souches.sql
 \i 81_virer_serovar.sql
+\i 85_corrections_manuelles.sql
 \i 90_suppression_doublons_taxo.sql
 \i 100_suppression_table_taxonomy.sql
 

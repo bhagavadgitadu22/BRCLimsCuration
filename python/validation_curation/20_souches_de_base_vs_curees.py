@@ -98,7 +98,7 @@ def main():
         version = str(record[28])
 
         # 40_historique_bacillus
-        if record[68] != record_curated[68]:
+        if record[68].replace(" ", "") != record_curated[68].replace(" ", ""):
             differences["historique"].append([identifiant_cip, version, record[68], record_curated[68]])
 
         # 50_localisation
