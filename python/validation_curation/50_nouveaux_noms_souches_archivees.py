@@ -18,13 +18,14 @@ def column_width(writer, name, df):
         worksheet.set_column(idx, idx, min(max_len, 100), my_format)  # set column width
 
 conn = psycopg2.connect(user="postgres",
-                                password="mysecretpassword",
+                                password="hercule1821",
                                 host="localhost",
                                 port="5432",
-                                database="brc_db")
+                                database="restart_db_cured")
 conn.autocommit = True
 
 cursor = conn.cursor()
+cursor.execute(open("../curation/20_collections_de_cip/liste_souches_bon_brclims.sql", "r").read())
 
 xls_ids = pd.ExcelFile(r"C:\Users\Public\Documents\ids_archives_lors_de_curation.xlsx")
 
