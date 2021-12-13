@@ -121,3 +121,6 @@ INSERT INTO public.stockeur_1 (first_strain, last_strain, balancelle) VALUES ('C
 INSERT INTO public.stockeur_1 (first_strain, last_strain, balancelle) VALUES ('CIP A1', 'CIP A83', '001');
 INSERT INTO public.stockeur_1 (first_strain, last_strain, balancelle) VALUES ('CIP A84', 'CIP A160', '002');
 INSERT INTO public.stockeur_1 (first_strain, last_strain, balancelle) VALUES ('CIP A161', 'CIP A245', '003');
+
+UPDATE stockeur_1
+SET last_strain = CONCAT(last_strain, 'T');

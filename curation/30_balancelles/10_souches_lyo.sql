@@ -40,5 +40,6 @@ OR sch_identifiant SIMILAR TO 'CIP [0-9]{1}.[0-9]+T?'
 OR sch_identifiant SIMILAR TO 'CIP 1[0-9]{5}T?')
 AND t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
 AND t_lot.xxx_sup_dat IS NULL
+AND t_lot.lot_qte_stock != 0
 AND sch_mot = false
-AND array_to_string(name_path, ' > ') NOT SIMILAR TO '%STOCKEUR (3|4)%';
+AND (array_to_string(name_path, ' > ') IS NULL OR array_to_string(name_path, ' > ') NOT SIMILAR TO '%STOCKEUR (3|4)%');

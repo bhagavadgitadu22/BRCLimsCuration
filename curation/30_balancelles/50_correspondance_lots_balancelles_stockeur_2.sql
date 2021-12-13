@@ -20,7 +20,7 @@ AND custom_sort(sch_identifiant) <= custom_sort(last_strain)
 JOIN ids_balancelles_2
 ON ids_balancelles_2.lst_nom = CONCAT('Balancelle-', balancelle)
 	  
-WHERE CONCAT('Balancelle-', balancelle) != souches_lyophilisees.lst_nom) AS a
+WHERE souches_lyophilisees.stockage_id IS NULL OR CONCAT('Balancelle-', balancelle) != souches_lyophilisees.lst_nom) AS a
 
 JOIN t_lot_casestockage
 ON lts_lst_id = id_balancelle
