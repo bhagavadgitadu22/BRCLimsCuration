@@ -62,13 +62,13 @@ def main():
     cursor = get_cursor("restart_db_pure")
     cursor_curated = get_cursor("restart_db_cured")
 
-    cursor.execute(open("../curation/10_fonctions/10_custom_order.sql", "r").read())
-    cursor_curated.execute(open("../curation/10_fonctions/10_custom_order.sql", "r").read())
+    cursor.execute(open("../curation_bloc_1/10_fonctions/10_custom_order.sql", "r").read())
+    cursor_curated.execute(open("../curation_bloc_1/10_fonctions/10_custom_order.sql", "r").read())
 
-    cursor.execute(open("../curation/validation_curation/40_emplacements_lots.sql", "r").read())
+    cursor.execute(open("../curation_bloc_1/validation_curation/40_emplacements_lots.sql", "r").read())
     souches = cursor.fetchall()
 
-    cursor_curated.execute(open("../curation/validation_curation/40_emplacements_lots.sql", "r").read())
+    cursor_curated.execute(open("../curation_bloc_1/validation_curation/40_emplacements_lots.sql", "r").read())
     souches_curated = cursor_curated.fetchall()
 
     # dont on extrait les ids

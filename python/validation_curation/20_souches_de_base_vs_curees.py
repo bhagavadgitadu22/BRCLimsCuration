@@ -82,7 +82,7 @@ def main():
         differences[elmt] = []
     legendes["localisation"] = ["Identifiant CIP", "Version", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
-    str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
+    str_base = open("../curation_bloc_1/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
     for row in rows:

@@ -25,7 +25,7 @@ conn = psycopg2.connect(user="postgres",
 conn.autocommit = True
 
 cursor = conn.cursor()
-cursor.execute(open("../curation/20_collections_de_cip/liste_souches_bon_brclims.sql", "r").read())
+cursor.execute(open("../curation_bloc_1/20_collections_de_cip/liste_souches_bon_brclims.sql", "r").read())
 
 xls_ids = pd.ExcelFile(r"C:\Users\Public\Documents\ids_archives_lors_de_curation.xlsx")
 

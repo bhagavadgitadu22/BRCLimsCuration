@@ -105,7 +105,6 @@ def main():
     dicos["localisation"] = create_dico("taxonomie", locs, locs_curated)
 
     # pathogenicite
-    '''
     cursor.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 72879")
     pathos = cursor.fetchall()
 
@@ -113,7 +112,6 @@ def main():
     pathos_curated = cursor_curated.fetchall()
 
     dicos["pathogenicite"] = create_dico("pathogenicite", locs, locs_curated)
-    '''
 
     # taxonomie
     cursor.execute("SELECT sch_taxonomie, path, xxx_sup_dat FROM chemins_taxonomie JOIN t_donneedico ON sch_taxonomie = t_donneedico.xxx_id WHERE t_donneedico.don_dic_id = 3755")

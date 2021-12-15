@@ -50,9 +50,9 @@ def get_cursor(db_name):
     return conn.cursor()
 
 def get_all_souches(cursor):
-    cursor.execute(open("../curation/validation_curation/10_parenteles_taxonomie.sql", "r").read())
+    cursor.execute(open("../curation_bloc_1/validation_curation/10_parenteles_taxonomie.sql", "r").read())
 
-    cursor.execute(open("../curation/validation_curation/20_toutes_souches.sql", "r").read())
+    cursor.execute(open("../curation_bloc_1/validation_curation/20_toutes_souches.sql", "r").read())
     records = cursor.fetchall()
     
     return records
@@ -149,7 +149,7 @@ def main():
     souches_archives_modifiees = []
     souches_modifiees_hors_cip = []
 
-    str_base = open("../curation/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
+    str_base = open("../curation_bloc_1/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
     for sch in souches_a_garder:
