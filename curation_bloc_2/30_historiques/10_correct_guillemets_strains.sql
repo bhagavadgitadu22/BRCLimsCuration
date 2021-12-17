@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS new_strains_bacillus;
 
 SELECT xxx_id, sch_historique, (regexp_matches(sch_historique, 'strain .*'))[1] AS strain
 INTO strains_bacillus
-FROM t_souche;
+FROM t_souche
+WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
 
 SELECT xxx_id, sch_historique, strain,
 (regexp_matches(strain, CONCAT('.*?', CHR(171))))[1] AS beginning_strain,
