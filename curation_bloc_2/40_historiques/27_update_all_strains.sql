@@ -35,3 +35,19 @@ WHERE (xxx_id, short_strain) IN (SELECT xxx_id, old_strain FROM casser_les_strai
 -- on supprime les strains vides (ne comportant ni chiffre ni lettre...)
 DELETE FROM all_strains
 WHERE short_strain NOT SIMILAR TO '%[a-zA-Z0-9]+%';
+
+UPDATE all_strains
+SET short_strain = 'ATCC 27647'
+WHERE short_strain = 'ATCC 27647  (souche-type)';
+
+UPDATE all_strains
+SET short_strain = 'B 6 «25»'
+WHERE short_strain = 'B 6 «25';
+
+UPDATE all_strains
+SET short_strain = 'NRS 1467'
+WHERE short_strain = 'NRS 1467 «B. pinottii»';
+
+UPDATE all_strains
+SET short_strain = 'Patoc 1'
+WHERE short_strain = 'Patoc 1,Pas de dossier';
