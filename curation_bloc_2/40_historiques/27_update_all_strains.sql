@@ -45,9 +45,5 @@ SET short_strain = 'B 6 «25»'
 WHERE short_strain = 'B 6 «25';
 
 UPDATE all_strains
-SET short_strain = 'NRS 1467'
-WHERE short_strain = 'NRS 1467 «B. pinottii»';
-
-UPDATE all_strains
 SET short_strain = 'Patoc 1'
 WHERE short_strain = 'Patoc 1,Pas de dossier';
