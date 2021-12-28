@@ -39,34 +39,18 @@ def sheet_error(wb, cursor, file, name):
     records = cursor.fetchall()
 
     sheet = wb.create_sheet(name)
-    sheet.append(["id" "souche", ""])
+    cols = ["id", "souche"]
+    for i in range(1, 35):
+        cols.append(i)
+    print(cols)
+    sheet.append(cols)
 
-    n_ligne = 2
     for record in records:
-        print(record[2])
-        row = []
-
-        # pour les sources d'erreur
-        if isinstance(record[2], str):
-            row.append(record[2])
-        else :
-            chaine = ""
-            for erreur in record[2]:
-                if chaine != "":
-                    chaine += "\n- "
-                chaine += str(erreur)
-            row.append(chaine)
+        row = [record[0], record[1]]
+        for res in range(len(record[3])):
+            row.append(record[3][res])
+        sheet.append(row)
         
-        # pour les noms de milieux et les souches qui en relèvent
-        for nom in record[1]:
-            for key in nom.keys():
-                sheet.append(row+[str(key)]+[str(nom[key])])
-            
-            n_ligne += 1
-
-        sheet.merge_cells(start_row=n_ligne-len(record[1]), start_column=1, end_row=n_ligne-1, end_column=1)
-
-    style_sheet(sheet)
 
 def create_excel(path):
     # on récupère la liste des identifiants valides

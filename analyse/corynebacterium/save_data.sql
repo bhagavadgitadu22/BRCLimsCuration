@@ -1,0 +1,1 @@
+COPY generalites TO 'C:\Users\Public\Documents\generalites.csv' DELIMITER '|' CSV HEADER;
