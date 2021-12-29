@@ -7,5 +7,6 @@ AND don_lib NOT LIKE '%Korea%'
 AND don_lib NOT SIMILAR TO '(1964|CEI|Yugoslavia|USSR)'
 AND don_lib NOT SIMILAR TO '(Africa|Asia|Europe|South America|Arctic|Antarctica)'
 AND don_lib NOT SIMILAR TO '%(Sea|Ocean)%'
+AND sch_mot IS False
 GROUP BY don_lib
 ORDER BY don_lib;
