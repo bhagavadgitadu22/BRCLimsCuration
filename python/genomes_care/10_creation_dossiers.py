@@ -43,14 +43,14 @@ for f in dir_list:
                 else:
                     row = [care_id, rm_id, wgs_raw]
                     fake_rows.append(row)
-
+        
         # on écrit fichier texte avec les infos utiles
         f_ids = open(path+'/'+genus+'/ids.csv', 'w', newline='', encoding='utf-8')
         writer = csv.writer(f_ids, delimiter='|')
         writer.writerows(true_rows)
         f_ids.close()
 
-        f_ids = open(path+'/'+genus+'/juste_sra.csv', 'w', newline='', encoding='utf-8')
+        f_ids = open(path+'/'+genus+'/juste_sra.txt', 'w', newline='', encoding='utf-8')
         writer = csv.writer(f_ids, delimiter='|')
         writer.writerows([[elmt[1]] for elmt in true_rows])
         f_ids.close()
