@@ -1,5 +1,9 @@
-SELECT sch.sch_identifiant, type_sch.sch_identifiant
-FROM t_souche AS sch
-JOIN t_souche AS type_sch
-ON type_sch.sch_identifiant = CONCAT(sch.sch_identifiant, 'T')
-WHERE sch.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip);
+SELECT sch.sch_identifiant, sch.sch_denomination, type_sch.sch_identifiant, type_sch.sch_denomination
+FROM last_version_souches_cip AS sch
+LEFT JOIN last_version_souches_cip AS type_sch
+ON sch.sch_denomination = type_sch.sch_denomination
+AND sch.sch_identifiant != type_sch.sch_identifiant
+AND type_sch.sch_identifiant LIKE '%T'
+WHERE sch.sch_identifiant NOT LIKE '%T'
+AND type_sch.sch_identifiant IS NULL
+ORDER BY type_sch.sch_identifiant DESC;
