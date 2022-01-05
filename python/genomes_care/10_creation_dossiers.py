@@ -19,6 +19,8 @@ for f in dir_list:
         sheet_names.remove('Working')
 
         true_rows = []
+        project_rows = []
+        sample_rows = []
         fake_rows = []
 
         for sheet_name in sheet_names:
@@ -38,7 +40,13 @@ for f in dir_list:
                     row = [rm_id, short_wgs_raw]
                     if not(pd.isnull(care_id)):
                         row[0] = care_id
-                    true_rows.append(row)
+
+                    if "ERS" in short_wgs_raw:
+                        sample_rows.append(row)
+                    elif "PRJEB" in short_wgs_raw:
+                        project_rows.append(row)
+                    else:
+                        true_rows.append(row)
                 
                 else:
                     row = [care_id, rm_id, wgs_raw]
@@ -55,8 +63,18 @@ for f in dir_list:
         writer.writerows([[elmt[1]] for elmt in true_rows])
         f_ids.close()
 
+        f_ids = open(path+'/'+genus+'/juste_project_sra.txt', 'w', newline='', encoding='utf-8')
+        writer = csv.writer(f_ids, delimiter='|')
+        writer.writerows([[elmt[1]] for elmt in project_rows])
+        f_ids.close()
+
+        f_ids = open(path+'/'+genus+'/juste_sample_sra.txt', 'w', newline='', encoding='utf-8')
+        writer = csv.writer(f_ids, delimiter='|')
+        writer.writerows([[elmt[1]] for elmt in sample_rows])
+        f_ids.close()
+
         f_fake_ids = open(path+'/'+genus+'/fake_ids.csv', 'w', newline='', encoding='utf-8')
         writer = csv.writer(f_fake_ids, delimiter='|')
         writer.writerows(fake_rows)
         f_fake_ids.close()
-            
+        

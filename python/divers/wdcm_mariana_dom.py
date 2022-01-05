@@ -3,7 +3,7 @@ from openpyxl.workbook.workbook import Workbook
 import psycopg2
 import re
 
-wdcm_normes = pd.ExcelFile(r"e:\Users\Proprietaire\Downloads\Normes et WDM souches_DC.xlsx")
+wdcm_normes = pd.ExcelFile(r"C:\Users\Public\Documents\Normes et WDM souches_DC.xlsx")
 
 df_normes = pd.read_excel(wdcm_normes, "Feuil1")
 
@@ -36,7 +36,7 @@ for i in range(len(df_normes)):
 # print(normes_eclates)
 # print(tests_eclates)
 
-wdcm_mariana = pd.ExcelFile(r'e:\Users\Proprietaire\Downloads\211227_WDCM_Panel_MF.xlsx')
+wdcm_mariana = pd.ExcelFile(r'C:\Users\Public\Documents\211227_WDCM_Panel_MF.xlsx')
 
 df_mar = pd.read_excel(wdcm_mariana, "Feuil1")
 
@@ -44,7 +44,7 @@ connection = psycopg2.connect(user="postgres",
                                 password="hercule1821",
                                 host="localhost",
                                 port="5432",
-                                database="brc_db")
+                                database="brc_db2")
 connection.autocommit = True
 
 cursor = connection.cursor()
@@ -74,7 +74,7 @@ for i in range(len(df_mar)):
             if local_wdcm in tests_eclates:
                 local_test = '\n'.join(tests_eclates[local_wdcm])
 
-            row = [souche_cip, local_wdcm, local_norme, local_test, record[2]]
+            row = [souche_cip, local_wdcm, local_norme, local_test, record[2], record[3]]
             # print(row)
         if record is None:
             print(souche_cip)
