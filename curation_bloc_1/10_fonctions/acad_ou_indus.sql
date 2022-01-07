@@ -1,4 +1,4 @@
-DROP FUNCTION acad_ou_indus;
+DROP FUNCTION IF EXISTS acad_ou_indus;
 
 CREATE OR REPLACE FUNCTION acad_ou_indus(integer, varchar)
   RETURNS text AS
