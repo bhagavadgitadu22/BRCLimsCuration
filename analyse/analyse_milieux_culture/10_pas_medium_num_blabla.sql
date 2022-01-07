@@ -1,9 +1,12 @@
-SELECT t_milieu.xxx_id, mil_designation_en, array_remove(ARRAY_AGG(sch_identifiant), NULL)
-FROM t_milieu
+SELECT sch_identifiant, 
+array_to_string(ARRAY_AGG(DISTINCT mil_numero) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_numero IS NOT NULL), E'\n'), 
+array_to_string(ARRAY_AGG(DISTINCT mil_designation_fr) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_designation_FR IS NOT NULL), E'\n'), 
+array_to_string(ARRAY_AGG(DISTINCT mil_designation_en) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_designation_en IS NOT NULL), E'\n')
+FROM t_souche
 LEFT JOIN t_milieu_souche
-ON msc_mil_id = t_milieu.xxx_id
-LEFT JOIN t_souche
 ON t_souche.xxx_id = msc_sch_id
-WHERE mil_clg_id = 401
-AND mil_designation_en NOT SIMILAR TO '%MEDIUM [0-9]+ -%'
-GROUP BY t_milieu.xxx_id, mil_designation_en, mil_clg_id;
+LEFT JOIN t_milieu
+ON msc_mil_id = t_milieu.xxx_id
+WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+GROUP BY sch_identifiant
+ORDER BY sch_identifiant;
