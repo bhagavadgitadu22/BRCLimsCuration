@@ -1,4 +1,5 @@
 SELECT sch_identifiant, 
+array_to_string(ARRAY_AGG(DISTINCT sch_denomination), E'\n'),
 array_to_string(ARRAY_AGG(DISTINCT mil_numero) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_numero IS NOT NULL), E'\n'), 
 array_to_string(ARRAY_AGG(DISTINCT mil_designation_fr) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_designation_FR IS NOT NULL), E'\n'), 
 array_to_string(ARRAY_AGG(DISTINCT mil_designation_en) FILTER (WHERE t_milieu.xxx_sup_dat IS NULL AND mil_designation_en IS NOT NULL), E'\n')
