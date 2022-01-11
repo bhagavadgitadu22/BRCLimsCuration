@@ -1,8 +1,10 @@
 DROP TABLE IF EXISTS last_version_souches_cip;
 
 SELECT DISTINCT ON (sch_identifiant) 
-xxx_id, sch_identifiant, sch_version, sch_type,
-trim(sch_denomination) AS sch_denomination
+xxx_id, sch_identifiant, sch_version, 
+sch_type, sch_catalogue, 
+trim(sch_denomination) AS sch_denomination,
+sch_temperature_incubation, sch_temps_culture
 INTO TABLE last_version_souches_cip
 FROM t_souche
 WHERE sch_col_id IN
