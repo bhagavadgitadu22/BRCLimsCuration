@@ -5,7 +5,7 @@ t_souche.xxx_id, sch_identifiant, sch_version,
 sch_type, sch_catalogue, 
 trim(sch_denomination) AS sch_denomination,
 sch_temperature_incubation, sch_temps_culture,
-svl_valeur AS basonyme
+svl_valeur AS basonyme, sch_synonymes
 INTO TABLE last_version_souches_cip
 FROM t_souche
 LEFT JOIN t_string_val

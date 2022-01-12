@@ -40,10 +40,11 @@ WHERE svl_att_id = 2756
 AND svl_valeur != ''
 AND svl_valeur != REPLACE(svl_valeur, 'subsp.b', 'subsp. b');
 
-SELECT sch_identifiant, svl_valeur
+SELECT sch_identifiant, sch_denomination, svl_valeur
 FROM t_string_val
-JOIN t_souche
-ON svl_entite_id = t_souche.xxx_id
+JOIN last_version_souches_cip
+ON svl_entite_id = last_version_souches_cip.xxx_id
 WHERE svl_att_id = 2756
 AND svl_valeur != ''
-AND svl_valeur NOT SIMILAR TO '[A-Z]{1}[a-z]+ [a-z]+( [a-z]+.?)*(, [A-Z]{1}[a-z]+ [a-z]+([ ]+[a-z]+.?)*)*';
+AND svl_valeur NOT SIMILAR TO '[A-Z]{1}[a-z]+ [a-z]+( [a-z]+.?)*(, [A-Z]{1}[a-z]+ [a-z]+([ ]+[a-z]+.?)*)*'
+ORDER BY sch_identifiant;
