@@ -1,5 +1,6 @@
 import os
 import csv
+from bioinfokit.analys import fastq
 
 def read_csv(ids, expected_errs):
     csvreader = csv.reader(ids)
@@ -40,16 +41,26 @@ for genus in dir_list:
         expected_errs = read_csv(samples_ids, expected_errs)
         
         # on compare les deux listes
-        print("not downloaded")
+        not_downloaded = []
         for err in expected_errs:
             if err not in local_errs:
-                print(err)
+                not_downloaded.append(err)
+
+        print(not_downloaded)
+
+        # pour retélécharger ce qui manque
+        f_ids = open(path+'/'+genus+'/errs_manquants.txt', 'w', newline='', encoding='utf-8')
+        writer = csv.writer(f_ids, delimiter='|')
+        writer.writerows(not_downloaded)
+        f_ids.close()
+
+        fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
             
-        print("")
-        print("downloaded")
-        for err in expected_errs:
-            if err in local_errs:
-                print(err)
+        #print("")
+        #print("downloaded")
+        #for err in expected_errs:
+        #    if err in local_errs:
+        #        print(err)
 
         for err in local_errs:
             if err not in expected_errs:
