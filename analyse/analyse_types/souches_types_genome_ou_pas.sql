@@ -1,4 +1,7 @@
-SELECT sch_identifiant, 
+SELECT sch_identifiant,
+CASE WHEN sch_catalogue IS True THEN 'Y'
+	ELSE 'N'
+END AS catalogue,
 CASE WHEN t_1546.xxx_id IS NULL THEN 'N'
 	ELSE 'Y'
 END AS genome,
@@ -13,5 +16,4 @@ AND t_cp.cpy_numero = 1546) AS t_1546
 ON last_version_souches_cip.xxx_id = t_1546.cpr_sch_id
 
 WHERE sch_type IS True
-AND sch_catalogue IS NOT True
 ORDER BY sch_identifiant;
