@@ -1,6 +1,4 @@
 DROP TABLE IF EXISTS all_documents;
-DROP TABLE IF EXISTS good_documents;
-DROP TABLE IF EXISTS good_documents_grouped;
 
 CREATE TABLE all_documents (
     id serial,
@@ -25,26 +23,3 @@ FROM (
 		WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)) t
    ) sub
 ORDER BY xxx_id, nr;
-
--- on crée aussi une table qu'on remplira au fur et à mesure avec les bons documents
-CREATE TABLE good_documents (
-    id serial,
-	journal text,
-	annee text,
-	volume text,
-	first_page text,
-	last_page text,
-	xxx_id integer,
-	n_ligne integer
-);
-
--- la même mais avec sch_identifiants regroupés
-CREATE TABLE good_documents_grouped (
-    id serial,
-	journal text,
-	annee text,
-	volume text,
-	first_page text,
-	xxx_ids integer[],
-	n_lignes integer[]
-);

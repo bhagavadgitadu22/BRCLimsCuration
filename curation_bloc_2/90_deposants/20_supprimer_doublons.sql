@@ -5,7 +5,7 @@ on garde la liste de tous les doublons dans id1 et l'id à l'origine de ces doub
 SELECT t_donneedico.xxx_id AS id1, id2,
 t_donneedico.don_lib AS version_1, duplicates.don_lib AS version_2
 
-INTO TEMPORARY TABLE ids_a_changer
+INTO TABLE ids_a_changer
 
 FROM t_donneedico JOIN
 
@@ -40,6 +40,3 @@ UPDATE t_donneedico
 SET xxx_sup_dat = now()::timestamp,
 	xxx_sup_usr_id = 1
 WHERE t_donneedico.xxx_id IN (SELECT id1 FROM ids_a_changer);
-
-/* enfin on supprime la table temporaire où l'on stockait ces id1 et 2 */
-DROP TABLE IF EXISTS ids_a_changer;

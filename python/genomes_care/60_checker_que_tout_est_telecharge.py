@@ -11,16 +11,14 @@ def read_csv(ids, expected_errs):
     return expected_errs
 
 #path = 'X:/crbtous/genomes_care'
-path = '/mnt/gaia/crbip/crbtous/genomes_care'
+path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
 # puis on lit les fichiers des différents dossiers pour voir si on a tout téléchargé
 for genus in dir_list:
     if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64':
         print("")
-        print("")
         print(genus)
-        print("")
 
         # on récupère liste de tous errs dont on a fasta pour ce génome
         local_files = os.listdir(path+'/'+genus)
@@ -44,7 +42,7 @@ for genus in dir_list:
         not_downloaded = []
         for err in expected_errs:
             if err not in local_errs:
-                not_downloaded.append(err)
+                not_downloaded.append([err])
 
         print(not_downloaded)
 
@@ -54,7 +52,7 @@ for genus in dir_list:
         writer.writerows(not_downloaded)
         f_ids.close()
 
-        fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
+        #fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
             
         #print("")
         #print("downloaded")

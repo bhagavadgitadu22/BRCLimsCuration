@@ -40,6 +40,7 @@ WHERE svl_att_id = 2756
 AND svl_valeur != ''
 AND svl_valeur != REPLACE(svl_valeur, 'subsp.b', 'subsp. b');
 
+/*
 SELECT sch_identifiant, sch_denomination, svl_valeur
 FROM t_string_val
 JOIN last_version_souches_cip
@@ -48,3 +49,4 @@ WHERE svl_att_id = 2756
 AND svl_valeur != ''
 AND svl_valeur NOT SIMILAR TO '[A-Z]{1}[a-z]+ [a-z]+( [a-z]+.?)*(, [A-Z]{1}[a-z]+ [a-z]+([ ]+[a-z]+.?)*)*'
 ORDER BY sch_identifiant;
+*/
