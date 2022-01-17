@@ -21,3 +21,9 @@ SET sch_references_equi = REGEXP_REPLACE(t_souche.sch_references_equi, CONCAT('(
 FROM doublons
 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
 AND t_souche.xxx_id = doublons.xxx_id;
+
+UPDATE t_souche
+SET sch_references_equi = REGEXP_REPLACE(t_souche.sch_references_equi, CONCAT('(?<=', repet, '.*);', repet), '', 'g')
+FROM doublons
+WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+AND t_souche.xxx_id = doublons.xxx_id;

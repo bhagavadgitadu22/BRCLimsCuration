@@ -52,7 +52,7 @@ for genus in dir_list:
         writer.writerows(not_downloaded)
         f_ids.close()
 
-        #fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
+        fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
             
         #print("")
         #print("downloaded")

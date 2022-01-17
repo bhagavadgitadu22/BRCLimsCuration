@@ -1,7 +1,8 @@
 import os
 import pandas as pd
 import csv
-import numpy as np
+import requests
+import json
 
 path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
@@ -45,6 +46,14 @@ for f in dir_list:
                         sample_rows.append(row)
                     elif "PRJEB" in short_wgs_raw:
                         project_rows.append(row)
+                    elif "ERX" in short_wgs_raw:
+                        url = requests.get('https://www.ebi.ac.uk/ena/portal/api/filereport?result=read_run&fields=fastq_ftp&format=JSON&accession='+short_wgs_raw)
+                        text = url.text
+                        data = json.loads(text)
+
+                        # vérifier que seulement un err associé à l'erx : print(len(data))
+                        row[1] = data[0]['run_accession']
+                        true_rows.append(row)
                     else:
                         true_rows.append(row)
                 
