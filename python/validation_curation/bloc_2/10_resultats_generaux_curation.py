@@ -50,17 +50,15 @@ def get_cursor(db_name):
     return conn.cursor()
 
 def get_all_souches(cursor):
-    cursor.execute(open("../curation_bloc_1/validation_curation/10_parenteles_taxonomie.sql", "r").read())
-
-    cursor.execute(open("../curation_bloc_1/validation_curation/20_toutes_souches.sql", "r").read())
+    cursor.execute(open("../curation_bloc_2/validation_curation/10_toutes_souches.sql", "r").read())
     records = cursor.fetchall()
     
     return records
 
 def main():
     # on établit les connections avec les 2 bdds
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("brc_db_pure")
+    cursor_curated = get_cursor("brc_db_cured2")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -149,7 +147,7 @@ def main():
     souches_archives_modifiees = []
     souches_modifiees_hors_cip = []
 
-    str_base = open("../curation_bloc_1/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
+    str_base = open("../curation_bloc_2/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
     for sch in souches_a_garder:
@@ -161,7 +159,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-13] == 401 and record_curated[len(record_curated)-13] == 401:
+            if record[len(record)-10] == 401 and record_curated[len(record_curated)-10] == 401:
                 if record[7] is None:
                     souches_modifiees.append(record)
                 else:
@@ -174,13 +172,13 @@ def main():
         i+=1
 
     print("")
-    print(str(len(souches_modifiees))+" modifiees")
+    print(str(len(souches_modifiees))+" modifiees de cip")
     print("")
     print(str(len(souches_archives_modifiees))+" archives modifiees")
-    print([elem[0] for elem in souches_archives_modifiees])
+    print([elem[22] for elem in souches_archives_modifiees])
     print("")
     print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
-    print([elem[0] for elem in souches_modifiees_hors_cip])
+    print([elem[22] for elem in souches_modifiees_hors_cip])
 
     f = open('../../output/cip_modifies.csv', 'w', newline='')
     writer = csv.writer(f, delimiter=';')

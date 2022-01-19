@@ -41,10 +41,10 @@ def sheet_error(wb, cursor):
     sheet = wb.create_sheet("stats_klebsiella")
 
     # on s'occupe des colonnes du fichier de klebsiella
-    cols = ["Id", "Souche", "Lieu d'origine", "Isolé à partir de", "Date de prélèvement", "Date d'isolement", "Bibliographie", "Propriétés"]
+    cols = ["Id", "Souche", "Denomination", "Lieu d'origine", "Isolé à partir de", "Date de prélèvement", "Date d'isolement", "Bibliographie", "Propriétés"]
     antibios = []
     for record in records:
-        liste = record[8]
+        liste = record[9]
         for elmt in liste:
             if elmt is not None and elmt not in antibios:
                 antibios.append(elmt)
@@ -59,16 +59,16 @@ def sheet_error(wb, cursor):
 
     # puis on remplit ces colonnes
     for record in records:
-        row = [record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7]]
+        row = [record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7], record[8]]
         for elmt in antibios_sorted:
             row.append("")
             row.append("")
 
-        noms_antibios = record[8]
-        resultats_antibios = record[9]
-        diametres_antibios = record[10]
+        noms_antibios = record[9]
+        resultats_antibios = record[10]
+        diametres_antibios = record[11]
         
-        if not(len(noms_antibios) ==1 and noms_antibios[0] is None):
+        if not(len(noms_antibios) == 1 and noms_antibios[0] is None):
             for i in range(len(noms_antibios)):
                 idx = cols.index(noms_antibios[i])
 

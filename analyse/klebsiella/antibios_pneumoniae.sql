@@ -1,11 +1,12 @@
-SELECT id_souche, sch_identifiant, lieu_origine, sch_isole_a_partir_de,
+SELECT id_souche, sch_identifiant, sch_denomination,
+lieu_origine, sch_isole_a_partir_de,
 date_prelevement, date_isolement, sch_bibliographie, sch_proprietes, 
 ARRAY_AGG(nom_antibio) AS antibios, 
 ARRAY_AGG(resultat) AS resultats,
 ARRAY_AGG(anr_diametre) AS diametres
 
 FROM 
-(SELECT id_souche, sch_identifiant, 
+(SELECT id_souche, sch_identifiant, sch_denomination,
 lieu_origine, sch_isole_a_partir_de,
 EXTRACT(YEAR FROM sch_dat_prelevement) AS date_prelevement, 
 EXTRACT(YEAR FROM sch_dat_isolement) AS date_isolement,
@@ -15,7 +16,8 @@ anr_diametre, t_resultat.don_lib AS resultat
 FROM 
 
 (SELECT last_version_souches_cip.xxx_id AS id_souche, 
-sch_identifiant, lieu_origine, sch_isole_a_partir_de,
+sch_identifiant, sch_denomination,
+lieu_origine, sch_isole_a_partir_de,
 sch_dat_prelevement, sch_dat_isolement, 
 sch_bibliographie, sch_proprietes,
 t_antibiogramme.xxx_id AS id_genre, 
@@ -38,5 +40,5 @@ ON anr_amt_id = t_antibiogrammemodelegenretest.xxx_id
 LEFT JOIN t_donneedico AS nom_antibio
 ON nom_antibio.xxx_id = amt_test) AS a
 
-GROUP BY id_souche, sch_identifiant, lieu_origine, sch_isole_a_partir_de, date_prelevement, date_isolement, sch_bibliographie, sch_proprietes
+GROUP BY id_souche, sch_identifiant, sch_denomination, lieu_origine, sch_isole_a_partir_de, date_prelevement, date_isolement, sch_bibliographie, sch_proprietes
 ORDER BY id_souche;

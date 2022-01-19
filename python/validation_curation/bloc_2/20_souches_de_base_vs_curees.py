@@ -9,7 +9,7 @@ def redimension_cell_width(ws):
         for cell in row:
             if cell.value:
                 # longueur max parmi != lignes de cellule
-                line_max = max([len(str(elmt)) for elmt in cell.value.split('\n')])
+                line_max = max([len(str(elmt)) for elmt in str(cell.value).split('\n')])
                 # cell.column_letter correspond à la taille que ça a de par les lignes précédentes déjà analysées
                 # on garde donc max taille entre cellules précédentes et celle analysée
                 max_ = max((dims.get(cell.column_letter, 0), line_max))
@@ -71,18 +71,18 @@ def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("brc_db_pure")
+    cursor_curated = get_cursor("brc_db_cured2")
 
-    name = ["historique", "localisation", "pathogenicite", "taxonomie", "temperature", "bibliographie"]
+    name = ["historique", "refs_equis", "localisation", "bibliographie", "denomination", "temps_culture", "temp_incubation", "basonyme", "deposant"]
     legendes = {}
     differences = {}
     for elmt in name:
         legendes[elmt] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
         differences[elmt] = []
-    legendes["localisation"] = ["Identifiant CIP", "Version", "Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
+    legendes["localisation"] = ["Ancienne localisation", "Nouvelle localisation", "Ancien lieu précis", "Nouveau lieu précis"]
 
-    str_base = open("../curation_bloc_1/validation_curation/25_toutes_souches_avec_infos.sql", "r").read()
+    str_base = open("../curation_bloc_2/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
     for row in rows:
@@ -97,31 +97,56 @@ def main():
         identifiant_cip = record[22]
         version = str(record[28])
 
-        # 40_historique_bacillus
+        bool = False
+
+        # historique
         if record[68].replace(" ", "") != record_curated[68].replace(" ", ""):
             differences["historique"].append([identifiant_cip, version, record[68], record_curated[68]])
+            bool = True
 
-        # 50_localisation
+        # refs_equis
+        if record[27] != record_curated[27]:
+            differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27]])
+            bool = True
+
+        # localisation
         if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47]:
             rep = [identifiant_cip, version, record[len(record)-11], record_curated[len(record)-11], record[47], record_curated[47]]
-
             differences["localisation"].append(rep)
+            bool = True
 
-        # 60_pathogenicite
-        if record[len(record)-2] != record_curated[len(record)-2]:
-            differences["pathogenicite"].append([identifiant_cip, version, str(record[len(record)-2]), str(record_curated[len(record_curated)-2])])
-
-        # 80_taxonomie
-        if record[len(record)-6] != record_curated[len(record)-6]:
-            differences["taxonomie"].append([identifiant_cip, version, record[len(record)-6], record_curated[len(record_curated)-6]])
-
-        # 90_temperature
-        if record[44] != record_curated[44]:
-            differences["temperature"].append([identifiant_cip, version, str(record[44]), str(record_curated[44])])
-
-        # 100_bibliographie
+        # bibliographie
         if record[59].replace(" ", "").replace("\n", "").replace("\r", "") != record_curated[59].replace(" ", "").replace("\n", "").replace("\r", ""):
             differences["bibliographie"].append([identifiant_cip, version, str(record[59]), str(record_curated[59])])
+            bool = True
+
+        # denomination
+        if record[25] != record_curated[25]:
+            differences["denomination"].append([identifiant_cip, version, str(record[25]), str(record_curated[25])])
+            bool = True
+
+        # temps_culture
+        if record[43] != record_curated[43]:
+            differences["temps_culture"].append([identifiant_cip, version, str(record[43]), str(record_curated[43])])
+            bool = True
+
+        # temp_incubation
+        if record[44] != record_curated[44]:
+            differences["temp_incubation"].append([identifiant_cip, version, str(record[44]), str(record_curated[44])])
+            bool = True
+
+        # basonyme
+        if record[len(record)-1] != record_curated[len(record)-1]:
+            differences["basonyme"].append([identifiant_cip, version, str(record[len(record)-1]), str(record_curated[len(record)-1])])
+            bool = True
+
+        # deposant
+        if record[len(record)-5] != record_curated[len(record)-5]:
+            differences["deposant"].append([identifiant_cip, version, str(record[len(record)-5]), str(record_curated[len(record)-5])])
+            bool = True
+
+        if not(bool):
+            print(identifiant_cip)
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")
