@@ -16,7 +16,7 @@ dir_list = os.listdir(path)
 
 # puis on lit les fichiers des différents dossiers pour voir si on a tout téléchargé
 for genus in dir_list:
-    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64':
+    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store':
         print("")
         print(genus)
 
@@ -39,6 +39,7 @@ for genus in dir_list:
         expected_errs = read_csv(samples_ids, expected_errs)
         
         # on compare les deux listes
+        print("not downloaded but useful")
         not_downloaded = []
         for err in expected_errs:
             if err not in local_errs:
@@ -52,14 +53,17 @@ for genus in dir_list:
         writer.writerows(not_downloaded)
         f_ids.close()
 
-        fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
+        #fastq.sra_bd(file=path+'/'+genus+'/'+'errs_manquants.txt', t=16, other_opts='--outdir '+path+'/'+genus)
             
-        #print("")
-        #print("downloaded")
-        #for err in expected_errs:
-        #    if err in local_errs:
-        #        print(err)
-
+        print("")
+        print("downloaded but useless")
+        downloaded = []
         for err in local_errs:
             if err not in expected_errs:
-                print('ca c\'est vraiment bizarre : '+err)
+                downloaded.append([err])
+
+                for file in local_files:
+                    if err in file:
+                        os.remove(path+'/'+genus+'/'+file)
+
+        print(downloaded)

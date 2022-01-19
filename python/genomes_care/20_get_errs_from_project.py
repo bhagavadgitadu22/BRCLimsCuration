@@ -9,7 +9,7 @@ dir_list = os.listdir(path)
 
 # on récupère les errs des projets
 for genus in dir_list:
-    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64':
+    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store':
         projects_ids = open(path+'/'+genus+'/juste_project_sra.txt', 'r', newline='', encoding='utf-8')
         csvreader = csv.reader(projects_ids)
         rows = []

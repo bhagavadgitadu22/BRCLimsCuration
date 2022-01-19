@@ -8,12 +8,15 @@ path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
 for f in dir_list:
-    if f.endswith(".xlsx"):
+    if '~$' not in f and f.endswith(".xlsx"):
+        print('file')
+        print(f)
         # créer dossier d'un genus
         genus = f.split('.')[0]
         print(genus)
         if not os.path.exists(path+'/'+genus):
             os.makedirs(path+'/'+genus)
+            print(path+'/'+genus)
 
         xlsx = pd.ExcelFile(path+'/'+f)
         sheet_names = xlsx.sheet_names  # see all sheet names
@@ -28,12 +31,25 @@ for f in dir_list:
             print(sheet_name)
 
             sheet = pd.read_excel(xlsx, sheet_name)
+            
+            # on récupère numéros des 3 colonnes d'intérêt
+            col_care = -1
+            col_rm = -1
+            col_wgs = -1
+            for col in range(len(sheet.columns)):
+                if sheet.iloc[2, col] == 'CARE ID':
+                    col_care = col
+                if sheet.iloc[2, col] == 'Provider RM ID':
+                    col_rm = col
+                if sheet.iloc[2, col] == 'WGS sequencing data raw reads':
+                    col_wgs = col
+            if col_care == -1 or col_rm == -1 or col_wgs == -1:
+                print('trouble')
 
-            # pour chaque feuille de l'excel récupérer les infos utiles
             for i in range(3, len(sheet)):
-                care_id = sheet.iloc[i, 1]
-                rm_id = sheet.iloc[i, 42]
-                wgs_raw = sheet.iloc[i, 27]
+                care_id = sheet.iloc[i, col_care]
+                rm_id = sheet.iloc[i, col_rm]
+                wgs_raw = sheet.iloc[i, col_wgs]
 
                 if not(pd.isnull(wgs_raw)) and str(wgs_raw) != 'na' and str(wgs_raw) != 'Pending':
                     short_wgs_raw = wgs_raw.replace('?term=', '').strip('/').split('/')[-1].split('?')[0].split('\n')[0].split('[')[0]
