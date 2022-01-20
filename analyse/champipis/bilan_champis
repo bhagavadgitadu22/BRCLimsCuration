@@ -1,0 +1,23 @@
+SELECT sch_identifiant, 
+sch_denomination, taxo.don_lib, 
+lieu.don_lib, sch_proprietes,
+sch_synonymes, sch_references_equi,
+sch_autres_coll, sch_bibliographie, 
+sch_dat_acquisition, sch_dat_isolement, 
+sch_isole_par, sch_isole_a_partir_de,
+sch_type, sch_temperature_incubation, 
+sch_historique,
+lot_numero, lot_qte_stock, stockage.don_lib
+FROM souches_de_champis
+LEFT JOIN t_lot
+ON souches_de_champis.xxx_id = t_lot.lot_sch_id
+LEFT JOIN t_lot_casestockage
+ON t_lot.xxx_id = t_lot_casestockage.lts_lot_id
+LEFT JOIN t_lieustockage
+ON t_lieustockage.xxx_id = t_lot_casestockage.lts_lst_id
+LEFT JOIN t_donneedico AS stockage
+ON stockage.xxx_id = lot_type_stockage
+LEFT JOIN t_donneedico AS taxo
+ON taxo.xxx_id = sch_taxonomie
+LEFT JOIN t_donneedico AS lieu
+ON lieu.xxx_id = sch_lieu;

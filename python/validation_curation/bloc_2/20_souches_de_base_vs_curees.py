@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -72,7 +72,7 @@ def main():
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("brc_db_pure")
-    cursor_curated = get_cursor("brc_db_cured2")
+    cursor_curated = get_cursor("brc_db_cured")
 
     name = ["historique", "refs_equis", "localisation", "bibliographie", "denomination", "temps_culture", "temp_incubation", "basonyme", "deposant"]
     legendes = {}
@@ -100,7 +100,7 @@ def main():
         bool = False
 
         # historique
-        if record[68].replace(" ", "") != record_curated[68].replace(" ", ""):
+        if record[68] != record_curated[68]:
             differences["historique"].append([identifiant_cip, version, record[68], record_curated[68]])
             bool = True
 
@@ -110,13 +110,13 @@ def main():
             bool = True
 
         # localisation
-        if record[len(record)-11] != record_curated[len(record)-11] or record[47] != record_curated[47]:
-            rep = [identifiant_cip, version, record[len(record)-11], record_curated[len(record)-11], record[47], record_curated[47]]
+        if record[83] != record_curated[83] or record[47] != record_curated[47]:
+            rep = [identifiant_cip, version, record[83], record_curated[83], record[47], record_curated[47]]
             differences["localisation"].append(rep)
             bool = True
 
         # bibliographie
-        if record[59].replace(" ", "").replace("\n", "").replace("\r", "") != record_curated[59].replace(" ", "").replace("\n", "").replace("\r", ""):
+        if record[59] != record_curated[59]:
             differences["bibliographie"].append([identifiant_cip, version, str(record[59]), str(record_curated[59])])
             bool = True
 
@@ -137,7 +137,18 @@ def main():
 
         # basonyme
         if record[len(record)-1] != record_curated[len(record)-1]:
-            differences["basonyme"].append([identifiant_cip, version, str(record[len(record)-1]), str(record_curated[len(record)-1])])
+            row = [identifiant_cip, version, str(record[len(record)-1]), str(record_curated[len(record)-1])]
+            baso = record[len(record)-1]
+            dico = record[len(record)-2]
+            baso_cured = record_curated[len(record)-1]
+            dico_cured = record_curated[len(record)-2]
+            for i in range(len(baso)):
+                if baso[i] != baso_cured[i]:
+                    row.append(str(dico[i]))
+                    row.append(str(baso[i]))
+                    row.append(str(dico_cured[i]))
+                    row.append(str(baso_cured[i]))
+            differences["basonyme"].append(row)
             bool = True
 
         # deposant
@@ -145,8 +156,15 @@ def main():
             differences["deposant"].append([identifiant_cip, version, str(record[len(record)-5]), str(record_curated[len(record)-5])])
             bool = True
 
+        # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
         if not(bool):
             print(identifiant_cip)
+            for i in range(len(record)):
+                if record[i] != record_curated[i]:
+                    print(i)
+                    print(record[i])
+                    print(record_curated[i])
+                    print("")
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")

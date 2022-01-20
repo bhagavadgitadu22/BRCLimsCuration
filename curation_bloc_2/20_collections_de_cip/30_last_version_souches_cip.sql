@@ -13,8 +13,6 @@ INTO TABLE last_version_souches_cip
 FROM t_souche
 LEFT JOIN t_string_val
 ON svl_entite_id = t_souche.xxx_id
-AND svl_att_id = 2756
-AND svl_valeur != ''
 LEFT JOIN t_donneedico AS t_lieu
 ON t_lieu.xxx_id = sch_lieu
 WHERE sch_col_id IN

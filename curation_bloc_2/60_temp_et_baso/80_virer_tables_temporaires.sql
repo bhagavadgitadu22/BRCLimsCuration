@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS ids_champs_basonymes;
 DROP TABLE IF EXISTS souches_types_de_souches;
 DROP TABLE IF EXISTS duos_de_souches_types;
 DROP TABLE IF EXISTS souches_types_de_souches_short;

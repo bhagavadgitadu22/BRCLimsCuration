@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -51,7 +51,7 @@ def get_cursor(db_name):
 
 def write_sheet(wb, name, dico):
     sheet = wb.create_sheet(name)
-    sheet.append(["Identifiant", "Ancienne valeur", "Nouvelle valeur"])
+    sheet.append(["Identifiant", "Statut", "Ancienne valeur", "Nouvelle valeur"])
 
     for elmt in dico:
         sheet.append(elmt)
@@ -67,7 +67,7 @@ def write_excel(name, dicos, filename):
     del wb["Sheet"]
     wb.save(str("../../output/"+filename+".xlsx"))
 
-def create_dico(name, records, records_curated):
+def create_dico(records, records_curated):
     dico = []
 
     for row in records:
@@ -75,52 +75,49 @@ def create_dico(name, records, records_curated):
 
         for row_cured in records_curated:
             if row_cured[0] == id_taxo:
+                status = 'same'
+                if row[1] != row_cured[1]:
+                    status = 'modified'
+
                 if row[2] is None and row_cured[2] is None:
-                    dico.append([str(id_taxo), row[1], row_cured[1]])
+                    dico.append([str(id_taxo), status, row[1], row_cured[1]])
                 elif row[2] is not None and row_cured[2] is None:
-                    dico.append([str(id_taxo), "xxx", row_cured[1]])
+                    dico.append([str(id_taxo), status, "xxx", row_cured[1]])
                 elif row[2] is None and row_cured[2] is not None:
-                    dico.append([str(id_taxo), row[1], "xxx"])
+                    dico.append([str(id_taxo), status, row[1], "xxx"])
                 records_curated.remove(row_cured)
 
     for row_cured in records_curated:
-        dico.append([str(row_cured[0]), "xxx", row_cured[1]])
+        dico.append([str(row_cured[0]), 'modified', "xxx", row_cured[1]])
     
     return dico
 
 def main():
-    name = ["localisation", "taxonomie"]
+    name = ["localisation", "deposant"]
     dicos = {}
 
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("brc_db_pure")
+    cursor_curated = get_cursor("brc_db_cured")
 
     # localisation
-    cursor.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 3758")
+    sql_lieu = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Localisation' AND dic_grp_collection = '[401]'"
+    cursor.execute(sql_lieu)
     locs = cursor.fetchall()
 
-    cursor_curated.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 3758")
+    cursor_curated.execute(sql_lieu)
     locs_curated = cursor_curated.fetchall()
 
-    dicos["localisation"] = create_dico("taxonomie", locs, locs_curated)
+    dicos["localisation"] = create_dico(locs, locs_curated)
 
-    # pathogenicite
-    cursor.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 72879")
-    pathos = cursor.fetchall()
+    # deposant
+    sql_depo = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Déposants'"
+    cursor.execute(sql_depo)
+    deps = cursor.fetchall()
 
-    cursor_curated.execute("SELECT xxx_id, don_lib, xxx_sup_dat FROM t_donneedico WHERE don_dic_id = 72879")
-    pathos_curated = cursor_curated.fetchall()
+    cursor_curated.execute(sql_depo)
+    deps_curated = cursor_curated.fetchall()
 
-    dicos["pathogenicite"] = create_dico("pathogenicite", locs, locs_curated)
-
-    # taxonomie
-    cursor.execute("SELECT sch_taxonomie, path, xxx_sup_dat FROM chemins_taxonomie JOIN t_donneedico ON sch_taxonomie = t_donneedico.xxx_id WHERE t_donneedico.don_dic_id = 3755")
-    taxos = cursor.fetchall()
-
-    cursor_curated.execute("SELECT sch_taxonomie, path, xxx_sup_dat FROM chemins_taxonomie JOIN t_donneedico ON sch_taxonomie = t_donneedico.xxx_id WHERE t_donneedico.don_dic_id = 3755")
-    taxos_curated = cursor_curated.fetchall()
-
-    dicos["taxonomie"] = create_dico("taxonomie", taxos, taxos_curated)
+    dicos["deposant"] = create_dico(deps, deps_curated)
 
     write_excel(name, dicos, "bilan_curation_dicos")
 

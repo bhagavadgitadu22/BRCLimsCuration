@@ -16,16 +16,11 @@ OR (sch.basonyme IS NOT NULL AND sch.basonyme != type_sch.basonyme AND type_sch.
 UPDATE t_string_val
 SET svl_valeur = type_baso
 FROM basonymes_a_faire
-WHERE svl_entite_id = id;
+WHERE svl_entite_id = id
+AND svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes);
 
 UPDATE t_string_val
 SET svl_valeur = 'Beneckea natriegens'
 FROM basonymes_a_faire
 WHERE svl_valeur = 'Beneckea netriegens'
-AND svl_att_id = 2756;
-
---a priori pas besoin de INSERT si tous les éléments existent déjà dans t_string_val
---INSERT INTO t_string_val (svl_entite_id, svl_att_id, svl_valeur)
-SELECT id, 2756, type_baso
-FROM basonymes_a_faire
-WHERE id NOT IN (SELECT svl_entite_id FROM t_string_val);
+AND svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes);

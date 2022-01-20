@@ -6,6 +6,9 @@ FROM all_strains
 GROUP BY xxx_id;
 
 UPDATE t_souche
-SET sch_references_equi = CONCAT(sch_references_equi, ';', ending_refs_equis)
+SET sch_references_equi = CASE 
+      WHEN sch_references_equi != '' THEN CONCAT(sch_references_equi, ';', ending_refs_equis)
+      ELSE ending_refs_equis
+END
 FROM new_refs_equis
 WHERE t_souche.xxx_id = new_refs_equis.xxx_id;

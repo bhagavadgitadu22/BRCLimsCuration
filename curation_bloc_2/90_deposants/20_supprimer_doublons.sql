@@ -30,7 +30,7 @@ ORDER BY duplicates.don_lib;
 
 /* dans la table t_souches on repointe tous les ids de lieux valant un id1 vers le id2 correspondant */
 UPDATE t_souche AS sch
-SET sch_lieu = id2
+SET sch_depositaire = id2
 FROM ids_a_changer
 WHERE sch.sch_depositaire = ids_a_changer.id1
 AND sch.xxx_sup_dat IS NULL;
