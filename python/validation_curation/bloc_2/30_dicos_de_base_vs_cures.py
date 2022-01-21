@@ -76,7 +76,7 @@ def create_dico(records, records_curated):
         for row_cured in records_curated:
             if row_cured[0] == id_taxo:
                 status = 'same'
-                if type(row[1]) != type(row_cured[1]) or row[1] != row_cured[1]:
+                if row[1] != row_cured[1] or row[2] != row_cured[2]:
                     status = 'modified'
 
                 if row[2] is None and row_cured[2] is None:
@@ -96,8 +96,8 @@ def main():
     name = ["localisation", "deposant"]
     dicos = {}
 
-    cursor = get_cursor("brc_db_pure2")
-    cursor_curated = get_cursor("brc_db_cured6")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # localisation
     sql_lieu = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Localisation' AND dic_grp_collection = '[401]'"
