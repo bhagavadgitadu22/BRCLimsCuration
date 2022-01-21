@@ -1,4 +1,11 @@
 DROP TABLE IF EXISTS last_version_souches_cip;
+DROP TABLE IF EXISTS ids_champs_basonymes;
+
+SELECT xxx_id
+INTO TABLE ids_champs_basonymes
+FROM t_attribut 
+WHERE att_nom = 'Basonyme'
+AND att_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401);
 
 SELECT DISTINCT ON (sch_identifiant) 
 t_souche.xxx_id, sch_identifiant, sch_version, 
@@ -13,6 +20,7 @@ INTO TABLE last_version_souches_cip
 FROM t_souche
 LEFT JOIN t_string_val
 ON svl_entite_id = t_souche.xxx_id
+AND svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)
 LEFT JOIN t_donneedico AS t_lieu
 ON t_lieu.xxx_id = sch_lieu
 WHERE sch_col_id IN

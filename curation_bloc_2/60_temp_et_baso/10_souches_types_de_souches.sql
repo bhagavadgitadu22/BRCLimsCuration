@@ -3,7 +3,8 @@ DROP TABLE IF EXISTS duos_de_souches_types;
 DROP TABLE IF EXISTS souches_types_de_souches_short;
 
 SELECT sch.sch_identifiant AS id, sch_type.sch_identifiant AS id_type, 
-sch.sch_type AS type_ou_pas, sch.sch_denomination AS denom
+sch.sch_type AS type_ou_pas, 
+sch.sch_denomination AS denom, sch_type.sch_denomination AS denom_type
 INTO TABLE souches_types_de_souches
 FROM last_version_souches_cip AS sch
 LEFT JOIN last_version_souches_cip AS sch_type

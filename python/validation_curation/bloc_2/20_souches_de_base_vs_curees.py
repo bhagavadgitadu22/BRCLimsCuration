@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="postgres",
+                                  password="hercule1821",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -71,8 +71,8 @@ def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
-    cursor = get_cursor("brc_db_pure")
-    cursor_curated = get_cursor("brc_db_cured")
+    cursor = get_cursor("brc_db_pure2")
+    cursor_curated = get_cursor("brc_db_cured6")
 
     name = ["historique", "refs_equis", "localisation", "bibliographie", "denomination", "temps_culture", "temp_incubation", "basonyme", "deposant"]
     legendes = {}
@@ -142,12 +142,12 @@ def main():
             dico = record[len(record)-2]
             baso_cured = record_curated[len(record)-1]
             dico_cured = record_curated[len(record)-2]
-            for i in range(len(baso)):
-                if baso[i] != baso_cured[i]:
-                    row.append(str(dico[i]))
-                    row.append(str(baso[i]))
-                    row.append(str(dico_cured[i]))
-                    row.append(str(baso_cured[i]))
+            for i_baso in range(len(baso)):
+                if baso[i_baso] != baso_cured[i_baso]:
+                    row.append(str(dico[i_baso]))
+                    row.append(str(baso[i_baso]))
+                    row.append(str(dico_cured[i_baso]))
+                    row.append(str(baso_cured[i_baso]))
             differences["basonyme"].append(row)
             bool = True
 
@@ -159,11 +159,11 @@ def main():
         # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
         if not(bool):
             print(identifiant_cip)
-            for i in range(len(record)):
-                if record[i] != record_curated[i]:
-                    print(i)
-                    print(record[i])
-                    print(record_curated[i])
+            for i_record in range(len(record)):
+                if record[i_record] != record_curated[i_record]:
+                    print(i_record)
+                    print(record[i_record])
+                    print(record_curated[i_record])
                     print("")
 
         if i%1000 == 0:

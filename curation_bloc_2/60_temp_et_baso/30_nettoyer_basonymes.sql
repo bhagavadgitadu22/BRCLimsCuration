@@ -1,11 +1,3 @@
-DROP TABLE IF EXISTS ids_champs_basonymes;
-
-SELECT xxx_id
-INTO TABLE ids_champs_basonymes
-FROM t_attribut 
-WHERE att_nom = 'Basonyme'
-AND att_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401);
-
 UPDATE t_string_val
 SET svl_valeur = btrim(svl_valeur, ' "''')
 WHERE svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)
@@ -42,6 +34,11 @@ WHERE svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)
 AND svl_valeur != REPLACE(svl_valeur, 'subsp.b', 'subsp. b');
 
 /*
+SELECT svl_valeur, REPLACE(svl_valeur, 'subsp.b', 'subsp. b')
+FROM t_string_val
+WHERE svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)
+AND svl_valeur != REPLACE(svl_valeur, 'subsp.b', 'subsp. b')
+
 SELECT sch_identifiant, sch_denomination, svl_valeur
 FROM t_string_val
 JOIN last_version_souches_cip

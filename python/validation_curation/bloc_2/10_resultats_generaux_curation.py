@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="postgres",
+                                  password="hercule1821",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -57,8 +57,8 @@ def get_all_souches(cursor):
 
 def main():
     # on établit les connections avec les 2 bdds
-    cursor = get_cursor("brc_db_pure")
-    cursor_curated = get_cursor("brc_db_cured")
+    cursor = get_cursor("brc_db_pure2")
+    cursor_curated = get_cursor("brc_db_cured6")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
