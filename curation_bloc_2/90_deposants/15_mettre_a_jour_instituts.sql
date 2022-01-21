@@ -109,3 +109,7 @@ WHERE entreprise IN ('Technological Munich University', 'Munich Technical Univer
 UPDATE deposants_utilises
 SET entreprise = 'Wurzburg University'
 WHERE entreprise IN ('Würzburg University');
+
+UPDATE deposants_utilises
+SET entreprise = 'Lyon National Veterinary School'
+WHERE entreprise IN ('Lyon National Veterinay School');

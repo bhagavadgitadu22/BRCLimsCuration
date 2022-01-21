@@ -10,7 +10,6 @@ ON sch_depositaire = t_deposant.xxx_id
 JOIN t_donneedico AS t_categorie
 ON t_deposant.don_parent = t_categorie.don_code
 AND t_deposant.don_dic_id = t_categorie.don_dic_id
---WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
 ORDER BY t_deposant.xxx_id;
 
 SELECT t_deposant.xxx_id, t_deposant.don_lib, 

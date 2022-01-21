@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS souches_groupe_cip;
+DROP TABLE IF EXISTS last_version_groupe_cip;
 
-DROP FUNCTION IF EXISTS full_trim(text);
-
-DROP FUNCTION IF EXISTS cut_string(text, boolean);
-DROP FUNCTION IF EXISTS custom_sort(text);
+-- tables oubliees du bloc de curation 1
+DROP TABLE IF EXISTS dois_et_pmids;
+DROP TABLE IF EXISTS all_documents;

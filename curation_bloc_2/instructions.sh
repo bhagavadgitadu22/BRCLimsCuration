@@ -62,7 +62,16 @@
 \i 0_une_seule_virgule.sql
 \i 5_deposants_utilises.sql
 \i 10_supprimer_inutiles.sql
+\i 12_gestion_des_solistes.sql
 \i 15_mettre_a_jour_instituts.sql
 \i 18_mettre_a_jour_souches.sql
 \i 20_supprimer_doublons.sql
 \i 30_virer_tables_temporaires.sql
+
+\cd ../100_fiches_de_specification
+\echo 100_fiches_de_specification
+\i 10_suppression_lots_qui_sont_fiches.sql
+
+\cd ../20_collections_de_cip
+\echo 20_collections_de_cip
+\i 20_suppression_tables_inutiles.sql
