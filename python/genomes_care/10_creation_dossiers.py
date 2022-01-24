@@ -7,8 +7,9 @@ import json
 path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
+total_fake = 0
 for f in dir_list:
-    if '~$' not in f and f.endswith(".xlsx"):
+    if '~$' not in f and f.endswith(".xlsx") and f != "final_ids.xlsx" and f != "Staphylococcus2.xlsx":
         # créer dossier d'un genus
         genus = f.split('.')[0]
         print(genus)
@@ -86,4 +87,8 @@ for f in dir_list:
         writer = csv.writer(f_fake_ids, delimiter=';')
         writer.writerows(fake_rows)
         f_fake_ids.close()
+
+        total_fake += len(fake_rows)
+
+print(total_fake)
         

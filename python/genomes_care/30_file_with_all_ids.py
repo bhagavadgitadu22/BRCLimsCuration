@@ -37,6 +37,9 @@ dir_list = os.listdir(path)
 wb = Workbook()
 
 # puis on lit les fichiers des différents dossiers pour voir si on a tout téléchargé
+total_ids = 0
+total_fastq = 0
+old_total = 0
 for genus in dir_list:
     if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
         print("")
@@ -80,11 +83,20 @@ for genus in dir_list:
                 for column in range(1, 5):
                     sheet.merge_cells(start_row=n_ligne-number_fastq, start_column=column, end_row=n_ligne-1, end_column=column)
 
+            total_ids += 1
+        print(total_ids-old_total)
+        old_total = total_ids
+
         style_sheet(sheet)
 
         for file in local_files:
             if file not in used_files and not(file.endswith(".csv")) and not(file.endswith(".txt")):
                 print("useless file: "+str(file))
 
+        total_fastq += len(local_files)
+
 del wb["Sheet"]
 wb.save("X:/crbtous/genomes_care/final_ids.xlsx")
+
+print("total_ids: "+str(total_ids))
+print("total_fastq: "+str(total_fastq))
