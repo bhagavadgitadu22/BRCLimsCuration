@@ -9,23 +9,19 @@ dir_list = os.listdir(path)
 
 for f in dir_list:
     if '~$' not in f and f.endswith(".xlsx"):
-        print('file')
-        print(f)
         # créer dossier d'un genus
         genus = f.split('.')[0]
         print(genus)
         if not os.path.exists(path+'/'+genus):
             os.makedirs(path+'/'+genus)
-            print(path+'/'+genus)
 
         xlsx = pd.ExcelFile(path+'/'+f)
         sheet_names = xlsx.sheet_names  # see all sheet names
         sheet_names.remove('Working')
 
         true_rows = []
-        project_rows = []
-        sample_rows = []
         fake_rows = []
+        requetes = []
 
         for sheet_name in sheet_names:
             print(sheet_name)
@@ -54,24 +50,22 @@ for f in dir_list:
                 if not(pd.isnull(wgs_raw)) and str(wgs_raw) != 'na' and str(wgs_raw) != 'Pending':
                     short_wgs_raw = wgs_raw.replace('?term=', '').strip('/').split('/')[-1].split('?')[0].split('\n')[0].split('[')[0]
                     
-                    row = [rm_id, short_wgs_raw]
-                    if not(pd.isnull(care_id)):
-                        row[0] = care_id
+                    row = [str(rm_id), care_id, short_wgs_raw]
 
-                    if "ERS" in short_wgs_raw:
-                        sample_rows.append(row)
-                    elif "PRJEB" in short_wgs_raw:
-                        project_rows.append(row)
-                    elif "ERX" in short_wgs_raw:
-                        url = requests.get('https://www.ebi.ac.uk/ena/portal/api/filereport?result=read_run&fields=fastq_ftp&format=JSON&accession='+short_wgs_raw)
-                        text = url.text
-                        data = json.loads(text)
+                    if short_wgs_raw not in requetes:
+                        if "ERS" in short_wgs_raw or "PRJEB" in short_wgs_raw or "ERX" in short_wgs_raw:
+                            url = requests.get('https://www.ebi.ac.uk/ena/portal/api/filereport?result=read_run&fields=fastq_ftp&format=JSON&accession='+short_wgs_raw)
+                            text = url.text
+                            data = json.loads(text)
 
-                        # vérifier que seulement un err associé à l'erx : print(len(data))
-                        row[1] = data[0]['run_accession']
-                        true_rows.append(row)
-                    else:
-                        true_rows.append(row)
+                            for elmt in data:
+                                row2 = row
+                                row2.append(elmt['run_accession'])
+                                true_rows.append(row)
+                        else:
+                            row2 = row
+                            row2.append(short_wgs_raw)
+                            true_rows.append(row)
                 
                 else:
                     row = [care_id, rm_id, wgs_raw]
@@ -79,27 +73,17 @@ for f in dir_list:
         
         # on écrit fichier texte avec les infos utiles
         f_ids = open(path+'/'+genus+'/ids.csv', 'w', newline='', encoding='utf-8')
-        writer = csv.writer(f_ids, delimiter='|')
+        writer = csv.writer(f_ids, delimiter=';')
         writer.writerows(true_rows)
         f_ids.close()
 
         f_ids = open(path+'/'+genus+'/juste_sra.txt', 'w', newline='', encoding='utf-8')
-        writer = csv.writer(f_ids, delimiter='|')
-        writer.writerows([[elmt[1]] for elmt in true_rows])
-        f_ids.close()
-
-        f_ids = open(path+'/'+genus+'/juste_project_sra.txt', 'w', newline='', encoding='utf-8')
-        writer = csv.writer(f_ids, delimiter='|')
-        writer.writerows([[elmt[1]] for elmt in project_rows])
-        f_ids.close()
-
-        f_ids = open(path+'/'+genus+'/juste_sample_sra.txt', 'w', newline='', encoding='utf-8')
-        writer = csv.writer(f_ids, delimiter='|')
-        writer.writerows([[elmt[1]] for elmt in sample_rows])
+        writer = csv.writer(f_ids, delimiter=';')
+        writer.writerows([[elmt[3]] for elmt in true_rows])
         f_ids.close()
 
         f_fake_ids = open(path+'/'+genus+'/fake_ids.csv', 'w', newline='', encoding='utf-8')
-        writer = csv.writer(f_fake_ids, delimiter='|')
+        writer = csv.writer(f_fake_ids, delimiter=';')
         writer.writerows(fake_rows)
         f_fake_ids.close()
         
