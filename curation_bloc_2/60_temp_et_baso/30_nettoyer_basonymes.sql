@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS ids_champs_basonymes;
+
+SELECT xxx_id
+INTO TABLE ids_champs_basonymes
+FROM t_attribut 
+WHERE att_nom = 'Basonyme'
+AND att_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401);
+
 UPDATE t_string_val
 SET svl_valeur = btrim(svl_valeur, ' "''')
 WHERE svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)

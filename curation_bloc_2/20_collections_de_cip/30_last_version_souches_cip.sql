@@ -1,15 +1,9 @@
 DROP TABLE IF EXISTS last_version_souches_cip;
-DROP TABLE IF EXISTS ids_champs_basonymes;
-
-SELECT xxx_id
-INTO TABLE ids_champs_basonymes
-FROM t_attribut 
-WHERE att_nom = 'Basonyme'
-AND att_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401);
 
 SELECT DISTINCT ON (sch_identifiant) 
 t_souche.xxx_id, sch_identifiant, sch_version, 
-sch_type, sch_catalogue, 
+sch_dat_acquisition, sch_dat_pheno, sch_qualite_dat_approbation,
+sch_type, sch_catalogue, sch_col_id,
 trim(sch_denomination) AS sch_denomination,
 sch_temperature_incubation, sch_temps_culture,
 svl_valeur AS basonyme, sch_synonymes,
@@ -18,11 +12,16 @@ t_lieu.don_lib AS lieu_origine, sch_isole_a_partir_de,
 sch_dat_prelevement, sch_dat_isolement
 INTO TABLE last_version_souches_cip
 FROM t_souche
-LEFT JOIN t_string_val
-ON svl_entite_id = t_souche.xxx_id
-AND svl_att_id IN (SELECT xxx_id FROM ids_champs_basonymes)
+
+LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
+		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
+		   WHERE att_nom = 'Basonyme') AS t_basonyme
+ON t_basonyme.att_col_id = t_souche.sch_col_id
+AND t_basonyme.svl_entite_id = t_souche.xxx_id
+
 LEFT JOIN t_donneedico AS t_lieu
 ON t_lieu.xxx_id = sch_lieu
+
 WHERE sch_col_id IN
 (SELECT xxx_id
 FROM t_collection
