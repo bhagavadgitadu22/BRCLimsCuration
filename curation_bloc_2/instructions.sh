@@ -16,11 +16,9 @@
 \i 27_update_all_strains.sql
 \i 28_bad_spelling_cip.sql
 \i 30_sanitiser_refs_equis.sql
+\i 35_refs_equis_dans_all_strains.sql
 \i 40_update_refs_equis.sql
-\i 49_preparation_virage_doublons.sql
-\i 50_virer_doublons_refs_equis.sql
-\i 60_virer_tables_temporaires.sql
-\i 40_virer_tables_temporaires.sql
+\i 50_virer_tables_temporaires.sql
 
 \cd ../40_localisations
 \echo 40_localisations

@@ -8,4 +8,4 @@ DROP TABLE IF EXISTS casser_les_egaux;
 DROP TABLE IF EXISTS casser_les_strains;
 DROP TABLE IF EXISTS cip_mispelled;
 DROP TABLE IF EXISTS new_refs_equis;
-DROP TABLE IF EXISTS doublons;
+DROP TABLE IF EXISTS all_strains_grouped;
