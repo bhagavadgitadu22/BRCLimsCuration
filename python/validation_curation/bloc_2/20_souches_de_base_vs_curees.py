@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -71,8 +71,8 @@ def main():
     f = open('../../output/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
-    cursor = get_cursor("brc_db_pure2")
-    cursor_curated = get_cursor("brc_db_cured2")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured")
 
     name = ["historique", "refs_equis", "localisation", "bibliographie", "denomination", "temps_culture", "temp_incubation", "basonyme", "deposant"]
     legendes = {}

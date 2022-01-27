@@ -1,8 +1,11 @@
+DROP TABLE IF EXISTS stats_de_dates;
+
 SELECT last_version_souches_cip.xxx_id, sch_identifiant, 
 sch_dat_acquisition, t_reception.dvl_valeur AS date_reception, t_validation.svl_valeur AS date_validation, 
 sch_dat_pheno, t_approbation.dvl_valeur AS date_approbation, 
 sch_dat_prelevement, sch_dat_isolement, 
 sch_qualite_dat_approbation
+INTO stats_de_dates
 FROM last_version_souches_cip
 
 LEFT JOIN (SELECT att_col_id, dvl_entite_id, dvl_valeur FROM t_attribut 
