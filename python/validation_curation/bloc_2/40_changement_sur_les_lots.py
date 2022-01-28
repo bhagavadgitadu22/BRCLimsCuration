@@ -59,8 +59,8 @@ def write_sheet(wb, name, dico, legende):
     #style_sheet(sheet)
 
 def main():
-    cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor = get_cursor("db_pure")
+    cursor_curated = get_cursor("db_cured")
 
     cursor.execute('SELECT * FROM t_lot ORDER BY xxx_id')
     souches = cursor.fetchall()
@@ -77,25 +77,25 @@ def main():
     print("Nombre de lots après : "+str(len(ids_curated)))
     print("")
 
-    #ids_lots_disparus = []
-    #ids_lots_apparus = []
+    ids_lots_disparus = []
+    ids_lots_apparus = []
     ids_lots_modifies = []
 
-    # for id_c in ids_curated:
-    #     if id_c not in ids:
-    #         ids_lots_disparus.append(id_c)
+    for id_c in ids_curated:
+        if id_c not in ids:
+            ids_lots_disparus.append(id_c)
 
-    # print("ids_lots_disparus")
-    # print(ids_lots_disparus)
-    # print("")
+    print("ids_lots_disparus")
+    print(ids_lots_disparus)
+    print("")
 
-    # for id in ids:
-    #     if id not in ids_curated:
-    #         ids_lots_apparus.append(id)
+    for id in ids:
+        if id not in ids_curated:
+            ids_lots_apparus.append(id)
 
-    # print("ids_lots_apparus")
-    # print(ids_lots_apparus)
-    # print("")
+    print("ids_lots_apparus")
+    print(ids_lots_apparus)
+    print("")
 
     c = 0
     for id in ids:
@@ -136,13 +136,13 @@ def main():
         if not(bool):
             print("bizarre, vraiment bizarre...")
     
-    print("lots_archives")
-    print(lots_archives)
-    print("")
+    # print("lots_archives")
+    # print(lots_archives)
+    # print("")
 
-    print("fiches_archivees")
-    print(fiches_archivees)
-    print("")
+    # print("fiches_archivees")
+    # print(fiches_archivees)
+    # print("")
     
     wb = Workbook()
     write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancien version", "Ancien numéro de lot", "Nouvel identifiant", "Nouvelle version", "Nouveau numéro de lot"])

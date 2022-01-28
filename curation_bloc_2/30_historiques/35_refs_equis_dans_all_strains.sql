@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS max_refs;
 
 SELECT xxx_id,
-CASE WHEN sch_references_equi = '' IS NULL OR sch_references_equi = '' THEN 0
+CASE WHEN sch_references_equi IS NULL OR sch_references_equi = '' THEN 0
 ELSE array_length(string_to_array(sch_references_equi, ';'), 1)
 END AS nombre_equis_refs
 INTO max_refs

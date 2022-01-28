@@ -30,12 +30,17 @@
 
 \cd ../50_biblios
 \echo 50_biblios
-\i 10_update_DOI.sql
-\i 20_pas_de_double_virgule.sql
+\i 1_pas_de_double_virgule.sql
+\i 2_pas_de_virgule_dans_titre_journal.sql
+\i 10_import_infos_csv.sql
+\i 20_separation_des_biblios_simples.sql
+\i 30_update_biblios.sql
+\i 40_update_sch_biblios.sql
+\i 50_drop_tables_temporaires.sql
 
 \cd ../20_collections_de_cip
 \echo 20_collections_de_cip
-\i 30_last_version_souches_cip.sql
+\i 20_last_version_souches_cip.sql
 
 \cd ../60_temp_et_baso
 \echo 60_temp_et_baso
@@ -74,4 +79,4 @@
 
 \cd ../20_collections_de_cip
 \echo 20_collections_de_cip
-\i 20_suppression_tables_inutiles.sql
+\i 30_suppression_tables_inutiles.sql
