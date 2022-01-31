@@ -27,6 +27,8 @@
 \i 10_vers_south_korea_for_cities.sql
 \i 20_separation_ville_pays.sql
 \i 30_supprimer_doublons_dico.sql
+\i 40_suppression_des_dates.sql
+\i 50_virer_tables_temporaires.sql
 
 \cd ../50_biblios
 \echo 50_biblios
@@ -48,6 +50,13 @@
 \i 10_souches_types_de_souches.sql
 \i 20_nettoyer_temps_culture.sql
 \i 30_nettoyer_basonymes.sql
+
+\cd ../20_collections_de_cip
+\echo 20_collections_de_cip
+\i 20_last_version_souches_cip.sql
+
+\cd ../60_temp_et_baso
+\echo 60_temp_et_baso
 \i 50_update_temperatures.sql
 \i 60_update_temps_culture.sql
 \i 70_update_basonymes.sql

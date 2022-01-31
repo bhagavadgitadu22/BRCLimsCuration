@@ -2,6 +2,7 @@ import os
 import csv
 from openpyxl.workbook.workbook import Workbook
 from openpyxl.styles import Border, Side, Alignment, Font
+from bioinfokit.analys import fastq
 
 def redimension_cell_width(ws):
     dims = {}
@@ -41,7 +42,8 @@ total_ids = 0
 total_fastq = 0
 old_total = 0
 for genus in dir_list:
-    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
+    if genus == "Salmonella":
+    #if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
         print("")
         print(genus)
 
@@ -61,6 +63,7 @@ for genus in dir_list:
 
         n_ligne = 2
         used_files = []
+        missing = []
         for row_csv in csvreader:
             number_fastq = 0
             for file in local_files:
@@ -78,6 +81,7 @@ for genus in dir_list:
 
             if number_fastq == 0:
                 print("fastq missing: "+str(row_csv[3]))
+                missing.append([str(row_csv[3])])
 
             if number_fastq > 1:
                 for column in range(1, 5):
@@ -86,6 +90,12 @@ for genus in dir_list:
             total_ids += 1
         print(total_ids-old_total)
         old_total = total_ids
+        
+        fs = open(path+'/'+genus+'/missing.csv', 'w', newline='', encoding='utf-8')
+        writer = csv.writer(fs, delimiter=';')
+        writer.writerows(missing)
+        fs.close()
+        fastq.sra_bd(file=path+'/'+genus+'/'+'missing.csv', t=16, other_opts='--outdir '+path+'/'+genus)
 
         style_sheet(sheet)
 

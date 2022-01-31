@@ -59,8 +59,8 @@ def write_sheet(wb, name, dico, legende):
     #style_sheet(sheet)
 
 def main():
-    cursor = get_cursor("db_pure")
-    cursor_curated = get_cursor("db_cured")
+    cursor = get_cursor("restart_db_pure")
+    cursor_curated = get_cursor("restart_db_cured2")
 
     cursor.execute('SELECT * FROM t_lot ORDER BY xxx_id')
     souches = cursor.fetchall()
@@ -135,14 +135,6 @@ def main():
             bool = True
         if not(bool):
             print("bizarre, vraiment bizarre...")
-    
-    # print("lots_archives")
-    # print(lots_archives)
-    # print("")
-
-    # print("fiches_archivees")
-    # print(fiches_archivees)
-    # print("")
     
     wb = Workbook()
     write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancien version", "Ancien numéro de lot", "Nouvel identifiant", "Nouvelle version", "Nouveau numéro de lot"])

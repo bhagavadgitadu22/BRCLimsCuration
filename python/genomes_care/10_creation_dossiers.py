@@ -9,7 +9,8 @@ dir_list = os.listdir(path)
 
 total_fake = 0
 for f in dir_list:
-    if '~$' not in f and f.endswith(".xlsx") and f != "final_ids.xlsx" and f != "Staphylococcus2.xlsx":
+    if f == "Salmonella.xlsx":
+    #if '~$' not in f and f.endswith(".xlsx") and f != "final_ids.xlsx" and f != "Staphylococcus2.xlsx":
         # créer dossier d'un genus
         genus = f.split('.')[0]
         print(genus)
@@ -48,7 +49,7 @@ for f in dir_list:
                 rm_id = sheet.iloc[i, col_rm]
                 wgs_raw = sheet.iloc[i, col_wgs]
 
-                if not(pd.isnull(wgs_raw)) and str(wgs_raw) != 'na' and str(wgs_raw) != 'Pending':
+                if not(pd.isnull(wgs_raw)) and str(wgs_raw) != 'na' and str(wgs_raw) != 'Pending' and str(wgs_raw) != 'TBC':
                     short_wgs_raw = wgs_raw.replace('?term=', '').strip('/').split('/')[-1].split('?')[0].split('\n')[0].split('[')[0]
                     
                     row = [str(rm_id), care_id, short_wgs_raw]
