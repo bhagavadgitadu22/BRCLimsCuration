@@ -38,7 +38,8 @@
 \i 20_separation_des_biblios_simples.sql
 \i 30_update_biblios.sql
 \i 40_update_sch_biblios.sql
-\i 50_drop_tables_temporaires.sql
+\i 50_isjem.sql
+\i 60_drop_tables_temporaires.sql
 
 \cd ../20_collections_de_cip
 \echo 20_collections_de_cip

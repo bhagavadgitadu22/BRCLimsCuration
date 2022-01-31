@@ -1,10 +1,19 @@
-import os
-from bioinfokit.analys import fastq
+import requests
+import csv
 
 path = 'X:/crbtous/genomes_grimonti'
-dir_list = os.listdir(path)
 
-for genus in dir_list:
-    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64':
-        print(path+'TableauGrimonti.csv')
-        fastq.sra_bd(file=path+'/'+'TableauGrimonti.csv', t=16, other_opts='--outdir '+path)
+f_ids = open(path+'/'+'TableauGrimonti.csv', 'r', newline='', encoding='utf-8')
+csvreader = csv.reader(f_ids, delimiter=';')
+
+for row in csvreader:
+    genome = row[0]
+    print(genome)
+    
+    url = 'https://www.ebi.ac.uk/ena/browser/api/embl/'+genome+'?download=true&lineLimit=0&gzip=true'
+
+    r = requests.get(url, stream=True)
+    with open(path+'/'+genome+'.gzip', 'wb') as f:
+        for chunk in r.raw.stream(1024, decode_content=False):
+            if chunk:
+                f.write(chunk)
