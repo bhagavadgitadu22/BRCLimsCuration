@@ -14,3 +14,10 @@ UPDATE t_donneedico
 SET don_lib = CONCAT(nom, ', ', nom)
 FROM solistes_utilises
 WHERE solistes_utilises.xxx_id = t_donneedico.xxx_id;
+
+UPDATE t_donneedico
+SET don_lib = REPLACE(t_donneedico.don_lib, 'Institut Pasteur', 'Pasteur Institute')
+FROM solistes_utilises
+WHERE t_donneedico.xxx_id = solistes_utilises.xxx_id
+AND don_dic_id = 104
+AND t_donneedico.don_lib != REPLACE(t_donneedico.don_lib, 'Institut Pasteur', 'Pasteur Institute');

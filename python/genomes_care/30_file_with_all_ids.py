@@ -31,8 +31,8 @@ def style_sheet(sheet):
     redimension_cell_width(sheet)
     borders_cells(sheet)
 
+path = '/mnt/gaia/crbip/crbtous/genomes_care'
 #path = 'X:/crbtous/genomes_care'
-path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
 wb = Workbook()
@@ -95,7 +95,6 @@ for genus in dir_list:
         writer = csv.writer(fs, delimiter=';')
         writer.writerows(missing)
         fs.close()
-        fastq.sra_bd(file=path+'/'+genus+'/'+'missing.csv', t=16, other_opts='--outdir '+path+'/'+genus)
 
         style_sheet(sheet)
 
@@ -106,7 +105,7 @@ for genus in dir_list:
         total_fastq += len(local_files)
 
 del wb["Sheet"]
-wb.save("X:/crbtous/genomes_care/final_ids.xlsx")
+wb.save(path+"/final_ids.xlsx")
 
 print("total_ids: "+str(total_ids))
 print("total_fastq: "+str(total_fastq))
