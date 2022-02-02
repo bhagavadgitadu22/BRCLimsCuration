@@ -7,12 +7,12 @@ END AS nombre_equis_refs
 INTO max_refs
 FROM t_souche;
 
-UPDATE all_strains
-SET number_row = all_strains.number_row+nombre_equis_refs
+UPDATE new_refs_equis
+SET number_row = new_refs_equis.number_row+nombre_equis_refs
 FROM max_refs
-WHERE all_strains.xxx_id = max_refs.xxx_id;
+WHERE new_refs_equis.xxx_id = max_refs.xxx_id;
 
-INSERT INTO all_strains
+INSERT INTO new_refs_equis
 SELECT xxx_id, sch_historique, arr[nr] AS strain, arr[nr] AS short_strain, nr AS number_row
 FROM  (
    SELECT *, generate_subscripts(arr, 1) AS nr

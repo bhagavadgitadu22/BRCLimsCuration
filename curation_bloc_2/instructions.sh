@@ -4,7 +4,6 @@
 
 \cd ../30_historiques
 \echo 30_historiques
-\i 0_table_taxonomie_lpsn.sql
 \i 10_correct_guillemets_strains.sql
 \i 15_erreurs_des_3_points_virgules.sql
 \i 16_corriger_fleches_entre_proprios.sql
@@ -12,16 +11,9 @@
 \i 18_autres_corrections.sql
 \i 19_dates_dans_lignes_historiques.sql
 \i 20_extraction_strains.sql
-\i 25_virer_strains_especes.sql
-\i 26_vers_bad_strains.sql
-\i 27_casser_les_egaux.sql
-\i 28_casser_les_strains.sql
-\i 29_bad_spelling_cip.sql
+\i 25_suppressions_souches_de_strains_r.sql
 \i 30_sanitiser_refs_equis.sql
-\i 35_refs_equis_dans_all_strains.sql
-\i 40_prepare_strains_grouped.sql
-\i 45_update_refs_equis.sql
-\i 50_virer_tables_temporaires.sql
+\i 40_virer_tables_temporaires.sql
 
 \cd ../40_localisations
 \echo 40_localisations

@@ -1,28 +1,25 @@
-DROP TABLE IF EXISTS all_strains_grouped;
+DROP TABLE IF EXISTS new_strain_designations_grouped;
 
 SELECT xxx_id, short_strain, MIN(number_row) AS position
-INTO TABLE all_strains_grouped
-FROM all_strains
+INTO TABLE new_strain_designations_grouped
+FROM new_strain_designations
 GROUP BY xxx_id, short_strain;
 
-DELETE FROM all_strains_grouped
+DELETE FROM new_strain_designations_grouped
 WHERE LOWER(short_strain) LIKE '%cpc%';
 
-DELETE FROM all_strains_grouped
-WHERE LOWER(short_strain) = 'r';
-
-DELETE FROM all_strains_grouped
+DELETE FROM new_strain_designations_grouped
 WHERE LOWER(short_strain) LIKE '%::%'
 OR LOWER(short_strain) LIKE CONCAT('%', CHR(916), '%');
 
-DELETE FROM all_strains_grouped AS a
-USING all_strains_grouped AS b
+DELETE FROM new_strain_designations_grouped AS a
+USING new_strain_designations_grouped AS b
 WHERE a.xxx_id = b.xxx_id
 AND a.position != b.position
 AND a.short_strain = ANY(string_to_array(REGEXP_REPLACE(b.short_strain, '[- \/]+', ' ', 'g'), ' '));
 
-DELETE FROM all_strains_grouped AS a
-USING all_strains_grouped AS b
+DELETE FROM new_strain_designations_grouped AS a
+USING new_refs_equis_grouped AS b
 WHERE a.xxx_id = b.xxx_id
 AND a.position != b.position
 AND REPLACE(b.short_strain, ' ', '') LIKE CONCAT('%', REPLACE(a.short_strain, ' ', ''), '%')
