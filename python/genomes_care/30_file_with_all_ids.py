@@ -31,8 +31,8 @@ def style_sheet(sheet):
     redimension_cell_width(sheet)
     borders_cells(sheet)
 
-path = '/mnt/gaia/crbip/crbtous/genomes_care'
-#path = 'X:/crbtous/genomes_care'
+#path = '/mnt/gaia/crbip/crbtous/genomes_care'
+path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
 wb = Workbook()

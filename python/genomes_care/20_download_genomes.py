@@ -1,8 +1,8 @@
 import os
 from bioinfokit.analys import fastq
 
-path = '/mnt/gaia/crbip/crbtous/genomes_care'
-#path = 'X:/crbtous/genomes_care'
+#path = '/mnt/gaia/crbip/crbtous/genomes_care'
+path = 'X:/crbtous/genomes_care'
 dir_list = os.listdir(path)
 
 for genus in dir_list:

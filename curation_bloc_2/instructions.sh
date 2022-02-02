@@ -10,6 +10,7 @@
 \i 16_corriger_fleches_entre_proprios.sql
 \i 17_date_arrivee_souches_jfcharles.sql
 \i 18_autres_corrections.sql
+\i 19_dates_dans_lignes_historiques.sql
 \i 20_extraction_strains.sql
 \i 25_virer_strains_especes.sql
 \i 26_vers_bad_strains.sql
