@@ -27,7 +27,8 @@
 \echo 50_biblios
 \i 1_pas_de_double_virgule.sql
 \i 2_pas_de_virgule_dans_titre_journal.sql
-\i 10_import_infos_csv.sql
+\i 10_create_table_csv.sql
+\i 15_import_infos_csv.sql
 \i 20_separation_des_biblios_simples.sql
 \i 30_update_biblios.sql
 \i 40_update_sch_biblios.sql
