@@ -9,9 +9,14 @@ WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
 AND sch_references_equi != REGEXP_REPLACE(sch_references_equi, ' ?; ?', ';', 'g');
 
 UPDATE t_souche
-SET sch_references_equi = REGEXP_REPLACE(sch_references_equi, E'[\\n\\r]+', '', 'g')
+SET sch_references_equi = REGEXP_REPLACE(sch_references_equi, E'[\\n\\r]+$', '')
 WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
-AND sch_references_equi != REGEXP_REPLACE(sch_references_equi, E'[\\n\\r]+', '', 'g');
+AND sch_references_equi != REGEXP_REPLACE(sch_references_equi, E'[\\n\\r]+$', '');
+
+UPDATE t_souche
+SET sch_references_equi = REGEXP_REPLACE(sch_references_equi, E'[; ]*[\\n\\r]+[; ]*', ';', 'g')
+WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
+AND sch_references_equi != REGEXP_REPLACE(sch_references_equi, E'[; ]*[\\n\\r]+[; ]*', ';', 'g');
 
 UPDATE t_souche
 SET sch_references_equi = REGEXP_REPLACE(sch_references_equi, ';= ', ';', 'g')

@@ -13,4 +13,4 @@ SET xxx_sup_dat = now()::timestamp,
 	xxx_sup_usr_id = 1
 FROM t_donneedico 
 WHERE lot_type = t_donneedico.xxx_id
-AND don_lib = 'fiche de spécification';
+AND don_lib = CONCAT('fiche de sp', CHR(130), 'cification');

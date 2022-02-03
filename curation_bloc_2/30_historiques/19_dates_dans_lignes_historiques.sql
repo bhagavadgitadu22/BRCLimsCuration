@@ -6,7 +6,8 @@ SELECT xxx_id, nr AS numero_ligne, trim(arr[nr]) AS ligne
 INTO TABLE lignes_historiques
 FROM  (
    SELECT *, generate_subscripts(arr, 1) AS nr
-   FROM  (SELECT xxx_id, string_to_array(sch_historique, '<-') AS arr FROM t_souche) t
+   FROM  (SELECT xxx_id, string_to_array(sch_historique, '<-') AS arr FROM t_souche
+		 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)) t
    ) sub;
 
 SELECT xxx_id, numero_ligne, ligne,

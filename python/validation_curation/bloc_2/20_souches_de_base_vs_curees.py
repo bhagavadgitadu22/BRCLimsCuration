@@ -72,7 +72,7 @@ def main():
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     name = ["historique", "refs_equis", "localisation", "bibliographie", "denomination", "temps_culture", "temp_incubation", "basonyme", "deposant"]
     legendes = {}
@@ -110,7 +110,7 @@ def main():
             bool = True
 
         # localisation
-        if record[83] != record_curated[83] or record[47] != record_curated[47]:
+        if record[17] != record_curated[17] or record[83] != record_curated[83] or record[47] != record_curated[47]:
             rep = [identifiant_cip, version, record[83], record_curated[83], record[47], record_curated[47]]
             differences["localisation"].append(rep)
             bool = True

@@ -97,7 +97,7 @@ def main():
     dicos = {}
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # localisation
     sql_lieu = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Localisation' AND dic_grp_collection = '[401]'"

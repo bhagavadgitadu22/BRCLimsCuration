@@ -31,6 +31,9 @@ def main():
                     page = dat["page"]
                 doi = row[2]
 
+                if ',' in journal:
+                    print(journal+', '+str(annee)+', '+str(volume)+', '+page+', '+doi)
+
                 if journal=="" or annee=="":
                     print("Some information are missing: "+journal+', '+str(annee)+', '+str(volume)+', '+page+', '+doi)   
                 else:

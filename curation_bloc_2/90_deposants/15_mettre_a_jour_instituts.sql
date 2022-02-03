@@ -12,7 +12,7 @@ WHERE entreprise IN ('Technological Berlin University', 'Berlin University');
 
 UPDATE deposants_utilises
 SET entreprise = 'Bundeswehr Medical Academy'
-WHERE entreprise IN ('BSW Sanitätsakademie des Bundeswehr');
+WHERE entreprise IN (CONCAT('BSW Sanit', CHR(132), 'tsakademie des Bundeswehr'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Institute for Geosciences and Natural Resources (BGR)'
@@ -27,8 +27,8 @@ SET entreprise = 'Chinese Academy of Science'
 WHERE entreprise IN ('Chinese Academy of Sciences', 'Chinese Academy Sciences');
 
 UPDATE deposants_utilises
-SET entreprise = 'Compiègne Technological University'
-WHERE entreprise IN ('Compiègne University');
+SET entreprise = CONCAT('Compi', CHR(138), 'gne Technological University')
+WHERE entreprise IN (CONCAT('Compi', CHR(138), 'gne University'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Bari Aldo Moro University'
@@ -39,8 +39,8 @@ SET entreprise = 'German Research Centre for Biotechnology (GBF)'
 WHERE entreprise IN ('GBF', 'GBF National Research Center Biotechnology');
 
 UPDATE deposants_utilises
-SET entreprise = 'Hans Knöll Institute'
-WHERE entreprise IN ('Hans Knöll Institut', 'Hans Knöll Institute');
+SET entreprise = CONCAT('Hans Kn', CHR(148), 'll Institute')
+WHERE entreprise IN (CONCAT('Hans Kn', CHR(148), 'll Institut', 'Hans Kn', CHR(148), 'll Institute'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Hawaii University'
@@ -64,7 +64,7 @@ WHERE entreprise IN ('Institut de Recherches Microbiologiques Wiame');
 
 UPDATE deposants_utilises
 SET entreprise = 'IFP Energies nouvelles (IFPEN)'
-WHERE entreprise IN ('Institut Français du Pétrole');
+WHERE entreprise IN (CONCAT('Institut Français du P', CHR(130), 'trole'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Pasteur Institute of Lille'
@@ -96,7 +96,7 @@ WHERE entreprise IN ('Milano University');
 
 UPDATE deposants_utilises
 SET entreprise = 'Munich University'
-WHERE entreprise IN ('München University');
+WHERE entreprise IN (CONCAT('M', CHR(129), 'nchen University'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Pennsylvania State University'
@@ -108,7 +108,7 @@ WHERE entreprise IN ('Technological Munich University', 'Munich Technical Univer
 
 UPDATE deposants_utilises
 SET entreprise = 'Wurzburg University'
-WHERE entreprise IN ('Würzburg University');
+WHERE entreprise IN (CONCAT('W', CHR(129), 'rzburg University'));
 
 UPDATE deposants_utilises
 SET entreprise = 'Lyon National Veterinary School'

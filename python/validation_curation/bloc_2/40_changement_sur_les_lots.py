@@ -60,7 +60,7 @@ def write_sheet(wb, name, dico, legende):
 
 def main():
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     cursor.execute('SELECT * FROM t_lot ORDER BY xxx_id')
     souches = cursor.fetchall()

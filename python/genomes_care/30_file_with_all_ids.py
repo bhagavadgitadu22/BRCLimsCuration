@@ -42,8 +42,8 @@ total_ids = 0
 total_fastq = 0
 old_total = 0
 for genus in dir_list:
-    if genus == "Salmonella":
-    #if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
+    #if genus == "Salmonella":
+    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2' and genus != 'ASSEMBLIES' and genus != 'Thumbs.db':
         print("")
         print(genus)
 
