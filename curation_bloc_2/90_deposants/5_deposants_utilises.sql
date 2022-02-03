@@ -22,6 +22,6 @@ JOIN t_donneedico AS t_categorie
 ON t_deposant.don_parent = t_categorie.don_code
 AND t_deposant.don_dic_id = t_categorie.don_dic_id
 --WHERE t_souche.xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)
-WHERE t_categorie.don_lib = CONCAT('D', CHR(130), 'posants')
+WHERE t_categorie.don_lib = CONCAT('D', CHR(233), 'posants')
 AND (CHAR_LENGTH(t_deposant.don_lib) - CHAR_LENGTH(REPLACE(t_deposant.don_lib, ',', ''))) != 0
 ORDER BY t_deposant.xxx_id;

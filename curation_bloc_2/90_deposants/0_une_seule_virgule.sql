@@ -46,9 +46,9 @@ WHERE don_dic_id = 104
 AND don_lib = 'R. Harasawa, Animal Center Biomedical Research, Faculty of Medicine, Tokyo University';
 
 UPDATE t_donneedico
-SET don_lib = CONCAT('K. Rose, IMMB Westf', CHR(132), 'lische Wilhelms Münster University')
+SET don_lib = CONCAT('K. Rose, IMMB Westf', CHR(228), 'lische Wilhelms Münster University')
 WHERE don_dic_id = 104
-AND don_lib = CONCAT('K. Rose, IMMB Westf', CHR(132), 'lische Wilhelms Münster University');
+AND don_lib = CONCAT('K. Rose, IMMB Westf', CHR(228), 'lische Wilhelms Münster University');
 
 UPDATE t_donneedico
 SET don_lib = 'G. Reuter, Institute for Food Hygiene of Berlin-Dahlem Free University'
@@ -56,11 +56,11 @@ WHERE don_dic_id = 104
 AND don_lib = 'G. Reuter, Institute for Food Hygiene, Berlin-Dahlem Free University';
 
 UPDATE t_donneedico
-SET don_lib = CONCAT('K. Tr', CHR(129), 'lzsch, Max von Pettenkofer Institute of Munich University')
+SET don_lib = CONCAT('K. Tr', CHR(252), 'lzsch, Max von Pettenkofer Institute of Munich University')
 WHERE don_dic_id = 104
-AND don_lib = CONCAT('K. Tr', CHR(129), 'lzsch, Max von Pettenkofer Institute of Munich University');
+AND don_lib = CONCAT('K. Tr', CHR(252), 'lzsch, Max von Pettenkofer Institute of Munich University');
 
 UPDATE t_donneedico
-SET don_lib = CONCAT('A. Steinb', CHR(129), 'chel, Munster (Germany)')
+SET don_lib = CONCAT('A. Steinb', CHR(252), 'chel, Munster (Germany)')
 WHERE don_dic_id = 104
-AND don_lib = CONCAT('A. Steinb', CHR(129), 'chel, Munster, Germany');
+AND don_lib = CONCAT('A. Steinb', CHR(252), 'chel, Munster, Germany');
