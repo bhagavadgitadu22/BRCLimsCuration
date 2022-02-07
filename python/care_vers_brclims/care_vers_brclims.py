@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 import psycopg2
+import requests
+import json
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
@@ -34,7 +36,8 @@ for f in dir_list:
             matrix = sheet.iloc[i, 14]
             country = sheet.iloc[i, 15]
             date = sheet.iloc[i, 17]
-            ref = sheet.iloc[i, 21]
+            ref_pubmed = sheet.iloc[i, 21]
+            ref_doi = sheet.iloc[i, 22]
             medium = sheet.iloc[i, 23]
             temp = sheet.iloc[i, 24]
             wgs = sheet.iloc[i, 27]
@@ -49,7 +52,10 @@ for f in dir_list:
 
             # taxonomie
             sch_taxonomie = ''
-            cursor.execute("SELECT sch_taxonomie FROM chemins_taxonomie WHERE path = '"+taxonomie+' '+subspecies+"'")
+            taxo = taxonomie+' '+subspecies
+            if taxo == 'Salmonella enterica VII':
+                taxo = 'Salmonella enterica'
+            cursor.execute("SELECT sch_taxonomie FROM chemins_taxonomie WHERE path = '"+taxo+"'")
             record = cursor.fetchone()
             if record is not None:
                 sch_taxonomie = record[0]
@@ -81,11 +87,18 @@ for f in dir_list:
                 sch_origine = 140
             elif sector == 'Natural Environment':
                 sch_origine = 141
-            elif sector == 'Food':
+            elif sector == 'Food' or sector == 'Agro-food industrial environment':
                 sch_origine = 7936452
             else:
                 print("origine non renseignée")
                 print(sector)
+
+            # biosafety
+            if biosafety == '2':
+                sch_pto_id = 2695
+
+            # sch_isole_a_partir_de
+            sch_isole_a_partir_de = matrix
 
             # lieu
             sch_lieu = ''
@@ -100,3 +113,81 @@ for f in dir_list:
             else:
                 print("pays non renseigné 1")
                 print(country)
+
+            # sch_dat_prelevement
+            sch_dat_prelevement = date
+
+            # sch_bibliographie
+            sch_bibliographie = ""
+            ref = ref_pubmed
+            if not(isinstance(ref_pubmed, str)):
+                ref = ref_doi
+
+                if "doi" in ref:
+                    doi = ref.split("/", 3)[-1]
+                    response = requests.get("https://doi.crossref.org/search/doi?pid=martinboutroux@outlook.fr&format=json&doi="+doi)
+                
+                    try:
+                        dat = json.loads(response.content)
+                        journal = ""
+                        if dat["container-title"] is not None:
+                            journal = dat["container-title"]
+                        annee = ""
+                        if dat["created"]["date-parts"][0] is not None:
+                            annee = dat["created"]["date-parts"][0]
+                        volume = ""
+                        if "volume" in dat["created"]:
+                            volume = dat["created"]["volume"]
+                            if "issue" in dat["created"] and '('+dat["created"]["issue"]+')' != '()':
+                                volume+='('+dat["created"]["issue"]+')'
+                        pages = ""
+                        if dat["page"] is not None and str(dat["page"]) != "null":
+                            pages = dat["page"]
+
+                        if journal=="" or annee=="":
+                            print("Some information are missing: "+journal+', '+str(annee)+', '+str(volume)+', '+pages+', '+doi)   
+                        else:
+                            sch_bibliographie = journal+', '+str(annee)+', '+str(volume)+', '+pages+', doi:'+doi      
+                    except json.decoder.JSONDecodeError:
+                        print("This doi is not right: "+doi)
+            elif "pubmed" in ref:
+                pubmed = ref.strip('/').split("/")[-1]
+
+                response = requests.get("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id="+pubmed+"&retmode=json&tool=my_tool&email=martinboutroux@outlook.fr")
+                try:
+                    dat = json.loads(response.content)["result"][pubmed]
+
+                    journal = ""
+                    if "source" in dat:
+                        journal = dat["source"]
+                    annee = ""
+                    if "pubdate" in dat:
+                        annee = dat["pubdate"].split(" ")[0]
+                    volume = ""
+                    if "volume" in dat:
+                        volume = dat["volume"]
+                        if "issue" in dat and '('+dat["issue"]+')' != '()':
+                            volume+='('+dat["issue"]+')'
+                    pages = ""
+                    if "pages" in dat:
+                        pages = dat["pages"]
+
+                    if journal=="" or annee=="":
+                        print("Some information are missing: "+journal+', '+str(annee)+', '+str(volume)+', '+pages+', '+pubmed)   
+                    else:
+                        sch_bibliographie = journal+', '+str(annee)+', '+str(volume)+', '+pages+', pmid:'+pubmed
+                except json.decoder.JSONDecodeError:
+                    print("This doi is not right: "+pubmed)
+            else:
+                sch_bibliographie = ref      
+
+            # sch_temperature_incubation
+            sch_temperature_incubation = temp
+
+            # sch_historique
+            if not(isinstance(rm, str)):
+                rm = rm.strftime('%Y/%m')
+            sch_historique = str(date)+', '+person+', '+org.replace(" - ", ', ')+': strain '+rm
+
+            # sch_deposant
+            sch_depositaire = 6348115
