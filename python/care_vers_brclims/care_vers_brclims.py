@@ -6,8 +6,6 @@ import json
 import re
 from xml.dom import minidom
 import csv
-import time
-import datetime
 
 def get_cursor(db_name, mdp):
     conn = psycopg2.connect(user="postgres",
@@ -47,10 +45,12 @@ def get_ref_doi(doi):
         print("This doi is not right: "+doi)
         return ""
 
-path = '/mnt/gaia/crbip/crbtous/genomes_care'
-mdp = 'postgres'
-#path = 'X:/crbtous/genomes_care'
-#mdp = 'hercule1821'
+#path = '/mnt/gaia/crbip/crbtous/genomes_care'
+#mdp = 'postgres'
+path = 'X:/crbtous/genomes_care'
+mdp = 'hercule1821'
+
+db_name = 'brc_db_cured'
 dir_list = os.listdir(path)
 
 journaux = [
@@ -76,7 +76,7 @@ journaux = [
     'Publ. Hlth, Lab'
 ]
 
-cursor = get_cursor("db_post_curation", mdp)
+cursor = get_cursor(db_name, mdp)
 cursor.execute(open("../curation_bloc_1/validation_curation/10_parenteles_taxonomie.sql", "r", encoding='utf-8').read())
 
 for f in dir_list:
@@ -144,9 +144,9 @@ for f in dir_list:
                 sch_origine = 139
             elif sector == 'Animal':
                 sch_origine = 140
-            elif sector == 'Natural Environment':
+            elif sector == 'Natural Environment' or sector == 'Agro-food industrial environment':
                 sch_origine = 141
-            elif sector == 'Food' or sector == 'Agro-food industrial environment':
+            elif sector == 'Food':
                 sch_origine = 7936452
             else:
                 print("origine non renseignée")
