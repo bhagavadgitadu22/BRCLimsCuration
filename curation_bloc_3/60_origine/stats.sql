@@ -7,11 +7,20 @@ WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip);
 SELECT *
 FROM t_souche
 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
-AND sch_origine IS NULL;
+AND sch_origine IS NOT NULL;
 
 SELECT sch_isole_a_partir_de, COUNT(*)
 FROM t_souche
 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
 AND sch_origine IS NULL
+AND sch_isole_a_partir_de SIMILAR TO '[A-Z]{1}[a-z]+(a|is|um|ae|us) %'
 GROUP BY sch_isole_a_partir_de
-ORDER BY COUNT(*) DESC
+ORDER BY COUNT(*) DESC;
+
+SELECT sch_isole_a_partir_de, COUNT(*), array_to_string(ARRAY_AGG(sch_identifiant), ', ')
+FROM t_souche
+WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
+AND sch_origine IS NULL
+AND sch_isole_a_partir_de != ''
+GROUP BY sch_isole_a_partir_de
+ORDER BY COUNT(*) DESC;
