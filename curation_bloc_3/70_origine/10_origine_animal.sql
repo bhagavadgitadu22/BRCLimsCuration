@@ -8,7 +8,7 @@ WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
 AND sch_origine IS NULL
 AND LOWER(sch_isole_a_partir_de) SIMILAR TO 'animal%';
 
-SELECT DISTINCT t_donneedico.xxx_id 
+SELECT DISTINCT t_donneedico.xxx_id, 'Animal' AS category
 INTO TABLE nombre_animal
 FROM t_donneedico
 JOIN t_souche
@@ -16,7 +16,7 @@ ON sch_origine = t_donneedico.xxx_id
 WHERE don_lib = 'Animal';
 
 /*
-SELECT (SELECT xxx_id FROM nombre_animal), CONCAT(UPPER(LEFT(new_isole, 1)), RIGHT(new_isole, -1))
+SELECT (SELECT category FROM nombre_animal), CONCAT(UPPER(LEFT(new_isole, 1)), RIGHT(new_isole, -1))
 FROM t_souche
 JOIN origine_animal
 ON t_souche.xxx_id = origine_animal.xxx_id;
