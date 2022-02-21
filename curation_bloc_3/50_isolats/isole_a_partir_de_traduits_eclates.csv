@@ -1714,8 +1714,6 @@ Glossina|Glossine|484419
 * silkworm litter|* litière de vers à soie|432853
 B. mori litter|litières B. mori|432264
 B. mori litter|litières B. mori|523067
-Human, acorn|Human, gland|140453
-Human, acorn|Human, gland|23258
 Lobesia botrana (dead farmed larva)|Lobesia botrana (larve d_élevage morte)|502363
 Lobesia botrana (dead farmed larva)|Lobesia botrana (larve d_élevage morte)|502378
 sediment 50cm deep|sédiment 50cm de profondeur|449381
@@ -1724,8 +1722,6 @@ sediment 80cm from the surface, sandy horizon|sédiment 80cm de la superficie, h
 sediment 80cm from the surface, sandy horizon|sédiment 80cm de la superficie, horizon sableux|449431
 * lake sediments|* sédiments de lac|527246
 * lake sediments|* sédiments de lac|432247
-Shallow water hydrothermal winds|Shallow water hydrothermal vents|82224
-Shallow water hydrothermal winds|Shallow water hydrothermal vents|82202
 * Mediterranean Sea off Toulon|* méditerranée large Toulon|433550
 * Mediterranean Sea off Toulon|* méditerranée large Toulon|433333
 Environment, freshwater|Environnment, freshwater|6638049
@@ -1768,8 +1764,6 @@ Oryctes (larvae)|Oryctes (larves)|469416
 Oryctes (larvae)|Oryctes (larves)|433421
 cabbage leaf|feuille de chou|456923
 cabbage leaf|feuille de chou|456939
-Human, gastric biopsies mucosa|Human, stomach gastric biopsies mucosa|152404
-Human, gastric biopsies mucosa|Human, stomach gastric biopsies mucosa|152448
 Sub-desert soil|Subdesert soil|120607
 Sub-desert soil|Subdesert soil|120626
 mangrove leaf|feuille de mangrove|481880
@@ -1862,11 +1856,9 @@ Human, duodenal biopsy|Human, biopsy duodenal|99868
 Human, blood via yolk bag|Human, blood via yolk sac|327698
 Human, bronchial washings|Human, bronchial  washings|362463
 Human, canker|Human, chancre|271065
-Human, digital|Human, digit|12593
 Human, pus drainage|Human, drainage pus|3952394
 Human, sputum|Human, expectoration|115448
 Human, eye conjunctivitis|Human, eye conjonctivitis|173758
-Human, football|Human, foot|4812549
 Human, pus node|Human, ganglion pus|15248
 human, gastric fluid|human, gastrique fluid|34468
 Human, healthy skin|Human,  healthy skin|8087105
@@ -1877,8 +1869,6 @@ Human, ovarian abcess|Human, ovarial abcess|319603
 Human, peritonitis|Human, peritonite|4891645
 Human, placenta|Human,  placenta|181821
 Human, plate from human|Human, plaque from human|355089
-Human (wept)|Human (pleura)|284938
-Human, cried|Human, pleura|245972
 Human, abdominal pus|Human, pus abdominal|362151
 Human (nasopharynx)|Human (rhinopharynx)|324957
 Human, conjunctival secretion|Human, secretion conjunctival|101676
@@ -1887,8 +1877,6 @@ Human (spinal fluid)|Human  (spinal fluid)|104274
 Human, tracheal exudate (child)|Human, tracheal exsudate (child)|224071
 Human, urethral exudate|Human, urethral exsudate|8355608
 Human, vagina swab|Human, vagine swab|366983
-Moisten|Humidifier|22413
-Hydrothermal wind|Hydrothermal vent|79139
 * Hygroma of the knee|* Hygroma du genou|522790
 Infected prosthesis|Infected prothesis|143623
 Insect (Curculionidae beetle): Otiorhynchus|Insecte (Coléoptère Curculionidae) : Otiorhynchus|497535
@@ -1941,16 +1929,12 @@ naturally dead larvae, parasite of orange trees|larves naturellement mortes, par
 Lasiacampidae (caterpillar)|Lasiacampidae(chenille)|523204
 Lasiocampidae (caterpillars)|Lasiocampidae (chenilles)|493492
 phosphate washing plant 1 at Krichet Enaam or Djebel Thelja|laverie 1 de phosphate à Krichet Enaam ou Djebel Thelja|449832
-CSF, Neurosurgery|LCR, Neurosurgery|77451
-Letter|Lettuce|150037
 slug|limace|516722
 Bombyx mori litter|litière Bombyx mori|433791
 * Litter Silkworms|* Litière Vers à soie|433823
-Lo'ihi hydrothermal wind|Lo'ihi hydrothermal vent|112262
 Lycopersicon esculentum, stem|Lycopersicon esculentum, tige|552220
 Lyophilisate|Lyophilisat|531338
 Mackerel piebald|Mackerel pie|106357
-Madura football|Madura foot|353185
 Malacosoma neustria (dead)|Malacosoma neustria (mortes)|526791
 Male shearwater|Male puffin|221395
 * Cow mamma|* Mammite vache|431920
@@ -1988,8 +1972,7 @@ Notodontidae (caterpillars)|Notodontidae (chenilles)|520507
 onion|oignon|479888
 onions|oignons|485724
 goslings 4s|oisons 4s|478886
-Moroccan locust library|Oothèque du criquet marocain|462250
-Open fracture, football|Open fracture, foot|314982
+Moroccan locust ootheca|Oothèque du criquet marocain|462250
 Ortosia stabilis (caterpillar)|Ortosia stabilis (chenille)|505290
 Ostrinia nubilalis (caterpillar)|Ostrinia nubilalis (chenille)|464048
 Sheep (brain)|Ovine (brain)|220645
@@ -1998,7 +1981,6 @@ peripheral taking|peripherique taking|31349
 small caterpillar|petite chenille|520099
 phosphate rock, raw 328m deep|pierre de phosphate brut  328m de profondeur|449730
 Pig, intestine|Pig, intestin|402228
-Intestine Pig|Pig intestine|132809
 Piglet, stomach contents|Piglet, stomachal contents|203198
 Pig with exudative epidermitis|Pig with exsudative epidermitis|226351
 Scots pine|Pin d'Ecosse|510741
@@ -2054,7 +2036,6 @@ grasshopper|sauterelle|474452
 Seawater by enrichment with allantoin|Seawater by enrichment with allantoïn|212446
 Seawater, and a depth of 5000 meter|Seawater, et a depth of 5000 meter|106898
 Seaweed, coastal zone|Seaweed, littoral zone|338360
-Sebaceous acorn|Sebaceous gland|204711
 sediment 30cm from the surface, sandy horizon|sédiment 30cm de la superficie, horizon sableux|449465
 sediment 60cm from the surface, sandy horizon|sédiment 60cm de la superficie, horizon sableux|449448
 Sediment core sample collected at a depth of 2247 m|Sediment core sample collected at a depth of 2247 m|142980
@@ -2064,14 +2045,12 @@ Chôtt el Fajjej salt, bottom side of layer -10cm|sel de Chôtt el Fajjej, face 
 sandy salt, 10cm deep, Chott el Jerid|sel sableux, 10cm prof., Chott el Jerid|449815
 Sesamia cretica (larva)|Sesamia cretica (larve)|456126
 Sewage water; enrichment with 2-methylnaphthalene|Sewage water; enrichment with 2-methylnaphtalene|367499
-Sheep, infected acorn|Sheep, infected gland|6985924
 Sheep, umbilical abscess|Sheep, ombilical abscess|190528
 * Grain silo|* Silo à grains|513263
-Soil, grassland|Soil, prair|146383
 Soil sample collected in an industrial stream|Soil  sample  collected  in  an  industrial stream|123955
 Soil, storage for potato plants|Soil, stockage for potatoes plants|456906
 soil?|sol?|446410
-"Solanum tuberosum ""maritta"", potato tube"|"""""""Solanum tuberosum """"""""maritta"""""""", potato tube"""""""|342143
+Solanum tuberosum "maritta", potato tube|"""""""Solanum tuberosum """"""""maritta"""""""", potato tube"""""""|342143
 soil ornamental trees|sol arbres ornementaux|502139
 wheat soil|sol blé|502105
 farm soil|sol de ferme|437275
@@ -2128,7 +2107,6 @@ sperm culture|spermoculture|25109
 Spodoptera littoralis dead larvae|Spodoptera littoralis larves mortes|440342
 Pumping station|Station de pompage|486143
 Steel surface of a beer-bottling plant|Steel surface of a  beer-bottling plant|158007
-Submarine hydrothermal wind|Submarine hydrothermal vent|358299
 Submaxillar abscess on a European woman|Submaxillar abscess on an European woman|193699
 Submaxillary tissue|Submaxillary  tissue|309685
 * hip suppuration|* suppuration de hanche|512988
@@ -2137,7 +2115,6 @@ marshland|terre de marais|497731
 Marshland|Terre de marais|497714
 grassy soil|terre herbeuse|497681
 Thaumatopoea pityocampa (caterpillar)|Thaumatopoea pityocampa (chenille)|464064
-Thermal wind|Thermal vent|102251
 sheep's fleece|toison de mouton|498378
 Tracheal exudation|Tracheal exsudation|228281
 Turkey, cecum|Turkey, caecum|309207
@@ -2180,8 +2157,6 @@ Anopheles (L3 larvae)|Anopheles (larves L3)|515444
 Anophelinae larvae (dead)|Anophelinae larvae (morte)|483607
 ascites fluid|ascite fluid|26131
 oats|avoine|524724
-* Bactospein 513|* Bactospeine 513|432106
-* Bactospein BTF 513/514|* Bactospeine BTF 513/514|432122
 bacteriologic medium|bactriologic medium|536934
 bird(plover)|bird(pluvier)|26715
 B.mori (breeding dust)|B.mori (poussières élevage)|519321
@@ -2207,7 +2182,6 @@ Canine, ascites fluid|Canine, ascite fluid|305511
 broken brown soil|cassé sol brun|467321
 broken yellow soil|cassé sol jaune|521219
 CASSÉ- yellow soil|CASSÉ- sol jaune|521187
-Cattle, acorn|Cattle, gland|223795
 Cellar|Cave|151351
 abdominal cavity of laboratory's rat|cavity abdominal of laboratory's rat|25263
 Ceratitis capitatat (pupa)|Ceratitis capitatat (pupe)|516501
@@ -2219,7 +2193,6 @@ tomato fields|champs de tomates|485674
 diseased caterpillar Mythimna loreyi|chenille malade Mythimna loreyi|464032
 Caterpillars|Chenilles|464845
 Chemically contaminated fresh water sediment|Chimically contaminated fresh water sediment|92813
-Chimney of deep sea winds|Chimney of deep sea vents|350608
 Chinese cabbage|Chou Chinois|525243
 chrysalises|chrysalides|458251
 Cicer arietinum (vegetable) root|Cicer arietinum (legume) root|122823
@@ -2245,7 +2218,6 @@ Dead female shearwater|Dead female puffin|221414
 debris in maize silo|débris dans silo à maïs|489776
 debris in rice silo|débris dans silo à riz|489744
 substrate waste from naturally dead larvae|déchets du substrat des larves naturellement mortes|450346
-Deep-sea hydrothermal wind|Deep-sea hydrothermal vent|90188
 Deep sea sediments at a depth of 2406-2409 m|Deep sea sediments at a depth of 2406–2409 m|137885
 * peritoneal dialysis|* dialyse péritonéale|490556
 Dog, cock|Dog, bite|168522
@@ -2320,5 +2292,4 @@ Hydrothermal Fireplace|Fireplace hydrothermale|90060
 penis fluid|fluide penis|24659
 Foal kidney, nephritis|Foal kidney,  nephritis|391090
 Mouse liver|Foie de souris|441080
-football, wound|foot, wound|32606
 Beech forests|Forêts de hêtres|437531
