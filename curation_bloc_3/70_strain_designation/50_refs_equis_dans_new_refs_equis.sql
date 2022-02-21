@@ -17,5 +17,5 @@ SELECT xxx_id, sch_historique, arr[nr] AS strain, arr[nr] AS short_strain, nr AS
 FROM  (
    SELECT *, generate_subscripts(arr, 1) AS nr
    FROM  (SELECT xxx_id, sch_historique, string_to_array(sch_references_equi, ';') AS arr FROM t_souche 
-		  WHERE xxx_id IN (SELECT xxx_id FROM souches_groupe_cip)) t
+		  WHERE xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)) t
    ) sub;

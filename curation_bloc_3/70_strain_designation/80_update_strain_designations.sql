@@ -7,10 +7,9 @@ GROUP BY xxx_id;
 
 UPDATE t_string_val
 SET svl_valeur = new_string
-FROM new_strain_deignations_strings
-WHERE svl_entite_id = new_strain_deignations_strings.xxx_id
+FROM new_strain_designations_strings
+WHERE svl_entite_id = new_strain_designations_strings.xxx_id
 AND svl_att_id IN (SELECT xxx_id
-INTO TABLE ids_champs_basonymes
 FROM t_attribut 
 WHERE att_nom = 'Strain Designation'
 AND att_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401));
