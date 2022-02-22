@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -72,7 +72,7 @@ def main():
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     name = ["taxonomie", "isole_a_partir_de_translated", "isole_a_partir_de_trimmed", "origine", "refs_equis", "strain_designation"]
     legendes = {}
@@ -113,7 +113,7 @@ def main():
 
         # refs_equis
         if record[27] != record_curated[27]:
-            differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27]])
+            differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27], record[68]])
 
         # strain_designation
         if record[len(record)-1] != record_curated[len(record)-1]:
@@ -128,6 +128,7 @@ def main():
                     row.append(str(baso[i_baso]))
                     row.append(str(dico_cured[i_baso]))
                     row.append(str(baso_cured[i_baso]))
+                    row.append(record[68])
             differences["strain_designation"].append(row)
 
         # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche

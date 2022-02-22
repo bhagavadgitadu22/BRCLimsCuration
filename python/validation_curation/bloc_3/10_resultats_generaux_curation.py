@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -58,7 +58,7 @@ def get_all_souches(c):
 def main():
     # on établit les connections avec les 2 bdds
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -92,6 +92,12 @@ def main():
     print("ids_supprimes")
     print([elmt[1] for elmt in schs_supprimes])
     print("")
+
+    # on sauvegarde les ids archivés dans un excel
+    fa = open('../../output/souches_creees.csv', 'w', newline='')
+    writera = csv.writer(fa, delimiter=';')
+    writera.writerows(map(lambda x: [x], [elem[0] for elem in schs_apparus]))
+    fa.close()
 
     # puis l'on prend la liste de ce que l'on a archivé
     schs_archives = []

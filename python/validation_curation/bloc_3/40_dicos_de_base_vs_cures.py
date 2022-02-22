@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -93,31 +93,21 @@ def create_dico(records, records_curated):
     return dico
 
 def main():
-    name = ["localisation", "deposant"]
+    name = ["taxonomie"]
     dicos = {}
 
     cursor = get_cursor("restart_db_pure")
     cursor_curated = get_cursor("restart_db_cured")
 
-    # localisation
-    sql_lieu = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Localisation' AND dic_grp_collection = '[401]'"
-    cursor.execute(sql_lieu)
+    # taxonomie
+    sql_taxo = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Taxonomie' AND dic_grp_collection = '[401]'"
+    cursor.execute(sql_taxo)
     locs = cursor.fetchall()
 
-    cursor_curated.execute(sql_lieu)
+    cursor_curated.execute(sql_taxo)
     locs_curated = cursor_curated.fetchall()
 
-    dicos["localisation"] = create_dico(locs, locs_curated)
-
-    # deposant
-    sql_depo = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Déposants'"
-    cursor.execute(sql_depo)
-    deps = cursor.fetchall()
-
-    cursor_curated.execute(sql_depo)
-    deps_curated = cursor_curated.fetchall()
-
-    dicos["deposant"] = create_dico(deps, deps_curated)
+    dicos["taxonomie"] = create_dico(locs, locs_curated)
 
     write_excel(name, dicos, "bilan_curation_dicos")
 

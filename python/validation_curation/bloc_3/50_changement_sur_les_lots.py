@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -114,9 +114,8 @@ def main():
 
     # puis l'on compare les éléments un par un
     lots_archives = []
-    fiches_archivees = []
 
-    sql_lot = 'SELECT t_souche.xxx_id, sch_identifiant, sch_version, t_lot.xxx_id, lot_numero, t_lot.xxx_sup_dat, don_lib FROM t_lot LEFT JOIN t_souche ON lot_sch_id = t_souche.xxx_id LEFT JOIN t_donneedico ON lot_type = t_donneedico.xxx_id'
+    sql_lot = 'SELECT t_souche.xxx_id, sch_identifiant, sch_version, t_lot.xxx_id, lot_numero, t_lot.xxx_sup_dat, don_lib, lot_qte_stock FROM t_lot LEFT JOIN t_souche ON lot_sch_id = t_souche.xxx_id LEFT JOIN t_donneedico ON lot_type = t_donneedico.xxx_id'
 
     for id in ids_lots_modifies:
         cursor.execute(sql_lot+' WHERE t_lot.xxx_id = '+str(id))
@@ -125,20 +124,15 @@ def main():
         cursor_curated.execute(sql_lot+' WHERE t_lot.xxx_id = '+str(id))
         record_cured = cursor_curated.fetchone()
 
-        if record_pure[2] != record_cured[2]:
-            # lot déplacé d'avant dernière version souches vers la dernière version
-            lots_archives.append([record_pure[1], record_pure[2], record_pure[4], record_cured[1], record_cured[2], record_cured[4]])
-            bool = True
         if record_pure[5] != record_cured[5]:
             # lot supprimé car c'était une fiche de spécification
-            fiches_archivees.append([record_pure[1], record_pure[2], record_pure[4], record_pure[5], record_pure[6], record_cured[1], record_cured[2], record_cured[4], record_cured[5], record_cured[6]])
+            lots_archives.append([record_pure[1], record_pure[2], record_pure[4], record_pure[5], record_pure[6], record_pure[7]])
             bool = True
         if not(bool):
             print("bizarre, vraiment bizarre...")
     
     wb = Workbook()
-    write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancien version", "Ancien numéro de lot", "Nouvel identifiant", "Nouvelle version", "Nouveau numéro de lot"])
-    write_sheet(wb, "fiches_archivees", fiches_archivees, ["Ancien identifiant", "Ancien version", "Ancien numéro de lot", "Ancienne date de suppression du lot", "Ancien type de lot", "Nouvel identifiant", "Nouvelle version", "Nouveau numéro de lot", "Nouvelle date de suppression du lot", "Nouveau type de lot"])
+    write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancienne version", "Ancien numéro de lot", "Ancienne date de suppression du lot", "Ancien type de lot", "Ancienne quantité"])
     del wb["Sheet"]
     wb.save(str("../../output/changements_sur_les_lots.xlsx"))
 
