@@ -1,15 +1,13 @@
-DROP TABLE IF EXISTS origines_refs_equis;
 DROP TABLE IF EXISTS bilan_collections;
 
-SELECT unnest(string_to_array(sch_references_equi, ';')) AS ref_equi,
-split_part(unnest(string_to_array(sch_references_equi, ';')), ' ', 1) AS collection, 
-split_part(unnest(string_to_array(sch_references_equi, ';')), ' ', 2) AS number
-INTO origines_refs_equis
-FROM t_souche;
-
-SELECT collection, ARRAY_AGG(ref_equi), COUNT(*)
+SELECT t_deposant.don_lib AS collection
 INTO bilan_collections
-FROM origines_refs_equis
-WHERE collection SIMILAR TO '[A-Z]+'
-AND length(collection) > 1
-GROUP BY collection;
+FROM t_souche
+JOIN t_donneedico AS t_deposant
+ON sch_depositaire = t_deposant.xxx_id
+JOIN t_donneedico AS t_categorie
+ON t_deposant.don_parent = t_categorie.don_code
+AND t_deposant.don_dic_id = t_categorie.don_dic_id
+WHERE t_categorie.don_lib = 'Collections'
+GROUP BY t_deposant.don_lib
+ORDER BY t_deposant.don_lib;

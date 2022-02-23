@@ -28,7 +28,6 @@ DROP TABLE IF EXISTS temp_taxo;
 DROP TABLE IF EXISTS casser_les_egaux;
 DROP TABLE IF EXISTS casser_les_strains;
 DROP TABLE IF EXISTS cip_mispelled;
-DROP TABLE IF EXISTS origines_refs_equis;
 DROP TABLE IF EXISTS bilan_collections;
 
 DROP TABLE IF EXISTS new_refs_equis;
