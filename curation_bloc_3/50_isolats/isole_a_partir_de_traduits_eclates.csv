@@ -975,28 +975,28 @@ black soil|sol noir|505068
 black soil|sol noir|490900
 black soil|sol noir|481961
 black soil|sol noir|445452
-sheet|feuille|481896
-sheet|feuille|448556
-sheet|feuille|448588
-sheet|feuille|448353
-sheet|feuille|448369
-sheet|feuille|448494
-sheet|feuille|448401
-sheet|feuille|448322
-sheet|feuille|448306
-sheet|feuille|448227
-sheet|feuille|448572
-sheet|feuille|448243
-sheet|feuille|448179
-sheet|feuille|448195
-sheet|feuille|448147
-sheet|feuille|448447
-sheet|feuille|448274
-sheet|feuille|448290
-sheet|feuille|448525
-sheet|feuille|448163
-sheet|feuille|448385
-sheet|feuille|481847
+leaf|feuille|481896
+leaf|feuille|448556
+leaf|feuille|448588
+leaf|feuille|448353
+leaf|feuille|448369
+leaf|feuille|448494
+leaf|feuille|448401
+leaf|feuille|448322
+leaf|feuille|448306
+leaf|feuille|448227
+leaf|feuille|448572
+leaf|feuille|448243
+leaf|feuille|448179
+leaf|feuille|448195
+leaf|feuille|448147
+leaf|feuille|448447
+leaf|feuille|448274
+leaf|feuille|448290
+leaf|feuille|448525
+leaf|feuille|448163
+leaf|feuille|448385
+leaf|feuille|481847
 garden soil|sol de jardin|438201
 garden soil|sol de jardin|438344
 garden soil|sol de jardin|438376
@@ -2110,7 +2110,7 @@ Steel surface of a beer-bottling plant|Steel surface of a  beer-bottling plant|1
 Submaxillar abscess on a European woman|Submaxillar abscess on an European woman|193699
 Submaxillary tissue|Submaxillary  tissue|309685
 * hip suppuration|* suppuration de hanche|512988
-sheet surface|surface de feuille|494082
+leaf surface|surface de feuille|494082
 marshland|terre de marais|497731
 Marshland|Terre de marais|497714
 grassy soil|terre herbeuse|497681
@@ -2281,8 +2281,8 @@ cockerel faeces|faeces de coq de bruyère|445435
 Feces from a convalescent diphtheria patient|Feces from a convalescent diphteria patient|7485103
 fermentation of NRD 10a|fermentation de NRD 10a|478298
 Cabbage leaf|Feuille de chou|458853
-* sheets|* feuilles|460573
-sheets|feuilles|489966
+* leaves|* feuilles|460573
+leaves|feuilles|489966
 muddy leaves|feuilles boueuses|445351
 * ivy leaves|* feuilles de lierre|460557
 * apple leaves|* feuilles de pommier|468309

@@ -3,9 +3,10 @@
 \i 10_liste_souches_bon_brclims.sql
 \i 20_last_version_souches_cip.sql
 
-\cd ../20_supprimer_lots_old_vides
-\echo 20_supprimer_lots_old_vides
-\i 10_supprimer_lots_old_avec_quantite_0.sql
+\cd ../20_taxonomie
+\echo 20_taxonomie
+\i 10_quelques_taxonomies_a_virer.sql
+\i 20_cas_des_photorhabdus.sql
 
 \cd ../30_mettre_infos_care
 \echo 30_mettre_infos_care
@@ -13,10 +14,9 @@
 \i 20_import_csv_care.sql
 \i 30_mettre_infos_dans_tables.sql
 
-\cd ../40_taxonomie
-\echo 40_taxonomie
-\i 10_quelques_taxonomies_a_virer.sql
-\i 20_cas_des_photorhabdus.sql
+\cd ../40_supprimer_lots_old_vides
+\echo 40_supprimer_lots_old_vides
+\i 10_supprimer_lots_old_avec_quantite_0.sql
 
 \cd ../50_isolats
 \echo 50_isolats
@@ -43,6 +43,7 @@
 \i 52_larves.sql
 \i 53_moutons.sql
 \i 60_divers_nourritures.sql
+\i 70_divers_plantes.sql
 
 \cd ../70_strain_designation
 \echo 70_strain_designation
@@ -56,7 +57,9 @@
 \i 40_bilan_des_collections.sql
 \i 45_separation_en_refs_equis_ou_strain_designations.sql
 \i 50_refs_equis_dans_new_refs_equis.sql
-\i 55_prepare_new_refs_equis_grouped.sql
+\i 55_create_table_csv.sql
+\i 56_import_infos_csv.sql
+\i 57_prepare_new_refs_equis_grouped.sql
 \i 60_update_refs_equis.sql
 \i 70_prepare_new_strain_designations_grouped.sql
 \i 80_update_strain_designations.sql
@@ -64,3 +67,5 @@
 \cd ../10_collections_de_cip
 \echo 10_collections_de_cip
 \i 30_suppression_tables_inutiles.sql
+
+\cd ..

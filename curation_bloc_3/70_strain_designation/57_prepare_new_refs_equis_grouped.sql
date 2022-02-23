@@ -24,3 +24,6 @@ WHERE a.xxx_id = b.xxx_id
 AND a.position != b.position
 AND REPLACE(b.short_strain, ' ', '') LIKE CONCAT('%', REPLACE(a.short_strain, ' ', ''), '%')
 AND length(a.short_strain) > 3;
+
+DELETE FROM new_refs_equis_grouped
+WHERE short_strain IN (SELECT identifiant FROM deuxxxxx_supprimes);
