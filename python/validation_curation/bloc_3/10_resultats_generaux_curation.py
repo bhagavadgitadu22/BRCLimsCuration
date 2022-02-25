@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="postgres",
+                                  password="hercule1821",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)

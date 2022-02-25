@@ -3,10 +3,24 @@
 \i 10_liste_souches_bon_brclims.sql
 \i 20_last_version_souches_cip.sql
 
-\cd ../20_taxonomie
-\echo 20_taxonomie
-\i 10_quelques_taxonomies_a_virer.sql
-\i 20_cas_des_photorhabdus.sql
+\cd ../20_strain_designation
+\echo 20_strain_designation
+\i 0_table_taxonomie_lpsn.sql
+\i 10_extraction_strains.sql
+\i 20_virer_strains_especes.sql
+\i 25_vers_bad_strains.sql
+\i 30_casser_les_egaux.sql
+\i 31_casser_les_strains.sql
+\i 35_bad_spelling_cip.sql
+\i 40_ajout_toutes_refs_equis_dans_all_strains.sql
+\i 50_bilan_des_collections.sql
+\i 51_create_table_csv.sql
+\i 52_import_infos_csv.sql
+\i 55_all_strains_grouped.sql
+\i 56_delete_useless_stuff.sql
+\i 60_separation_en_refs_equis_ou_strain_designations.sql
+\i 70_update_refs_equis.sql
+\i 80_update_strain_designations.sql
 
 \cd ../30_mettre_infos_care
 \echo 30_mettre_infos_care
@@ -45,24 +59,10 @@
 \i 60_divers_nourritures.sql
 \i 70_divers_plantes.sql
 
-\cd ../70_strain_designation
-\echo 70_strain_designation
-\i 0_table_taxonomie_lpsn.sql
-\i 10_extraction_strains.sql
-\i 20_virer_strains_especes.sql
-\i 25_vers_bad_strains.sql
-\i 30_casser_les_egaux.sql
-\i 31_casser_les_strains.sql
-\i 35_bad_spelling_cip.sql
-\i 40_ajout_toutes_refs_equis_dans_all_strains.sql
-\i 50_bilan_des_collections.sql
-\i 51_create_table_csv.sql
-\i 52_import_infos_csv.sql
-\i 55_all_strains_grouped.sql
-\i 56_delete_useless_stuff.sql
-\i 60_separation_en_refs_equis_ou_strain_designations.sql
-\i 70_update_refs_equis.sql
-\i 80_update_strain_designations.sql
+\cd ../70_taxonomie
+\echo 70_taxonomie
+\i 10_quelques_taxonomies_a_virer.sql
+\i 20_cas_des_photorhabdus.sql
 
 \cd ../10_collections_de_cip
 \echo 10_collections_de_cip

@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="postgres",
+                                  password="hercule1821",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -80,6 +80,9 @@ def main():
     for elmt in name:
         legendes[elmt] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
         differences[elmt] = []
+    legendes["origine"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
+    legendes["refs_equis"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique"]
+    legendes["strain_designation"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
 
     str_base = open("../curation_bloc_3/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
@@ -109,7 +112,7 @@ def main():
 
         # origine
         if record[len(record)-5] != record_curated[len(record)-5]:
-            differences["origine"].append([identifiant_cip, version, record[len(record)-5], record_curated[len(record)-5]])
+            differences["origine"].append([identifiant_cip, version, record[len(record)-5], record_curated[len(record)-5], record_curated[69]])
 
         # refs_equis
         if record[27] != record_curated[27]:
@@ -117,18 +120,29 @@ def main():
 
         # strain_designation
         if record[len(record)-1] != record_curated[len(record)-1]:
-            row = [identifiant_cip, version, str(record[len(record)-1]), str(record_curated[len(record)-1])]
+            row = [identifiant_cip, version]
+
             baso = record[len(record)-1]
             dico = record[len(record)-2]
             baso_cured = record_curated[len(record)-1]
             dico_cured = record_curated[len(record)-2]
-            for i_baso in range(len(baso)):
-                if baso[i_baso] != baso_cured[i_baso]:
-                    row.append(str(dico[i_baso]))
-                    row.append(str(baso[i_baso]))
-                    row.append(str(dico_cured[i_baso]))
+
+            for i_baso in range(len(baso_cured)):
+                if i_baso >= len(baso) and baso_cured[i_baso] != "":
+                    row.append("xxx")
                     row.append(str(baso_cured[i_baso]))
                     row.append(record[68])
+                    row.append("xxx")
+                    row.append(str(dico_cured[i_baso]))
+                elif baso[i_baso] != baso_cured[i_baso]:
+                    row.append(str(baso[i_baso]))
+                    row.append(str(baso_cured[i_baso]))
+                    row.append(record[68])
+                    row.append(str(dico[i_baso]))
+                    row.append(str(dico_cured[i_baso]))
+            row.append(str(record[len(record)-1]))
+            row.append(str(record_curated[len(record)-1]))
+
             differences["strain_designation"].append(row)
 
         # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
@@ -156,6 +170,9 @@ def main():
         for diff in differences[elmt]:
             if diff[2:] not in differences_uniques[elmt]:
                 differences_uniques[elmt].append(diff[2:])
+    legendes_uniques["origine"] = ["Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
+    legendes_uniques["refs_equis"] = ["Ancienne valeur", "Nouvelle valeur", "Historique"]
+    legendes_uniques["strain_designation"] = ["Ancienne valeur", "Nouvelle valeur", "Historique", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
 
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")
 
