@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS new_strain_designations_strings;
 
 SELECT xxx_id, array_to_string(ARRAY_AGG(short_strain ORDER BY position), ';') AS new_string
 INTO TABLE new_strain_designations_strings
-FROM new_strain_designations_grouped
+FROM new_strain_designations
 GROUP BY xxx_id;
 
 /*

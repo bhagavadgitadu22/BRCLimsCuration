@@ -54,14 +54,14 @@
 \i 30_casser_les_egaux.sql
 \i 31_casser_les_strains.sql
 \i 35_bad_spelling_cip.sql
-\i 40_bilan_des_collections.sql
-\i 45_separation_en_refs_equis_ou_strain_designations.sql
-\i 50_refs_equis_dans_new_refs_equis.sql
-\i 55_create_table_csv.sql
-\i 56_import_infos_csv.sql
-\i 57_prepare_new_refs_equis_grouped.sql
-\i 60_update_refs_equis.sql
-\i 70_prepare_new_strain_designations_grouped.sql
+\i 40_ajout_toutes_refs_equis_dans_all_strains.sql
+\i 50_bilan_des_collections.sql
+\i 51_create_table_csv.sql
+\i 52_import_infos_csv.sql
+\i 55_all_strains_grouped.sql
+\i 56_delete_useless_stuff.sql
+\i 60_separation_en_refs_equis_ou_strain_designations.sql
+\i 70_update_refs_equis.sql
 \i 80_update_strain_designations.sql
 
 \cd ../10_collections_de_cip
