@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS souches_groupe_cip;
 DROP TABLE IF EXISTS last_version_souches_cip;
+DROP TABLE IF EXISTS taxonomy;
 
 DROP TABLE IF EXISTS infos_care;
 DROP TABLE IF EXISTS max_identifiant;
@@ -21,7 +22,6 @@ DROP TABLE IF EXISTS nombre_humain;
 DROP TABLE IF EXISTS origine_plante;
 DROP TABLE IF EXISTS nombre_plante;
 
-DROP TABLE IF EXISTS taxonomy;
 DROP TABLE IF EXISTS all_strains;
 DROP TABLE IF EXISTS bad_strains;
 DROP TABLE IF EXISTS temp_taxo;
@@ -36,3 +36,8 @@ DROP TABLE IF EXISTS new_refs_equis;
 DROP TABLE IF EXISTS new_strain_designations;
 DROP TABLE IF EXISTS new_refs_equis_strings;
 DROP TABLE IF EXISTS new_strain_designations_strings;
+
+DROP TABLE IF EXISTS milieux_vides;
+DROP TABLE IF EXISTS milieux_non_vides;
+DROP TABLE IF EXISTS milieux_souches_a_changer;
+DROP TABLE IF EXISTS milieux_a_ignorer;

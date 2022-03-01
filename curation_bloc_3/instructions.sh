@@ -2,31 +2,18 @@
 \echo 10_collections_de_cip
 \i 10_liste_souches_bon_brclims.sql
 \i 20_last_version_souches_cip.sql
+\i 30_table_taxonomie_lpsn.sql
 
-\cd ../20_strain_designation
-\echo 20_strain_designation
-\i 0_table_taxonomie_lpsn.sql
-\i 10_extraction_strains.sql
-\i 20_virer_strains_especes.sql
-\i 25_vers_bad_strains.sql
-\i 30_casser_les_egaux.sql
-\i 31_casser_les_strains.sql
-\i 35_bad_spelling_cip.sql
-\i 40_ajout_toutes_refs_equis_dans_all_strains.sql
-\i 50_bilan_des_collections.sql
-\i 51_create_table_csv.sql
-\i 52_import_infos_csv.sql
-\i 55_all_strains_grouped.sql
-\i 56_delete_useless_stuff.sql
-\i 60_separation_en_refs_equis_ou_strain_designations.sql
-\i 70_update_refs_equis.sql
-\i 80_update_strain_designations.sql
-
-\cd ../30_mettre_infos_care
-\echo 30_mettre_infos_care
+\cd ../20_mettre_infos_care
+\echo 20_mettre_infos_care
 \i 10_create_table_csv.sql
 \i 20_import_csv_care.sql
 \i 30_mettre_infos_dans_tables.sql
+
+\cd ../30_taxonomie
+\echo 30_taxonomie
+\i 10_quelques_taxonomies_a_virer.sql
+\i 20_cas_des_photorhabdus.sql
 
 \cd ../40_supprimer_lots_old_vides
 \echo 40_supprimer_lots_old_vides
@@ -59,13 +46,35 @@
 \i 60_divers_nourritures.sql
 \i 70_divers_plantes.sql
 
-\cd ../70_taxonomie
-\echo 70_taxonomie
-\i 10_quelques_taxonomies_a_virer.sql
-\i 20_cas_des_photorhabdus.sql
+\cd ../70_strain_designation
+\echo 70_strain_designation
+\i 10_extraction_strains.sql
+\i 20_virer_strains_especes.sql
+\i 25_vers_bad_strains.sql
+\i 30_casser_les_egaux.sql
+\i 31_casser_les_strains.sql
+\i 35_bad_spelling_cip.sql
+\i 40_ajout_toutes_refs_equis_dans_all_strains.sql
+\i 50_bilan_des_collections.sql
+\i 51_create_table_csv.sql
+\i 52_import_infos_csv.sql
+\i 55_all_strains_grouped.sql
+\i 56_delete_useless_stuff.sql
+\i 60_separation_en_refs_equis_ou_strain_designations.sql
+\i 70_update_refs_equis.sql
+\i 80_update_strain_designations.sql
+
+\cd ../80_strain_designation
+\echo 80_strain_designation
+\i 10_create_table_csv.sql
+\i 20_import_csv_vides.sql
+\i 25_import_csv_non_vides.sql
+\i 30_get_ids_brc.sql
+\i 40_on_enleve_references_a_milieux_inutiles.sql
+\i 50_supprimer_milieux_inutiles.sql
 
 \cd ../10_collections_de_cip
 \echo 10_collections_de_cip
-\i 30_suppression_tables_inutiles.sql
+\i 40_suppression_tables_inutiles.sql
 
 \cd ..
