@@ -3,7 +3,12 @@ DROP TABLE IF EXISTS ids_mots;
 SELECT xxx_id 
 INTO ids_mots
 FROM t_souche
-WHERE xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
+WHERE xxx_id IN (SELECT xxx_id
+FROM t_souche
+WHERE sch_col_id IN
+(SELECT xxx_id
+FROM t_collection
+WHERE col_clg_id = 401))
 AND sch_mot IS True;
 
 SELECT * 
@@ -67,6 +72,3 @@ ON att_col_id = t_souche.sch_col_id
 AND svl_entite_id = t_souche.xxx_id
 WHERE sch_mot IS True
 AND svl_valeur NOT SIMILAR TO '[ ]*';
-
-
-
