@@ -64,8 +64,8 @@
 \i 70_update_refs_equis.sql
 \i 80_update_strain_designations.sql
 
-\cd ../80_strain_designation
-\echo 80_strain_designation
+\cd ../80_milieux_inutiles
+\echo 80_milieux_inutiles
 \i 10_create_table_csv.sql
 \i 20_import_csv_vides.sql
 \i 25_import_csv_non_vides.sql
