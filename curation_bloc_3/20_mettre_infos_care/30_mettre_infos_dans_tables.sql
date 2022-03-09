@@ -12,7 +12,9 @@ now()::timestamp AS sch_dat_reception,
 sch_denomination, sch_taxonomie, sch_proprietes, sch_origine, 
 sch_pto_id, sch_isole_a_partir_de, sch_lieu, TO_TIMESTAMP(sch_dat_prelevement, 'YYYY') AS sch_dat_prelevement,
 sch_bibliographie, sch_temperature_incubation, sch_historique, sch_depositaire,
-8376101 AS xxx_cre_usr_id, 8376101 AS xxx_maj_usr_id, 124 AS sch_statut, 413 AS sch_col_id
+(SELECT xxx_cre_usr_id FROM t_utilisateur WHERE usr_log = 'superadmin') AS xxx_cre_usr_id,
+(SELECT xxx_cre_usr_id FROM t_utilisateur WHERE usr_log = 'superadmin') AS xxx_maj_usr_id, 
+124 AS sch_statut, 413 AS sch_col_id
 INTO TABLE infos_completes_care
 FROM infos_care;
 
