@@ -4,7 +4,7 @@ import psycopg2
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="postgres",
+                                  password="hercule1821",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -18,35 +18,28 @@ records = csv.reader(f, delimiter=';')
 cursor = get_cursor("restart_db_pure")
 cursor.execute(open("../analyse/last_version_souches_lots.sql", "r").read())
 
+str_sql = "SELECT sch_identifiant, lot_numero, REPLACE(REPLACE(CONCAT(REGEXP_REPLACE(sch_identifiant, '[_ -.T]+', '', 'g'), REGEXP_REPLACE(split_part(lot_numero, '_', 1), '[_ -.T]+', '', 'g')), 'CIP', ''), 'CRBIP', '') FROM last_version_souches_lots"
+cursor.execute(str_sql)
+ids_lots_colles = cursor.fetchall()
+
 ids = {}
+yes = 0
+no = 1
 for record in records:
-    result = [elmt.replace("pas de souche", '').strip() for elmt in re.split('[-_]{1}', record[0], 1)]
+    result = record[0].replace('_', '').replace('-', '').replace(' ', '').replace('.', '').replace('T', '').replace('CIP', '').replace('CRBIP', '')
 
-    pattern = re.compile("^[0-9-_]+$")
-    if len(result) == 2 and pattern.match(result[1]):
-        id_cip = result[0].replace('CIP', '')
-        if id_cip not in ids:
-            ids[id_cip] = []
-
-        lot_cip = result[1]
-        if lot_cip not in ids[id_cip]:
-            ids[id_cip].append(lot_cip)
-
-    elif len(result) != 1:
+    bool = False
+    for colle in ids_lots_colles:
+        if colle[2] == result:
+            bool = True
+    if bool:
+        yes += 1
+    else:
+        no += 1
+        print(record[0])
         print(result)
 
-    str_sql = "SELECT lot_numero FROM last_version_souches_lots WHERE sch_identifiant LIKE '%"+id_cip+"%'"
-    cursor.execute(str_sql)
-    records = cursor.fetchall()
-    
-
-    # id_cip = record[0].split('_')[0].replace('CIP', '')
-    # if id_cip not in ids:
-    #     ids[id_cip] = []
-    # if '_' in record[0]:
-    #     lot_cip = record[0].split('_')[1].strip()
-    #     ids[id_cip].append(lot_cip)
-    # elif '-' in record[0]:
-    #     print(record[0])
-
 f.close()
+
+print(yes)
+print(no)

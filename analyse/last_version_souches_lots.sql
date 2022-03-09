@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS last_version_souches;
+DROP TABLE IF EXISTS last_version_souches_lots;
 
 SELECT t_souche.xxx_id, sch_identifiant, sch_version, lot_numero
 INTO TABLE last_version_souches_lots
