@@ -42,7 +42,7 @@ def get_names_params(cursor, df, tab_idens, param, stri):
 
             maj_prenom = ''.join([c for c in prenom if c.isupper()])
 
-            str_sql = "SELECT xxx_id, sch_identifiant, sch_version, sch_historique, col_descr FROM last_version_souches WHERE "+param+" SIMILAR TO CONCAT('%', '"+maj_prenom[0]+"', '[ .a-z]+', '"+fam+"', '%')"
+            str_sql = "SELECT xxx_id, sch_identifiant, sch_version, "+param+", col_descr FROM last_version_souches WHERE "+param+" SIMILAR TO CONCAT('%', '"+maj_prenom[0]+"', '[ .a-z]+', '"+fam+"', '%')"
             if str_idens_used != "('')":
                 str_sql += " AND sch_identifiant NOT IN "+str_idens_used
 
@@ -93,12 +93,12 @@ def get_names_params(cursor, df, tab_idens, param, stri):
 
 cursor = get_cursor("restart_db_pure")
 
-cursor.execute(open("../analyse/last_version_souches_toutes_collections.sql", "r").read())
+cursor.execute(open("../analyse/last_version_souches.sql", "r").read())
 
 xls_milieux = pd.ExcelFile('../../output/Fermetures 2000-2022.xlsx')
 
-df = pd.read_excel(xls_milieux, 'unités_fermées')
-col_nom = df.columns[2]
+df = pd.read_excel(xls_milieux, 'Feuil1')
+col_nom = df.columns[3]
 
 df, tab_idens, col_nombs_1 = get_names_params(cursor, df, [], "sch_historique", "historique")
 df, tab_idens, col_nombs_2 = get_names_params(cursor, df, tab_idens, "sch_isole_par", "isole_par")
