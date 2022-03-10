@@ -52,6 +52,7 @@ for f in dir_list:
                     local_file = path3+'/'+f3
                     if local_file not in ids_cip[id_cip][lot_cip][local_dir]:
                         ids_cip[id_cip][lot_cip][local_dir].append(local_file)
+                        
         for id_c in ids_concerned:
             for extra_f in extra_files:
                 if '' not in ids_cip[id_c]:
