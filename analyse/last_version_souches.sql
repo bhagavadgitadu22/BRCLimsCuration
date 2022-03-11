@@ -4,7 +4,7 @@ SELECT DISTINCT ON (sch_identifiant)
 t_souche.xxx_id, sch_identifiant, sch_version, CASE 
       WHEN sch_historique LIKE '%<-%' THEN (string_to_array(sch_historique, '<-'))[1]
       ELSE sch_historique
-END AS sch_historique, sch_isole_par, don_lib AS deposant, col_descr
+END AS sch_historique, sch_isole_par, don_lib AS deposant, col_descr, sch_catalogue
 INTO TABLE last_version_souches
 FROM t_souche
 LEFT JOIN t_collection
