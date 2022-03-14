@@ -44,14 +44,14 @@ connection = psycopg2.connect(user="postgres",
                                 password="hercule1821",
                                 host="localhost",
                                 port="5432",
-                                database="brc_db2")
+                                database="brc_db")
 connection.autocommit = True
 
 cursor = connection.cursor()
 
 wb = Workbook()
 sheet = wb.create_sheet("name")
-sheet.append(["id", "wdcm", "normes", "tests", "commandes 10 ans"])
+sheet.append(["id", "wdcm", "normes", "tests", "commandes 10 ans", "taxonomie", "catalogue", "refs_equis"])
 
 for i in range(len(df_mar)):
     souche_cip = df_mar.iloc[i, 0]
@@ -59,7 +59,7 @@ for i in range(len(df_mar)):
         # print(souche_cip)
 
         str_sql = open("../analyse/corynebacterium/get_wdcm.sql", "r", encoding='utf-8').read()
-        complement_sql = " WHERE (t_commande.xxx_id IS NULL OR EXTRACT(YEAR FROM cmd_dat) > 2010) AND sch_identifiant = '"+souche_cip+"' GROUP BY sch_identifiant, (REGEXP_MATCHES(sch_references_equi, 'WDCM ?([0-9]+)'))[1];"
+        complement_sql = " WHERE (t_commande.xxx_id IS NULL OR EXTRACT(YEAR FROM cmd_dat) > 2010) AND sch_identifiant = '"+souche_cip+"' GROUP BY sch_identifiant, sch_denomination, sch_catalogue, sch_references_equi"
 
         cursor.execute(str_sql+complement_sql)
         record = cursor.fetchone()
@@ -70,11 +70,11 @@ for i in range(len(df_mar)):
             local_norme = ''
             local_test = ''
             if local_wdcm in normes_eclates:
-                local_norme = '\n'.join(normes_eclates[local_wdcm])
+                local_norme = ';\n'.join(normes_eclates[local_wdcm])
             if local_wdcm in tests_eclates:
-                local_test = '\n'.join(tests_eclates[local_wdcm])
+                local_test = ';\n'.join(tests_eclates[local_wdcm])
 
-            row = [souche_cip, local_wdcm, local_norme, local_test, record[2], record[3]]
+            row = [souche_cip, local_wdcm, local_norme, local_test, record[2], record[3], record[4], record[5]]
             # print(row)
         if record is None:
             print(souche_cip)

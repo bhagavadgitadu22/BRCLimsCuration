@@ -27,5 +27,4 @@ WHERE sch_col_id IN
 (SELECT xxx_id
 FROM t_collection
 WHERE col_clg_id = 401)
-AND t_souche.xxx_sup_dat IS NULL
 ORDER BY sch_identifiant, sch_version DESC;

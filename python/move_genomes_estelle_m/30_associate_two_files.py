@@ -38,7 +38,7 @@ for index, row in df.iterrows():
         concordance_lot = False
         bool2 = False
         for record in concordance:
-            if lot_cip == record[1]:
+            if lot_cip != 'nan' and lot_cip == record[1]:
                 ct += 1
                 concordance_lot = True
                 valeur_lot = record[3]
@@ -47,7 +47,7 @@ for index, row in df.iterrows():
             cf +=1
         
     c_id.append(concordance_id)
-    c_lot.append(concordance_id)
+    c_lot.append(concordance_lot)
     v_id.append(valeur_id)   
     v_lot.append(valeur_lot)
 
