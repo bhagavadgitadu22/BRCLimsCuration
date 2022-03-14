@@ -1,0 +1,84 @@
+import os
+import csv
+
+local_path = '/mnt/gaia/cip'
+path = local_path+'/SEQUENCAGETOTAL/FICHIERRESULTATSSEQUENCES'
+dir_list = os.listdir(path)
+
+file = ""
+ids_cip = {}
+c = 0
+for f in dir_list:
+    # on traite chaque dossier de p2m
+    if os.path.isdir(os.path.join(path, f)) and f[0].isdigit():
+        file = f
+
+        print(file)
+
+        path2 = path+'/'+file
+        dir_list2 = os.listdir(path2)
+
+        # création du dico avec toutes les infos utiles
+        extra_files = []
+        ids_concerned = []
+        for f2 in dir_list2:
+            path3 = path2+'/'+f2
+
+            if not(os.path.isdir(path3)):
+                extra_files.append(path3+'/'+f2)
+            else:
+                dir_list3 = os.listdir(path3)
+
+                for f3 in dir_list3:
+                    id_cip = f3.split('_')[0].replace("CIP", '')
+                    if id_cip not in ids_cip:
+                        ids_cip[id_cip] = {}
+                    if id_cip not in ids_concerned:
+                        ids_concerned.append(id_cip)
+
+                    lot_cip = ''
+                    if '_' in f3.split('.')[0]:
+                        lot_cip = f3.split('.')[0].split('_')[1]
+
+                        if lot_cip[0] == 'S':
+                            lot_cip = ''
+                    if lot_cip not in ids_cip[id_cip]:
+                        ids_cip[id_cip][lot_cip] = {}
+
+                    local_dir = path3.split('/')[-1]
+                    if local_dir not in ids_cip[id_cip][lot_cip]:
+                        ids_cip[id_cip][lot_cip][local_dir] = []
+
+                    local_file = path3+'/'+f3
+                    if local_file not in ids_cip[id_cip][lot_cip][local_dir]:
+                        ids_cip[id_cip][lot_cip][local_dir].append(local_file)
+                        
+        for id_c in ids_concerned:
+            for extra_f in extra_files:
+                if '' not in ids_cip[id_c]:
+                    ids_cip[id_c][''] = {}
+                if '' not in ids_cip[id_c]['']:
+                    ids_cip[id_c][''][''] = []
+                ids_cip[id_c][''][''].append(extra_f)
+    
+    c += 1
+    if c%10 == 0:
+        print(c)
+    if c>200:
+        break
+
+rows = []
+for id in ids_cip:
+    for lot in ids_cip[id]:
+        for dir in ids_cip[id][lot]:
+            for f in ids_cip[id][lot][dir]:
+                row = [id, lot, dir, f]
+                rows.append(row)
+
+fa = open('../../output/dossiers_p2m.csv', 'w', newline='')
+writera = csv.writer(fa, delimiter=';')
+writera.writerows(rows)
+fa.close()
+
+for id in ids_cip:
+    print(id)
