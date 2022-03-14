@@ -82,7 +82,7 @@ def main():
         differences[elmt] = []
     legendes["origine"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
     legendes["refs_equis"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique"]
-    legendes["strain_designation"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
+    legendes["strain_designation"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique", "Collection de souche", "Collection de valeur", "Check collection", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
 
     str_base = open("../curation_bloc_3/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
@@ -99,9 +99,11 @@ def main():
         identifiant_cip = record[22]
         version = str(record[28])
 
+        alpha = 1
+
         # taxonomie
-        if record[len(record)-7] != record_curated[len(record)-7]:
-            differences["taxonomie"].append([identifiant_cip, version, record[len(record)-8], record_curated[len(record)-8]])
+        if record[len(record)-7-alpha] != record_curated[len(record)-7-alpha]:
+            differences["taxonomie"].append([identifiant_cip, version, record[len(record)-8-alpha], record_curated[len(record)-8-alpha]])
 
         # isole_a_partir_de
         if record[69] != record_curated[69]:
@@ -111,42 +113,51 @@ def main():
                 differences["isole_a_partir_de_trimmed"].append([identifiant_cip, version, record[69], record_curated[69]])
 
         # origine
-        if record[len(record)-5] != record_curated[len(record)-5]:
-            differences["origine"].append([identifiant_cip, version, record[len(record)-5], record_curated[len(record)-5], record_curated[69]])
+        if record[len(record)-5-alpha] != record_curated[len(record)-5-alpha]:
+            differences["origine"].append([identifiant_cip, version, record[len(record)-5-alpha], record_curated[len(record)-5-alpha], record_curated[69]])
 
         # refs_equis
         if record[27] != record_curated[27]:
             differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27], record[68]])
 
         # strain_designation
-        if record[len(record)-1] != record_curated[len(record)-1]:
+        if record[len(record)-1-alpha] != record_curated[len(record)-1-alpha]:
             row = [identifiant_cip, version]
 
-            baso = record[len(record)-1]
-            dico = record[len(record)-2]
-            baso_cured = record_curated[len(record)-1]
-            dico_cured = record_curated[len(record)-2]
+            baso = record[len(record)-1-alpha]
+            dico = record[len(record)-2-alpha]
+            baso_cured = record_curated[len(record)-1-alpha]
+            dico_cured = record_curated[len(record)-2-alpha]
+
+            coll_souche = record_curated[len(record)-11-alpha]
+            coll_cured = record_curated[len(record)-alpha]
 
             for i_baso in range(len(baso_cured)):
                 if i_baso >= len(baso) and baso_cured[i_baso] != "":
                     row.append("xxx")
                     row.append(str(baso_cured[i_baso]))
                     row.append(record[68])
+                    row.append(coll_souche)
+                    row.append(str(coll_cured[i_baso]))
+                    row.append(coll_souche == coll_cured[i_baso])
                     row.append("xxx")
                     row.append(str(dico_cured[i_baso]))
                 elif baso[i_baso] != baso_cured[i_baso]:
                     row.append(str(baso[i_baso]))
                     row.append(str(baso_cured[i_baso]))
                     row.append(record[68])
+                    row.append(coll_souche)
+                    row.append(str(coll_cured[i_baso]))
+                    row.append(coll_souche == coll_cured[i_baso])
                     row.append(str(dico[i_baso]))
                     row.append(str(dico_cured[i_baso]))
-            row.append(str(record[len(record)-1]))
-            row.append(str(record_curated[len(record)-1]))
+            row.append(str(record[len(record)-1-alpha]))
+            row.append(str(record_curated[len(record)-1-alpha]))
 
             differences["strain_designation"].append(row)
 
         # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
-        if record[len(record)-10:] == record_curated[len(record)-10:] and record[12] == record_curated[12] and record[69] == record_curated[69] and record[13] == record_curated[13] and record[27] == record_curated[27]:
+        if record[len(record)-10-alpha:] == record_curated[len(record)-10:] and record[12] == record_curated[12] and record[69] == record_curated[69] and record[13] == record_curated[13] and record[27] == record_curated[27]:
             print(identifiant_cip)
             for i_record in range(len(record)):
                 if record[i_record] != record_curated[i_record]:
@@ -172,7 +183,7 @@ def main():
                 differences_uniques[elmt].append(diff[2:])
     legendes_uniques["origine"] = ["Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
     legendes_uniques["refs_equis"] = ["Ancienne valeur", "Nouvelle valeur", "Historique"]
-    legendes_uniques["strain_designation"] = ["Ancienne valeur", "Nouvelle valeur", "Historique", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
+    legendes_uniques["strain_designation"] = ["Ancienne valeur", "Nouvelle valeur", "Historique", "Collection de souche", "Collection de valeur", "Check collection", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
 
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")
 
