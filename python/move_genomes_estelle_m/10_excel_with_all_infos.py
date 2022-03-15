@@ -15,7 +15,7 @@ def redimension_cell_width(ws):
     for row in ws.rows:
         for cell in row:
             if cell.value:
-                line_max = max([len(str(elmt)) for elmt in cell.value.split('\n')])
+                line_max = max([len(str(elmt)) for elmt in str(cell.value).split('\n')])
                 max_ = max((dims.get(cell.column_letter, 0), line_max))
                 dims[cell.column_letter] = max_
     for col, value in dims.items():
@@ -37,8 +37,8 @@ def borders_cells(sheet):
             if cell.value:
                 cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
-#local_path = '/mnt/gaia/cip'
-local_path = 'V:'
+local_path = '/mnt/gaia/cip'
+#local_path = 'V:'
 path = local_path+'/SEQUENCAGETOTAL/FICHIERRESULTATSSEQUENCES'
 dir_list = os.listdir(path)
 
@@ -51,6 +51,7 @@ count = 0
 
 # file is the number p2m
 ids_cip = {}
+ids_cip_extra = {}
 fake_ids = []
 for file in dir_list:
     # on traite chaque dossier de p2m
@@ -113,21 +114,29 @@ for file in dir_list:
                             
                         fasta_dir = path3.split('/')[-1]
                         if fasta_dir not in ids_cip[id_cip][lot_cip]:
-                            ids_cip[id_cip][lot_cip][fasta_dir] = []
+                            ids_cip[id_cip][lot_cip][fasta_dir] = {}
 
                         fasta_file = path3+'/'+f3
                         if fasta_file not in ids_cip[id_cip][lot_cip][fasta_dir]:
-                            ids_cip[id_cip][lot_cip][fasta_dir].append(fasta_file)
+                            ids_cip[id_cip][lot_cip][fasta_dir][fasta_file] = 0
+
+                            # on tient le compte du nombre de fois où chaque file est utilisé
+                            for elmt_genome in ids_cip[id_cip][lot_cip][fasta_dir]:
+                                if elmt_genome.split('/')[-1] == f3:
+                                    ids_cip[id_cip][lot_cip][fasta_dir][fasta_file] += 1
         
         # il peut y avoir plusieurs fois un des 4 fichiers de base si plusieurs lots d'une même souche ont été séquencés
         for id_c in ids_concerned:
             for extra_f in extra_files:
-                if '' not in ids_cip[id_c]:
-                    ids_cip[id_c][''] = {}
-                if '' not in ids_cip[id_c]['']:
-                    ids_cip[id_c][''][''] = []
+                if id_c not in ids_cip_extra:
+                    ids_cip_extra[id_c] = {}
 
-                ids_cip[id_c][''][''].append(extra_f)
+                ids_cip_extra[id_c][extra_f] = 0
+                
+                # on tient le compte du nombre de fois où chaque file est utilisé
+                for elmt_genome in ids_cip_extra[id_c]:
+                    if elmt_genome.split('/')[-1] == extra_f.split('/')[-1]:
+                        ids_cip_extra[id_c][extra_f] += 1
 
     count += 1
     if count % 100 == 0:
@@ -135,17 +144,28 @@ for file in dir_list:
 
 # création de l'excel avec toutes les infos
 wb = Workbook()
-sheet = wb.create_sheet('all')
+sheet = wb.create_sheet('genomes')
 del wb["Sheet"]
-cols = ["id", "lot", "dir", 'path']
+
+cols = ["id", "lot", "dir", "path", "compte"]
 sheet.append(cols)
 for id in ids_cip:
     for lot in ids_cip[id]:
         for dir in ids_cip[id][lot]:
             for f in ids_cip[id][lot][dir]:
-                row = [id, lot, dir, f]
+                row = [id, lot, dir, f, ids_cip[id][lot][dir][f]]
                 sheet.append(row)
 style_sheet(sheet)
+
+sheet2 = wb.create_sheet('metafiles')
+cols = ["id", "path", "compte"]
+sheet2.append(cols)
+for id in ids_cip_extra:
+    for f in ids_cip_extra[id]:
+        row = [id, f, ids_cip_extra[id][f]]
+        sheet2.append(row)
+style_sheet(sheet2)
+
 wb.save("../../output/all_infos_p2m.xlsx")
 
 # et de celui avec les fichiers dont je n'ai pas trouvé l'id

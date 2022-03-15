@@ -2,7 +2,7 @@ import pandas as pd
 import csv
 
 xls_milieux = pd.ExcelFile('../../output/all_infos_p2m.xlsx')
-df = pd.read_excel(xls_milieux, 'all')
+df = pd.read_excel(xls_milieux, 'genomes')
 
 f = open('../../output/infos_de_p2m.csv', 'r', newline='')
 records = csv.reader(f, delimiter=';')
@@ -66,4 +66,6 @@ df["Valeur d'id"] = v_id
 df["Valeur de lot"] = v_lot
 
 with pd.ExcelWriter("../../output/all_infos_p2m_crossed.xlsx") as writer:
-    df.to_excel(writer, sheet_name="all_complete", index=False)
+    df.to_excel(writer, sheet_name="genomes_crossed", index=False)
+    df = pd.read_excel(xls_milieux, 'metafiles')
+    df.to_excel(writer, sheet_name="metafiles", index=False)
