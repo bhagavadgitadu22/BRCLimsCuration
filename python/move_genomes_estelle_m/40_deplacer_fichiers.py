@@ -33,8 +33,10 @@ def borders_cells(sheet):
 xls_milieux = pd.ExcelFile('../../output/all_infos_p2m_crossed.xlsx')
 df = pd.read_excel(xls_milieux, 'genomes_crossed')
 
-local_path = '/mnt/gaia/cip'
-#local_path = 'V:'
+#local_path = '/mnt/gaia/cip'
+#pos_p2m = 6
+local_path = 'V:'
+pos_p2m = 3
 path = local_path+'/CONTROLE_SOUCHE'
 dir_list = os.listdir(path)
 
@@ -55,7 +57,7 @@ for index, row in df.iterrows():
         fasta_cip = row[2]
 
         fileToTransfer = row[3].split('/')[-1]
-        compte = 1
+        compte = row[4]
 
         row_transfert = [row[3], '']
 
@@ -69,20 +71,19 @@ for index, row in df.iterrows():
             short_file_id = file_id.replace("CIP", '').replace("CRBIP", '').replace("_", '').replace("-", '').replace(".", '').replace(" ", '').replace("T", '')
 
             if short_file_id == id_cip and os.path.isdir(os.path.join(path, file_id)):
-                dir_id = os.path.join(path, file_id)
-                print(file_id)
+                dir_id = path+'/'+file_id
 
                 # on regarde s'il y a un dossier pour le lot à l'intérieur
                 id_list = os.listdir(dir_id)
                 for lot_dir in id_list:
                     if lot_dir == file_id+'-'+lot_cip and os.path.isdir(os.path.join(dir_id, lot_dir)):
-                        dir_lot = os.path.join(dir_id, lot_dir)
+                        dir_lot = dir_id+'/'+lot_dir
 
                         # on regarde s'il y a un dossier pour le type de fasta à l'intérieur
                         lot_list = os.listdir(dir_lot)
                         for fasta_dir in lot_list:
                             if fasta_dir == fasta_cip and os.path.isdir(os.path.join(dir_lot, fasta_dir)):
-                                dir_fasta = os.path.join(dir_lot, fasta_dir)
+                                dir_fasta = dir_lot+'/'+fasta_dir
 
                                 elmts_genomes = os.listdir(dir_fasta)
                                 for elmt_genome in elmts_genomes:
@@ -132,8 +133,8 @@ for index, row in df.iterrows():
 
 p2m_used = []
 for line_log in log_transferts:
-    if line_log[0].split('/')[6] not in p2m_used:
-        p2m_used.append(line_log[0].split('/')[6])
+    if line_log[0].split('/')[pos_p2m] not in p2m_used:
+        p2m_used.append(line_log[0].split('/')[pos_p2m])
 
 df = pd.read_excel(xls_milieux, 'metafiles')
 
@@ -142,7 +143,7 @@ log_metafiles = []
 unfound = []
 df = df.reset_index(drop=True)  # make sure indexes pair with number of rows
 for index, row in df.iterrows():
-    n_p2m = row[1].split('/')[6]
+    n_p2m = row[1].split('/')[pos_p2m]
     filename = row[1].split('/')[-1]
 
     if n_p2m in p2m_used:
@@ -158,7 +159,7 @@ for index, row in df.iterrows():
 
             log_metafiles.append(row_metafile)
         else:
-            unfound.append(filename)
+            unfound.append(row[1])
 
 # création de l'excel avec toutes les infos
 wb = Workbook()

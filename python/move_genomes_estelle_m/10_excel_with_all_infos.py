@@ -37,8 +37,8 @@ def borders_cells(sheet):
             if cell.value:
                 cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
-local_path = '/mnt/gaia/cip'
-#local_path = 'V:'
+#local_path = '/mnt/gaia/cip'
+local_path = 'V:'
 path = local_path+'/SEQUENCAGETOTAL/FICHIERRESULTATSSEQUENCES'
 dir_list = os.listdir(path)
 
