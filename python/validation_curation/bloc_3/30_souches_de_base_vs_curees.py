@@ -76,13 +76,15 @@ def main():
 
     name = ["taxonomie", "isole_a_partir_de_translated", "isole_a_partir_de_trimmed", "origine", "refs_equis", "strain_designation"]
     legendes = {}
+    legendes["taxonomie"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
+    legendes["isole_a_partir_de_translated"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Ancienne origine", "Nouvelle origine"]
+    legendes["isole_a_partir_de_trimmed"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Ancienne origine", "Nouvelle origine"]
+    legendes["origine"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Ancien isolé à partir de", "Nouveau isolé à partir de"]
+    legendes["refs_equis"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Suppressions", "Ajouts", "Historique"]
+    legendes["strain_designation"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique", "Collection de souche", "Collection de valeur", "Check collection", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
     differences = {}
     for elmt in name:
-        legendes[elmt] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
         differences[elmt] = []
-    legendes["origine"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
-    legendes["refs_equis"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique"]
-    legendes["strain_designation"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur", "Historique", "Collection de souche", "Collection de valeur", "Check collection", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
 
     str_base = open("../curation_bloc_3/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
@@ -108,19 +110,31 @@ def main():
         # isole_a_partir_de
         if record[69] != record_curated[69]:
             if record[69].replace(' ', '').replace('*', '').replace('\\n', '').lower() != record_curated[69].replace(' ', '').replace('*', '').replace('\\n', '').lower():
-                differences["isole_a_partir_de_translated"].append([identifiant_cip, version, record[69], record_curated[69]])
+                differences["isole_a_partir_de_translated"].append([identifiant_cip, version, record[69], record_curated[69], record[len(record)-5-alpha], record_curated[len(record)-5-alpha]])
             else:
-                differences["isole_a_partir_de_trimmed"].append([identifiant_cip, version, record[69], record_curated[69]])
+                differences["isole_a_partir_de_trimmed"].append([identifiant_cip, version, record[69], record_curated[69], record[len(record)-5-alpha], record_curated[len(record)-5-alpha]])
 
         # origine
         if record[len(record)-5-alpha] != record_curated[len(record)-5-alpha]:
-            differences["origine"].append([identifiant_cip, version, record[len(record)-5-alpha], record_curated[len(record)-5-alpha], record_curated[69]])
+            differences["origine"].append([identifiant_cip, version, record[len(record)-5-alpha], record_curated[len(record)-5-alpha], record[69], record_curated[69]])
 
         # refs_equis
         if record[27] != record_curated[27]:
-            differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27], record[68]])
+            break_cured = record_curated[27].split(";")
+            break_pure = record[27].split(";")
 
-        # strain_designation
+            add = []
+            for elmt_break in break_cured:
+                if elmt_break not in break_pure:
+                    add.append(elmt_break)
+            sup = []
+            for elmt_break in break_pure:
+                if elmt_break not in break_cured and elmt_break != '':
+                    sup.append(elmt_break)
+
+            differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27], str(sup), str(add), record[68]])
+
+        #strain_designation
         if record[len(record)-1-alpha] != record_curated[len(record)-1-alpha]:
             row = [identifiant_cip, version]
 
@@ -133,15 +147,16 @@ def main():
             coll_cured = record_curated[len(record)-alpha]
 
             for i_baso in range(len(baso_cured)):
-                if i_baso >= len(baso) and baso_cured[i_baso] != "":
-                    row.append("xxx")
-                    row.append(str(baso_cured[i_baso]))
-                    row.append(record[68])
-                    row.append(coll_souche)
-                    row.append(str(coll_cured[i_baso]))
-                    row.append(coll_souche == coll_cured[i_baso])
-                    row.append("xxx")
-                    row.append(str(dico_cured[i_baso]))
+                if i_baso >= len(baso):
+                    if baso_cured[i_baso] != "":
+                        row.append("xxx")
+                        row.append(str(baso_cured[i_baso]))
+                        row.append(record[68])
+                        row.append(coll_souche)
+                        row.append(str(coll_cured[i_baso]))
+                        row.append(coll_souche == coll_cured[i_baso])
+                        row.append("xxx")
+                        row.append(str(dico_cured[i_baso]))
                 elif baso[i_baso] != baso_cured[i_baso]:
                     row.append(str(baso[i_baso]))
                     row.append(str(baso_cured[i_baso]))
@@ -175,16 +190,13 @@ def main():
     legendes_uniques = {}
     differences_uniques = {}
     for elmt in name:
-        legendes_uniques[elmt] = ["Ancienne valeur", "Nouvelle valeur"]
+        legendes_uniques[elmt] = legendes[elmt][2:]
         differences_uniques[elmt] = []
     for elmt in name:
         for diff in differences[elmt]:
             if diff[2:] not in differences_uniques[elmt]:
                 differences_uniques[elmt].append(diff[2:])
-    legendes_uniques["origine"] = ["Ancienne valeur", "Nouvelle valeur", "Nouveau isolé à partir de"]
-    legendes_uniques["refs_equis"] = ["Ancienne valeur", "Nouvelle valeur", "Historique"]
-    legendes_uniques["strain_designation"] = ["Ancienne valeur", "Nouvelle valeur", "Historique", "Collection de souche", "Collection de valeur", "Check collection", "Ancien dico", "Nouveau dico", "Ancienne string_val", "Nouvelle string_val"]
-
+    
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")
 
 main()

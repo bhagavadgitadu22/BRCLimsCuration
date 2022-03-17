@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS origine_food;
 DROP TABLE IF EXISTS nombre_food;
 
-SELECT xxx_id, sch_isole_a_partir_de, btrim(REGEXP_REPLACE(sch_isole_a_partir_de, '(F|f)ood', ''), ', ()*') AS new_isole
+SELECT xxx_id, sch_isole_a_partir_de, btrim(REGEXP_REPLACE(sch_isole_a_partir_de, '(F|f)ood(?=([^A-Za-z]+|$))', ''), ', *:.-') AS new_isole
 INTO TABLE origine_food
 FROM t_souche
 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)

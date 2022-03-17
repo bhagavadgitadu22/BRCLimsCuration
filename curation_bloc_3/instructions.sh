@@ -21,10 +21,10 @@
 
 \cd ../50_isolats
 \echo 50_isolats
-\i 10_reformattage_isole_a_partir_de.sql
-\i 20_create_table_csv.sql
-\i 30_import_csv_traductions.sql
-\i 40_update_avec_traductions.sql
+\i 10_create_table_csv.sql
+\i 20_import_csv_traductions.sql
+\i 30_update_avec_traductions.sql
+\i 40_reformattage_isole_a_partir_de.sql
 \i 50_trim_correctement_isolats.sql
 
 \cd ../60_origine
