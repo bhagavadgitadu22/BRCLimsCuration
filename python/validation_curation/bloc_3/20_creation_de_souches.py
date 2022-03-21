@@ -59,7 +59,7 @@ def write_sheet(wb, name, dico, legende):
     #style_sheet(sheet)
 
 def main():
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     f = open('../../output/souches_creees.csv', 'r', newline='')
     records = csv.reader(f, delimiter=';')

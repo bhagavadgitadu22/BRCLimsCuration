@@ -1,3 +1,4 @@
+from decimal import ROUND_DOWN
 import psycopg2
 import csv
 from openpyxl.workbook.workbook import Workbook
@@ -72,7 +73,7 @@ def main():
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
     name = ["taxonomie", "isole_a_partir_de_translated", "isole_a_partir_de_trimmed", "origine", "refs_equis", "strain_designation"]
     legendes = {}
@@ -89,6 +90,7 @@ def main():
     str_base = open("../curation_bloc_3/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
+    bilan_words = {}
     for row in rows:
         id_cip = row[0]
 
@@ -127,10 +129,17 @@ def main():
             for elmt_break in break_cured:
                 if elmt_break not in break_pure:
                     add.append(elmt_break)
+
             sup = []
             for elmt_break in break_pure:
                 if elmt_break not in break_cured and elmt_break != '':
                     sup.append(elmt_break)
+
+                    words = elmt_break.split(' ')
+                    for w in words:
+                        if w not in bilan_words:
+                            bilan_words[w] = 0
+                        bilan_words[w] += 1
 
             differences["refs_equis"].append([identifiant_cip, version, record[27], record_curated[27], str(sup), str(add), record[68]])
 
@@ -198,5 +207,15 @@ def main():
                 differences_uniques[elmt].append(diff[2:])
     
     write_excel(name, legendes_uniques, differences_uniques, "bilan_curation_lignes_uniques")
+
+    rows_words = []
+    for w in bilan_words:
+        row = [w, bilan_words[w]]
+        print(row)
+        rows_words.append(row)
+    f_vides = open('../../output/bilan_words.csv', 'w', encoding="utf-8", newline='')
+    writer_vides = csv.writer(f_vides, delimiter=';')
+    writer_vides.writerows(rows_words)
+    f_vides.close()
 
 main()

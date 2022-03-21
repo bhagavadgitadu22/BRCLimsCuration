@@ -1,4 +1,5 @@
 import re
+import csv
 
 texte = '''<button id="abb" class="accordion">ABB <a href="/text/collections#abb" class="anchorlink">   </a> </button>
               
@@ -4514,15 +4515,27 @@ texte = '''<button id="abb" class="accordion">ABB <a href="/text/collections#abb
 
 m = re.findall(r'id=".*?"', texte)
 
-str_collections = '('
+collections = []
 for elmt in m:
-    if str_collections != '(':
-        str_collections += '|'
-    
-    short_elmt = elmt.replace('id=', '').strip('"')
-    str_collections += short_elmt
+  short_elmt = elmt.replace('id=', '').strip('"')
+  if short_elmt not in collections:
+      collections.append(short_elmt)
 
-str_collections += ')'
-print(str_collections)
+f_vides = open('../../output/bilan_words.csv', 'r', newline='')
+records = csv.reader(f_vides, delimiter=';')
 
+rows = []
+for record in records:
+  row = [record[0], record[1]]
+  if record[0].lower() in collections:
+    row.append("True")
+  else:
+    row.append("False")
+  rows.append(row)
 
+f_vides2 = open('../../output/bilan_words2.csv', 'w', encoding="utf-8", newline='')
+writer_vides2 = csv.writer(f_vides2, delimiter=';')
+writer_vides2.writerows(rows)
+f_vides2.close()
+
+f_vides.close()

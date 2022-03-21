@@ -5,7 +5,7 @@ SELECT *
 INTO new_refs_equis
 FROM all_strains_grouped
 WHERE short_strain LIKE ANY(SELECT CONCAT(collection, '%') FROM bilan_collections)
-OR short_strain SIMILAR TO '(CARE|CRBIP|CIP|DSM|ATCC|JCM|NCTC)%';
+OR short_strain SIMILAR TO '(CARE|CRBIP|CIP|DSM|ATCC|JCM|NCTC|WDCM|LMG)%';
 
 SELECT * 
 INTO new_strain_designations
