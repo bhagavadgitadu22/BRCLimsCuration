@@ -14,12 +14,12 @@ sch_pto_id, sch_isole_a_partir_de, sch_lieu, TO_TIMESTAMP(sch_dat_prelevement, '
 sch_bibliographie, sch_temperature_incubation, sch_historique, sch_depositaire,
 (SELECT xxx_id FROM t_utilisateur WHERE usr_log = 'superadmin') AS xxx_cre_usr_id,
 (SELECT xxx_id FROM t_utilisateur WHERE usr_log = 'superadmin') AS xxx_maj_usr_id, 
-124 AS sch_statut, 413 AS sch_col_id
+124 AS sch_statut, 413 AS sch_col_id, 1 AS xxx_brc_id, 1 AS sch_version
 INTO TABLE infos_completes_care
 FROM infos_care;
 
 INSERT INTO t_souche (sch_identifiant, sch_dat_acquisition, sch_denomination, sch_taxonomie, sch_proprietes, 
 					  sch_origine, sch_pto_id, sch_isole_a_partir_de, sch_lieu, sch_dat_prelevement, 
 					  sch_bibliographie, sch_temperature_incubation, sch_historique, sch_depositaire,
-					  xxx_cre_usr_id, xxx_maj_usr_id, sch_statut, sch_col_id)
+					  xxx_cre_usr_id, xxx_maj_usr_id, sch_statut, sch_col_id, xxx_brc_id, sch_version)
 SELECT * FROM infos_completes_care;

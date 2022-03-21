@@ -1,6 +1,6 @@
 import csv 
 
-f_vides = open('../../output/colls_utiles.csv', 'r', newline='')
+f_vides = open('../../output/collections_valables.csv', 'r', newline='')
 records = csv.reader(f_vides, delimiter=';')
 
 str = ""
