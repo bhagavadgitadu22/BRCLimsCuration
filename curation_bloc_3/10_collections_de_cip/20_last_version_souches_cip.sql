@@ -10,7 +10,7 @@ svl_valeur AS basonyme, sch_synonymes,
 sch_proprietes, sch_bibliographie,
 t_lieu.don_lib AS lieu_origine, sch_isole_a_partir_de,
 sch_dat_prelevement, sch_dat_isolement, 
-sch_taxonomie, sch_references_equi
+sch_taxonomie, sch_references_equi, sch_historique
 INTO TABLE last_version_souches_cip
 FROM t_souche
 

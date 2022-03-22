@@ -10,7 +10,7 @@ connection = psycopg2.connect(user="postgres",
                                 password="hercule1821",
                                 host="localhost",
                                 port="5432",
-                                database="brc_db")
+                                database="restart_db_pure")
 connection.autocommit = True
 
 # create a cursor to perform database operations
@@ -22,23 +22,19 @@ with pd.ExcelWriter("C:/Users/Public/Documents/bilan_panels.xlsx") as writer:
         df = pd.read_excel(xls, name)
         col = df.columns[0]
 
-        denom = []
-        refs_equis = []
-        catalogue = []
+        rows = []
 
         for elmt in df[col]:
-            cursor.execute("SELECT sch_denomination, sch_references_equi, sch_catalogue FROM last_version_souches_cip WHERE sch_identifiant SIMILAR TO '"+str(elmt)+"T?'")
+            cursor.execute("SELECT sch_dat_isolement, sch_historique, sch_dat_prelevement, sch_dat_acquisition, lieu_origine, sch_isole_a_partir_de FROM last_version_souches_cip WHERE sch_identifiant SIMILAR TO '"+str(elmt)+"T?'")
             record = cursor.fetchone()
             if record is not None:
-                denom.append(record[0])
-                refs_equis.append(record[1])
-                catalogue.append(record[2])
+                rows.append([elmt for elmt in record])
             else:
-                denom.append("")
-                refs_equis.append("")
-                catalogue.append("")
+                rows.append(["", "", "", "", ""])
         
-        df["Dénomination"] = denom
-        df["Références équivalentes"] = refs_equis
-        df["Catalogue"] = catalogue
+        df["Date d'isolement"] = [elmt[0] for elmt in rows]
+        df["Date de prélèvement"] = [elmt[1] for elmt in rows]
+        df["Date d'acquisition"] = [elmt[2] for elmt in rows]
+        df["Lieu d'origine"] = [elmt[3] for elmt in rows]
+        df["Origine"] = [elmt[4] for elmt in rows]
         df.to_excel(writer, sheet_name=name, index=False)
