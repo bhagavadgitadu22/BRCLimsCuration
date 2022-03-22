@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS taxonomy;
 
 DROP TABLE IF EXISTS infos_care;
 DROP TABLE IF EXISTS max_identifiant;
+DROP TABLE IF EXISTS max_cpt;
 DROP TABLE IF EXISTS infos_completes_care;
 
 DROP TABLE IF EXISTS ids_taxos_a_virer;

@@ -90,7 +90,7 @@ def main():
     wb = Workbook()
     write_sheet(wb, "souches_apparues", bilan, ["Identifiant", "Date d'acquisition", "Dénomination", "Taxonomie", "Propriétés", 
                                                         "Origine", "Pathogénicité", "Isolé à partir de", "Lieu", "Date de prélèvement", 
-                                                        "Bibliographie", "Tempréature d'incubation", "Historique", "Déposant", 
+                                                        "Bibliographie", "Température d'incubation", "Historique", "Déposant", 
                                                         "xxx_cre_usr_id", "xxx_maj_usr_id", "sch_statut", "sch_col_id"])
     del wb["Sheet"]
     wb.save(str("../../output/apparitions_souches.xlsx"))
