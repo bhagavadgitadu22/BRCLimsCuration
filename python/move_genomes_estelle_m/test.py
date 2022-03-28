@@ -1,78 +1,35 @@
-import os
+import pandas as pd
 
-def testIfExists(path, id, elmt):
-    exist = False
-    path_id = path
-    if id != '':
-        path_id = path+'/'+id
-    dir_list_id = os.listdir(path_id)
+# list_ids = ['105813', '107243', '107244', '107245', '107246', '107247', '107499T', '108671T', '108751T', '109051T', '109252T', '109585T', '111175', '111411T', '111486T', '111608T', '111725T', '111733T', '111750T', '111751T', '60.14', 'A231', '101049T', '103452T', '103549', '103857', '103869', '106155T', '111065', '111402', '111403', '111444T', '111497T', '111542T', '111543T', '111544T', '111546T', '64.31T', '105568', '111937', '78.25', '106788', '111830', '111844T', '111847T', '111848T', '105702', '105701', '111177T', 'A30', '105674', '102697', 'A31', '104583', '111179T', '111176T', '102722T', '102728', '103551', '103716', '103744T', '104221', '105921', '105922', '109891T', '110923', '111670', '111686', '111696T', '111715T', '111717T', '103212', '103570', '104340', '105891', '105960T', '106356T', '106358T', '107124T', '107448T', '107652', '108050T', '109356T', '109574T', '109743T', '109815T', '110183T', '111129', '111172', '111218', '111400T', '55.30', '75.1T', '81.57T', 'CRBIP17.18', '105662', '105521', '111904T', '105185', '107205T']
+# list_ids.sort()
+# print(list_ids)
 
-    for elmt_in_id in dir_list_id:
-        if os.path.isdir(os.path.join(path_id, elmt_in_id)) and elmt in elmt_in_id:
-            exist = True
-            print(elmt)
-            print(exist)
+# xls = pd.ExcelFile('../../transfert_p2m_try_1/50_transfert_infos_p2m.xlsx')
 
-    return exist
+# #pos_genome = 5
+# pos_genome = 2
 
-path = 'V:/SEQUENCAGETOTAL/FICHIERRESULTATSSEQUENCES'
-dir_list = os.listdir(path)
+# list_p2m = []
+# df = pd.read_excel(xls, 'metafiles')
+# df = df.reset_index(drop=True)  # make sure indexes pair with number of rows
+# for index, row in df.iterrows():
+#     if row[0].split('/')[3] not in list_p2m:
+#         list_p2m.append(row[0].split('/')[3])
 
-file = ""
-for f in dir_list:
-    if os.path.isdir(os.path.join(path, f)) and f[0].isdigit():
-        file = f
+# print(list_p2m)
 
-print(file)
+l1 = ['191105', '191203', '161215', '180105', '171006', '191129', '190712', '190201', '171201', '170725', '200817', '180112', '171122', '211025_NB501255', '200228', '200728', '180725', '170217', '180713', '180719', '190801', '170512', '181221', '190823', '190906', '170928', '170721', '180525', '180629', '170224', '180413', '171115', '190420', '161125']
+l2 = ['211129_NB501755', '160802', '191105', '191203', '161215', '180105', '171006', '191129', '190712', '190201', '171201', '170113', '170725', '200817', '171122', '180112', '211025_NB501255', '200228', '200728', '161222', '180725', '170217', '161021', '170404', '161230', '180713', '180719', '170103', '190801', '170512', '181221', '190823', '190906', '170928', '170721', '171003', '170808', '180525', '180629', '170620', '170224', '180413', '171115', '190420', '161125']
 
-path2 = path+'/'+file
-dir_list2 = os.listdir(path2)
+for elmt in l1:
+    if elmt not in l2:
+        print("l2")
+        print(elmt)
 
-# création du dico avec toutes les infos utiles
-ids_cip = {}
-for f2 in dir_list2:
-    path3 = path2+'/'+f2
+for elmt in l2:
+    if elmt not in l1:
+        print("l1")
+        print(elmt)    
 
-    if not(os.path.isdir(path3)):
-        print(f2)
-    else:
-        dir_list3 = os.listdir(path3)
-
-        for f3 in dir_list3:
-            id_cip = f3.split('_')[0].replace("CIP", '')
-            if id_cip not in ids_cip:
-                ids_cip[id_cip] = {}
-
-            lot_cip = f3.split('.')[0].split('_', 1)[1]
-            if lot_cip not in ids_cip[id_cip]:
-                ids_cip[id_cip][lot_cip] = {}
-
-            local_dir = path3.split('/')[-1]
-            if local_dir not in ids_cip[id_cip][lot_cip]:
-                ids_cip[id_cip][lot_cip][local_dir] = []
-
-            local_file = path3+'/'+f3
-            if local_file not in ids_cip[id_cip][lot_cip][local_dir]:
-                ids_cip[id_cip][lot_cip][local_dir].append(local_file)
-
-print(ids_cip)
-
-path_aim = 'V:/CONTROLE_SOUCHE'
-dir_list_aim = os.listdir(path_aim)
-
-for id_cip in ids_cip:
-    if not(testIfExists(path_aim, '', id_cip)):
-        os.mkdir(os.path.join(path_aim, id_cip))
-
-    print(ids_cip[id_cip])
-    for lot_cip in ids_cip[id_cip]:
-        path_id = path_aim+'/'+id_cip  
-        if not(testIfExists(path_aim, id_cip, lot_cip)):
-            os.mkdir(path_id+'/'+lot_cip)
-
-        path_lot = path_id+'/'+lot_cip
-        for dir_cip in ids_cip[id_cip][lot_cip]:
-            if not(testIfExists(path_id, lot_cip, dir_cip)):
-                os.mkdir(path_lot+'/'+dir_cip)
-
-        
+l2.sort()
+print(l2)

@@ -32,7 +32,7 @@ def borders_cells(sheet):
             if cell.value:
                 cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
-xls = pd.ExcelFile('../../output/transfert_infos_p2m.xlsx')
+xls = pd.ExcelFile('../../transfert_p2m/50_transfert_infos_p2m.xlsx')
 
 #pos_genome = 5
 pos_genome = 2
@@ -44,10 +44,10 @@ pos_genome = 2
 #     if row[1].split('/')[pos_genome] not in list_ids:
 #         list_ids.append(row[1].split('/')[pos_genome])
 
-# sub_ids = list_ids[:10]
-sub_ids = ['111770T', '55.117', '102968T', '103611T', '103959', '105187', '105188']
+# sub_ids = list_ids[10:100]
+# print(sub_ids)
 
-print(sub_ids)
+sub_ids = ['109252T', '109585T', '111175', '111411T', '111486T', '111608T', '111725T', '111733T', '111750T', '111751T', '60.14', 'A231', '101049T', '103452T', '103549', '103857', '103869', '106155T', '111065', '111402', '111403', '111444T', '111497T', '111542T', '111543T', '111544T', '111546T', '64.31T', '105568', '111937', '78.25', '106788', '111830', '111844T', '111847T', '111848T', '105702', '105701', '111177T', 'A30', '105674', '102697', 'A31', '104583', '111179T', '111176T', '102722T', '102728', '103551', '103716', '103744T', '104221', '105921', '105922', '109891T', '110923', '111670', '111686', '111696T', '111715T', '111717T', '103212', '103570', '104340', '105891', '105960T', '106356T', '106358T', '107124T', '107448T', '107652', '108050T', '109356T', '109574T', '109743T', '109815T', '110183T', '111129', '111172', '111218', '111400T', '55.30', '75.1T', '81.57T', 'CRBIP17.18', '105662']
 
 dirs_created = []
 metafiles_moved = []
@@ -126,4 +126,4 @@ for line_genome in genomes_moved:
     sheet.append(line_genome)
 style_sheet(sheet)
 
-wb.save("../../output/50_bilan_transfert_p2m.xlsx")
+wb.save("../../transfert_p2m/60_bilan_transfert_p2m.xlsx")

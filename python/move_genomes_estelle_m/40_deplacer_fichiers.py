@@ -35,7 +35,7 @@ df = pd.read_excel(xls_milieux, 'genomes_crossed')
 
 #local_path = '/mnt/gaia/cip'
 #pos_p2m = 6
-local_path = 'V:'
+local_path = 'X:'
 pos_p2m = 3
 path = local_path+'/CONTROLE_SOUCHE'
 dir_list = os.listdir(path)
@@ -125,7 +125,7 @@ for index, row in df.iterrows():
         log_transferts.append(row_transfert)
 
         compet += 1
-        if compet % 50 == 0:
+        if compet % 1000 == 0:
             print(compet)
 
     # if compet == 2500:

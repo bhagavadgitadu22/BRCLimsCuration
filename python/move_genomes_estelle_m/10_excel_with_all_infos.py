@@ -8,6 +8,11 @@ def test_match(pattern, file):
     match = re.match(pattern, file)
     if match:
         id_cip = match.group(0)
+        if '105521' in id_cip:
+            print('')
+            print(pattern)
+            print(file)
+            print(id_cip)
     return id_cip
 
 def redimension_cell_width(ws):
@@ -38,7 +43,7 @@ def borders_cells(sheet):
                 cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
 #local_path = '/mnt/gaia/cip'
-local_path = 'V:'
+local_path = 'X:'
 path = local_path+'/SEQUENCAGETOTAL/FICHIERRESULTATSSEQUENCES'
 dir_list = os.listdir(path)
 
@@ -49,13 +54,22 @@ pattern4 = '^CIPA[0-9]{1,3}T?'
 
 count = 0
 
+# liste des dossiers à éviter car on préviligie copie
+dossiers_copie = []
+for file in dir_list:
+    # on traite chaque dossier de p2m
+    if os.path.isdir(os.path.join(path, file)) and file[0].isdigit() and "copie" in file.lower():
+        dossiers_copie.append(file.replace("-Copie", ""))
+
+print(dossiers_copie)
+
 # file is the number p2m
 ids_cip = {}
 ids_cip_extra = {}
 fake_ids = []
 for file in dir_list:
     # on traite chaque dossier de p2m
-    if os.path.isdir(os.path.join(path, file)) and file[0].isdigit():
+    if os.path.isdir(os.path.join(path, file)) and file[0].isdigit() and file not in dossiers_copie:
         path2 = path+'/'+file
         dir_list2 = os.listdir(path2)
 
@@ -142,6 +156,9 @@ for file in dir_list:
     if count % 100 == 0:
         print(count)
 
+    # if "copie" in file.lower():
+    #     print(file)
+
 # création de l'excel avec toutes les infos
 wb = Workbook()
 sheet = wb.create_sheet('genomes')
@@ -160,10 +177,20 @@ style_sheet(sheet)
 sheet2 = wb.create_sheet('metafiles')
 cols = ["id", "path", "compte"]
 sheet2.append(cols)
+used = []
 for id in ids_cip_extra:
     for f in ids_cip_extra[id]:
-        row = [id, f, ids_cip_extra[id][f]]
-        sheet2.append(row)
+        if 'readme' in f.lower():
+            if id not in used:
+                first_use = id
+                used.append(first_use)
+                row = [id, f, ids_cip_extra[id][f]]
+                sheet2.append(row)
+            else:
+                print([id, f])
+        else:
+            row = [id, f, ids_cip_extra[id][f]]
+            sheet2.append(row)
 style_sheet(sheet2)
 
 wb.save("../../output/all_infos_p2m.xlsx")
