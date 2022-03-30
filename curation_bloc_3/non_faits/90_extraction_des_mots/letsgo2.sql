@@ -3,7 +3,8 @@ tdd_type.don_lib, tdd_type_stockage.don_lib,
 t_lot.lot_qte_initiale, t_lot.lot_qte_stock, t_lot.lot_qte_minimale, t_lot.lot_date_creation, t_lot.lot_com, 
 tdd_unite.don_lib, t_lot2.lot_numero, 
 t_lot.lot_en_vente, 
-tdd_emballage_primaire.don_lib, tdd_solide_liquide.don_lib, tdd_support_conservation.don_lib
+tdd_emballage_primaire.don_lib, tdd_solide_liquide.don_lib, tdd_support_conservation.don_lib,
+t_lot.xxx_cre_dat, t_lot.xxx_maj_dat, t_lot.xxx_sup_dat
 FROM t_souche
 JOIN t_lot
 ON lot_sch_id = t_souche.xxx_id
