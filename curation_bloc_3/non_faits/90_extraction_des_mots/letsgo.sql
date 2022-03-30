@@ -1,4 +1,5 @@
-SELECT t_souche.xxx_id, sch_identifiant, sch_version, don_lib 
+SELECT t_souche.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+sch_identifiant, sch_version, don_lib 
 FROM t_souche
 JOIN t_alerte_souche
 ON als_sch_id = t_souche.xxx_id
@@ -14,7 +15,8 @@ ORDER BY t_souche.xxx_id;
 DELETE FROM t_alerte_souche
 WHERE als_sch_id IN (SELECT xxx_id FROM ids_mots);
 
-SELECT ta.xxx_id, ta.sch_identifiant, ta.sch_version, tb.xxx_id, tb.sch_identifiant, tb.sch_version, don_lib 
+SELECT ta.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+ta.sch_identifiant, ta.sch_version, tb.xxx_id, tb.sch_identifiant, tb.sch_version, don_lib 
 FROM t_cousinage
 JOIN t_souche AS ta
 ON sch_id_principal = ta.xxx_id
@@ -39,7 +41,8 @@ USING ids_mots
 WHERE sch_id_principal IN (SELECT xxx_id FROM ids_mots)
 OR sch_id_secondaire IN (SELECT xxx_id FROM ids_mots);
 
-SELECT t_souche.xxx_id, sch_identifiant, sch_version, don_lib, cpy_numero, cpy_methode, cpr_resultat, cpr_com
+SELECT t_souche.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+sch_identifiant, sch_version, don_lib, cpy_numero, cpy_methode, cpr_resultat, cpr_com
 FROM t_souche_t_carac_phenotypique_resultat
 JOIN t_souche
 ON strainentity_xxx_id = t_souche.xxx_id
@@ -64,7 +67,8 @@ DELETE FROM t_carac_phenotypique_resultat
 USING ids_mots
 WHERE cpr_sch_id IN (SELECT xxx_id FROM ids_mots);
 
-SELECT t_souche.xxx_id, sch_identifiant, sch_version, don_lib, seq_sequence, seq_blast, seq_qualite, seq_lien_base_publique, seq_com
+SELECT t_souche.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+sch_identifiant, sch_version, don_lib, seq_sequence, seq_blast, seq_qualite, seq_lien_base_publique, seq_com
 --, tsp_id, tsp_sequence
 FROM t_souche
 JOIN t_sequence
@@ -85,7 +89,8 @@ ORDER BY t_souche.xxx_id;
 DELETE FROM t_sequence
 WHERE seq_sch_id IN (SELECT xxx_id FROM ids_mots);
 
-SELECT t_souche.xxx_id, sch_identifiant, sch_version, 
+SELECT t_souche.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+sch_identifiant, sch_version, 
 t_donneedico.don_lib, gal_code, gal_dat_realisation, gal_com, 
 tddtype.don_lib, gmt_code, gmt_presentation_resultat, gtt_ordre, tddtest.don_lib, gar_resultat, 
 tdd2.don_lib, tdd3.don_lib
@@ -119,7 +124,8 @@ DELETE FROM t_galerieresultat
 WHERE gar_gal_id IN (SELECT xxx_id FROM t_galerie
 WHERE gal_sch_id IN (SELECT xxx_id FROM ids_mots));
 
-SELECT t_souche.xxx_id, sch_identifiant, sch_version, 
+SELECT t_souche.xxx_id, xxx_cre_dat, xxx_maj_dat, xxx_sup_dat,
+sch_identifiant, sch_version, 
 t_donneedico.don_lib, ant_code, ant_dat_realisation, ant_com,
 tddgenre.don_lib AS amg_genre, amg_code, amt_ordre, tddtest.don_lib AS amt_test,
 tddres.don_lib AS anr_resultat, anr_diametre
