@@ -8,17 +8,20 @@ dir_list = os.listdir(path)
 
 for genus in dir_list:
     # on parcourt les dossiers de genus créés
-    if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
+    #if not(genus.endswith(".xlsx")) and genus != 'sratoolkit.2.11.3-win64' and genus != '.DS_Store' and genus != 'Staphylococcus2':
+    if genus == 'Escherichia':
         # à chaque fois on lit la listes d'errs pour ce genus
         f = open(path+'/'+genus+'/'+'ids.csv', 'r', newline='')
         rows = csv.reader(f)
         for row in rows:
-            genome = row[0]
+            genome = row[0].split(';')[-1]
             print(genome)
 
             # pour chaque err on récupère les liens ftp des fichiers fasta avec le site de l'ena
             url = 'https://www.ebi.ac.uk/ena/portal/api/filereport?accession='+genome+'&result=read_run&fields=fastq_ftp'
             r = requests.get(url, stream=True)
+            print(url)
+            print(str(r.content))
             ftp = str(r.content).split('\\n')[1].split('\\t')[1]
 
             ftp1 = ftp.split(';')[0]
