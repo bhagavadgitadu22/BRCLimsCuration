@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS last_version_souches_cip;
 
-SELECT DISTINCT ON (sch_identifiant) 
+SELECT DISTINCT ON (sch_cpt_id)
 t_souche.xxx_id, sch_identifiant, sch_version, 
 sch_dat_acquisition, sch_dat_pheno, sch_qualite_dat_approbation,
 sch_type, sch_catalogue, sch_col_id,
@@ -29,4 +29,4 @@ WHERE sch_col_id IN
 FROM t_collection
 WHERE col_clg_id = 401)
 AND t_souche.xxx_sup_dat IS NULL
-ORDER BY sch_identifiant, sch_version DESC;
+ORDER BY sch_cpt_id, sch_version DESC;
