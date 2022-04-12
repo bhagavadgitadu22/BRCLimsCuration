@@ -3,7 +3,7 @@ import csv
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -11,7 +11,7 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
-cursor = get_cursor("new_brc")
+cursor = get_cursor("new_db")
 cursor.execute(open("../envoi_souches/mirri_biblio_par_id.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri.sql", "r").read())
 records = cursor.fetchall()

@@ -1,5 +1,9 @@
 SELECT t_souche.xxx_id, sch_identifiant, sch_references_equi, '1' AS restrictions_on_use,
-'1' AS nagoya, '', '', '', t_pathogenicite.pto_lib, '', '', 'Bacteria', 
+'1' AS nagoya, '', '', '', 
+CASE
+	WHEN t_pathogenicite.pto_lib IS NOT NULL THEN t_pathogenicite.pto_lib
+	ELSE '1'
+END AS statut, '', '', 'Bacteria', 
 CONCAT((string_to_array(sch_denomination, ' '))[1], ' ', (string_to_array(sch_denomination, ' '))[2], ' subsp. ', CASE
 	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN (string_to_array(sch_denomination, ' '))[3]
 	ELSE ''
@@ -18,8 +22,15 @@ t_deposant.don_lib, t_ddr.svl_valeur AS date_depot,
 sch_dat_acquisition, '', 
 sch_temperature_incubation, 
 array_to_string(ARRAY_AGG(mil_numero), ';'),
-t_conservation.don_lib AS form_of_supply, t_sd.svl_valeur AS strain_designation, 
-'', '', t_lieu.don_lib, sch_ogm, '', '', '', sch_bibliographie, 
+CASE
+	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 5
+	ELSE 2
+END AS form_of_supply, t_sd.svl_valeur AS strain_designation, 
+'', '', t_lieu.don_lib, 
+CASE
+	WHEN sch_ogm IS False THEN 1
+	ELSE 2
+END AS gmo, '', '', '', sch_bibliographie, 
 '', '', '', '', '', '', '', '', '', '', sch_isole_a_partir_de, '',  '',  '',  '', 
 CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS original_site
 FROM t_souche
@@ -29,7 +40,7 @@ ON t_pathogenicite.xxx_id = sch_pto_id
 LEFT JOIN t_donneedico AS t_deposant
 ON sch_depositaire = t_deposant.xxx_id
 LEFT JOIN t_donneedico AS t_conservation
-ON sch_depositaire = t_conservation.xxx_id
+ON sch_conservation = t_conservation.xxx_id
 LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
 		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
 		   WHERE att_nom = 'Strain Designation') AS t_sd
