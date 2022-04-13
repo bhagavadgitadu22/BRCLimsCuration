@@ -31,7 +31,13 @@ CASE
 	WHEN sch_ogm IS False THEN 1
 	ELSE 2
 END AS gmo, '', '', '', sch_bibliographie, 
-'', '', '', '', '', '', '', '', '', '', sch_isole_a_partir_de, '',  '',  '',  '', 
+'', '', '', '', '', '', '', '', '', '', 
+CASE
+	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de != '' THEN CONCAT(t_origine.don_lib, ', ', sch_isole_a_partir_de)
+	WHEN t_origine.don_lib IS NULL AND sch_isole_a_partir_de != '' THEN sch_isole_a_partir_de
+	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de = '' THEN t_origine.don_lib
+	ELSE ''
+END AS origine, '',  '',  '',  '', 
 CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS original_site
 FROM t_souche
 
@@ -53,6 +59,8 @@ ON t_ddr.att_col_id = t_souche.sch_col_id
 AND t_ddr.svl_entite_id = t_souche.xxx_id
 LEFT JOIN t_donneedico AS t_lieu
 ON sch_lieu = t_lieu.xxx_id
+LEFT JOIN t_donneedico AS t_origine
+ON sch_origine = t_origine.xxx_id
 LEFT JOIN t_milieu_souche
 ON t_souche.xxx_id = msc_sch_id
 LEFT JOIN t_milieu
@@ -62,7 +70,7 @@ WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
 AND sch_catalogue IS True
 AND sch_mot IS False
 GROUP BY t_souche.xxx_id, sch_identifiant, sch_references_equi, t_pathogenicite.pto_lib, sch_denomination, sch_type, 
-sch_historique, t_deposant.don_lib, t_ddr.svl_valeur, sch_dat_prelevement, sch_isole_a_partir_de, 
+sch_historique, t_deposant.don_lib, t_ddr.svl_valeur, sch_dat_prelevement, t_origine.don_lib, sch_isole_a_partir_de, 
 sch_dat_isolement, sch_dat_acquisition, sch_temperature_incubation, t_lieu.don_lib, t_conservation.don_lib, 
 t_sd.svl_valeur, sch_ogm, sch_bibliographie
 ORDER BY t_souche.xxx_id;

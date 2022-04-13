@@ -54,7 +54,7 @@ pattern4 = '^CIPA[0-9]{1,3}T?'
 
 count = 0
 
-# liste des dossiers à éviter car on préviligie copie
+# liste des dossiers à éviter car on privéligie copie
 dossiers_copie = []
 for file in dir_list:
     # on traite chaque dossier de p2m
