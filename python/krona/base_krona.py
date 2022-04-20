@@ -1,11 +1,11 @@
 import csv
 
 def addFather(line_genus, nodes_cleared, names_cleared, father):
-    fatherName = names_cleared[father]
+    fatherName = names_cleared[father][0]
     grandFather = nodes_cleared[father][0]
 
     if grandFather != '1':
-        line_genus.append(nodes_cleared[father][1])
+        line_genus.append(fatherName)
         line_genus = addFather(line_genus, nodes_cleared, names_cleared, grandFather)
 
     return line_genus
@@ -44,11 +44,11 @@ for name in names:
     for idx in range(len(name)):
         name[idx] = name[idx].replace('\t', '')
 
-    if name[3] == 'scientific name' or name[3] == 'synonym':
-        if name[0] not in names_cleared:
-            names_cleared[name[0]] = [name[1]]
-        else:
-            names_cleared[name[0]].append(name[1])
+    if name[3] == 'scientific name':
+        names_cleared[name[0]] = [name[1]]
+for name in names:
+    if name[3] == 'synonym':
+        names_cleared[name[0]].append(name[1])
 
 print("lets_go")
 print(len(genus_cleared))
@@ -56,16 +56,17 @@ print("")
 lines = []
 count = 0
 for key, value in genus_cleared.items():
-    line_genus = [names_cleared[key][0]]
-    father = value[0]
+    for name in names_cleared[key]:
+        line_genus = [name]
+        father = value[0]
 
-    line_genus = addFather(line_genus, fathers_cleared, names_cleared, father)
-    if line_genus[-1] == 'Bacteria':
-        lines.append(line_genus)
+        line_genus = addFather(line_genus, fathers_cleared, names_cleared, father)
+        if line_genus[-1] == 'Bacteria':
+            lines.append(line_genus)
 
-    count += 1
-    if count%50 == 0:
-        print(count)
+        count += 1
+        if count%50 == 0:
+            print(count)
 
 f = open('C:/Users/mboutrou/Documents/output/genus_complete.csv', 'w', newline='')
 writer = csv.writer(f, delimiter=';')

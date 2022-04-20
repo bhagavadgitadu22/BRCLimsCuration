@@ -11,12 +11,20 @@ genus_complete = [record for record in records_complete]
 f2.close()
 
 ex = []
+lines = []
 for record in genus_cip:
     genus = record[1].replace("'", '').replace('"', '')
 
     found = False
     for elmt in genus_complete:
         if elmt[0] == genus:
+            line = [record[0]]
+            for x in list(reversed(elmt)):
+                line.append(x)
+            line.append(record[2])
+            line.append(record[3])
+            
+            lines.append(line)
             found = True
             break
 
@@ -27,4 +35,7 @@ for record in genus_cip:
 for e in ex:
     print(e)
 
-#list(reversed(line_genus)
+f = open('C:/Users/mboutrou/Documents/output/bilan_genus.csv', 'w', newline='')
+writer = csv.writer(f, delimiter=';')
+writer.writerows(lines)
+f.close()
