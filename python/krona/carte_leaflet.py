@@ -31,15 +31,20 @@ f.close()
 
 list_pays = []
 for country in reversed(gj['features']):
-    list_pays.append(country["properties"]["ADMIN"])
-
-for nb_p_pa in nombres_par_pays:
-    nb = nb_p_pa[0]
-    pa = ajustement(nb_p_pa[1])
+    pays_geojson = country["properties"]["ADMIN"]
 
     boo = False
-    for lp in list_pays:
-        if pa in lp or pa.split(' (')[0] in lp:
+    for nb_p_pa in nombres_par_pays:
+        nb = nb_p_pa[0]
+        pa = ajustement(nb_p_pa[1])
+
+        if pa in pays_geojson or pa.split(' (')[0] in pays_geojson:
             boo = True
+
+            country["properties"]["nombre"] = nb
+    
     if not(boo):
-        print(pa)
+        gj['features'].remove(country)
+
+with open('../../output/countries_with_numbers.geojson', 'w') as f:
+    geojson.dump(gj, f)
