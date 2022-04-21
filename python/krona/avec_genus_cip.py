@@ -1,11 +1,11 @@
 import csv
 
-f = open('C:/Users/mboutrou/Documents/output/genus_cip.csv', 'r', newline='')
+f = open('../../output/genus_cip.csv', 'r', newline='')
 records_cip = csv.reader(f, delimiter=';')
 genus_cip = [record for record in records_cip]
 f.close()
 
-f2 = open('C:/Users/mboutrou/Documents/output/genus_complete.csv', 'r', newline='')
+f2 = open('../../output/genus_complete.csv', 'r', newline='')
 records_complete = csv.reader(f2, delimiter=';')
 genus_complete = [record for record in records_complete]
 f2.close()
@@ -35,7 +35,7 @@ for record in genus_cip:
 for e in ex:
     print(e)
 
-f = open('C:/Users/mboutrou/Documents/output/bilan_genus.csv', 'w', newline='')
+f = open('../../output/bilan_genus.csv', 'w', newline='')
 writer = csv.writer(f, delimiter=';')
 writer.writerows(lines)
 f.close()

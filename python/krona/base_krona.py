@@ -11,7 +11,7 @@ def addFather(line_genus, nodes_cleared, names_cleared, father):
     return line_genus
 
 print("nodes_cleared")
-f = open('C:/Users/mboutrou/Downloads/new_taxdump/nodes.dmp', 'r', newline='')
+f = open('/home/calvin/Documents/new_taxdump/nodes.dmp', 'r', newline='')
 records = csv.reader(f, delimiter='|')
 nodes = [record[:3] for record in records]
 f.close()
@@ -34,7 +34,7 @@ for node in nodes:
 print(cat)
 
 print("names_cleared")
-f = open('C:/Users/mboutrou/Downloads/new_taxdump/names.dmp', 'r', newline='')
+f = open('/home/calvin/Documents/new_taxdump/names.dmp', 'r', newline='')
 records = csv.reader(f, delimiter='|')
 names = [record for record in records]
 f.close()
@@ -61,14 +61,14 @@ for key, value in genus_cleared.items():
         father = value[0]
 
         line_genus = addFather(line_genus, fathers_cleared, names_cleared, father)
-        if line_genus[-1] == 'Bacteria':
+        if line_genus[-1] == 'Bacteria' or line_genus[-1] == 'Archaea':
             lines.append(line_genus)
 
         count += 1
         if count%50 == 0:
             print(count)
 
-f = open('C:/Users/mboutrou/Documents/output/genus_complete.csv', 'w', newline='')
+f = open('../../output/genus_complete.csv', 'w', newline='')
 writer = csv.writer(f, delimiter=';')
 writer.writerows(lines)
 f.close()
