@@ -1,0 +1,139 @@
+<html>
+
+<head>
+	<meta charset=utf-8 />
+	<title>CartoWiki</title>
+	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<!-- Load Leaflet from CDN -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+		integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+		crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+		integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+		crossorigin=""></script>
+		
+	<!-- side panel leaflet -->
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	
+	<!-- JQuery -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+// changement Leaflet
+L.Map.include({
+  _initControlPos: function () {
+    var corners = this._controlCorners = {},
+      l = 'leaflet-',
+      container = this._controlContainer =
+        L.DomUtil.create('div', l + 'control-container', this._container);
+    function createCorner(vSide, hSide) {
+      var className = l + vSide + ' ' + l + hSide;
+      corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+    }
+    createCorner('top', 'left');
+    createCorner('top', 'right');
+    createCorner('bottom', 'left');
+    createCorner('bottom', 'right');
+    createCorner('top', 'center');
+    createCorner('middle', 'center');
+    createCorner('middle', 'left');
+    createCorner('middle', 'right');
+    createCorner('bottom', 'center');
+  }
+});
+// définition variables
+var figures;
+var geoJSONlayer_pays;
+var geoJSONlayer_villes;
+var id_actif = "";
+var type_actif;
+var caracs = {};
+var annee;
+var min_annee = -3000;
+var max_annee = 2020;
+var caracs_a_cette_date = {};
+var myPlayer;
+var max_villes_simultanees = 25;
+// initialisation
+var map = L.map('map', {
+	attributionControl: false
+}).setView([46.988332, 2.605527], 5);
+L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain-background/{z}/{x}/{y}{r}.{ext}', {
+	noWrap: true,
+	attribution: '',
+	subdomains: 'abcd',
+	minZoom: 1,
+	maxZoom: 18,
+	ext: 'png'
+}).addTo(map);
+
+var bottom_slider = L.Control.extend({
+    options: {
+        position: 'bottomcenter',
+    },
+    onAdd: function (map) {
+        var sliderContainer = L.DomUtil.create('div', 'slider_container');
+		
+		dims_map = map.getPixelBounds();
+		width_map = dims_map.max.x - dims_map.min.x;
+		
+		$(sliderContainer).css("width", 0.9*width_map);
+		
+		$(sliderContainer).css("display", "flex");
+		$(sliderContainer).css("align-items", "center");
+		
+		$(sliderContainer).append('<div id="slider_range" style="float:left; width:88%;"></div><div id="slider_date" style="float: right; width: 120px; padding-left:1%;"><input type="number" id="slider_date_annee" min="-3000" max="2020" value="0" style="font-family: Georgia; color: black; font-size:30px; padding-top: 5px; padding-bottom: 7px; padding-left: 11px; padding-right: 7px;"></input></div>');
+		
+		L.DomEvent.disableClickPropagation(sliderContainer);
+		L.DomEvent.disableScrollPropagation(sliderContainer);
+		
+        return sliderContainer;
+    }
+});
+map.on('resize', function () {
+	dims_map = map.getPixelBounds();
+	width_map = dims_map.max.x - dims_map.min.x;
+	
+	$(".slider_container").css("width", 0.9*width_map);
+});
+map.addControl(new bottom_slider());
+$( "#slider_range" ).slider({
+	min: min_annee, 
+	max: max_annee,
+	slide: function( event, ui ) {
+		$( "#slider_date_annee" ).val(ui.value);
+		
+		map.removeLayer(geoJSONlayer_pays);
+		map.removeLayer(geoJSONlayer_villes);
+		
+		annee = parseInt($( "#slider_date_annee" ).val());
+		determination_caracs_a_cette_date();
+		affichage_figures();
+		
+		if (id_actif != "") { actualisation_conteneur_droite(); };
+	}
+});
+$( "#slider_date_annee" ).bind('change', function(){
+	$( "#slider_range" ).slider('value', $( "#slider_date_annee" ).val());
+	
+	map.removeLayer(geoJSONlayer_pays);
+	map.removeLayer(geoJSONlayer_villes);
+	
+	annee = parseInt($( "#slider_date_annee" ).val());
+	determination_caracs_a_cette_date();
+	affichage_figures();
+	
+	if (id_actif != "") { actualisation_conteneur_droite(); };
+});
+	
+</script>
+</body>
+</html>

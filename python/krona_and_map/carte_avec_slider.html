@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>CountriesBRCLims</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+    
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.4.2/chroma.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="map"></div>
+<script type="text/javascript" src="countries_with_dates.js"></script>
+
+<script>
+
+// center of the map
+var center = [0, 0];
+
+// create the map
+var map = L.map('map').setView(center, 2);
+
+// set up the OSM layer
+L.tileLayer(
+  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+	noWrap: true
+  }).addTo(map);
+
+var alphas = [0,0.02,0.3,1]
+var colorRamp = chroma.scale('RdYlBu').domain(alphas);
+
+var years = [];
+var sums = [];
+var numberByCountry = {}
+for (elmt in geom.features) {
+	sum = 0;
+	for (prop in geom.features[elmt].properties) {
+		if (prop != 'ADMIN' & prop != 'ISO_A3' & prop != '' & !(years.includes(parseInt(prop)))) {
+			years.push(parseInt(prop));
+		}
+		if (prop != 'ADMIN' & prop != 'ISO_A3') {
+			sum += parseInt(geom.features[elmt].properties[prop])
+		}
+	}
+	sums.push(sum);
+	numberByCountry[geom.features[elmt].properties.ADMIN] = sum;
+}
+var minYear = Math.min(...years);
+var maxYear = Math.max(...years);
+var maxAvg = Math.max(...sums);
+
+var geojson;
+
+function setNumberByCountry(properties) {
+	sum = 0;
+	for (prop in properties) {
+		if (prop != 'ADMIN' & prop != 'ISO_A3') {
+			console.log($("#slider_range").slider("values")[0]);
+			console.log($("#slider_range").slider("values")[1]);
+			console.log(parseInt(prop));
+			console.log('');
+			if ($("#slider_range").slider("values")[0] <= parseInt(prop) & $("#slider_range").slider("values")[1] >= parseInt(prop)) {
+				sum += parseInt(geom.features[elmt].properties[prop])
+			}
+		}
+	}
+	numberByCountry[properties.ADMIN] = sum;
+}
+
+function getColor(nombre) {
+	return colorRamp(nombre/maxAvg);
+}
+
+function style(feature) {
+	return {
+		fillColor: getColor(numberByCountry[feature.properties.ADMIN]),
+		weight: 1,
+		opacity: 1,
+		color: 'black',
+		dashArray: '3',
+		fillOpacity: 0.7
+	};
+}
+
+function highlightFeature(e) {
+    var layer = e.target;
+
+    layer.setStyle({
+        weight: 2,
+        color: 'black',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+
+	info.update(layer.feature.properties);
+}
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+	info.update();
+}
+
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+	
+}
+
+geojson = L.geoJson(geom, {style: style, onEachFeature: onEachFeature}).addTo(map);
+
+// legend
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+	var div = L.DomUtil.create('div', 'info legend');
+	var labels = ["Number of strains:"];
+	var from, to;
+
+	for (var i = 0; i < alphas.length; i++) {
+		from = parseInt(alphas[i]*maxAvg);
+		if (from == 0) {
+			from = 1
+		}
+		labels.push('<i style="background:' + getColor(from) + '"></i> '+from);
+	}
+
+	div.innerHTML = labels.join('<br>');
+	return div;
+};
+
+legend.addTo(map);
+
+// info when we hover on a country
+var info = L.control({position: 'bottomright'});
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = (props ? numberByCountry[props.ADMIN] + ' strains in ' + props.ADMIN : 'Hover over a country');
+};
+
+info.addTo(map);
+
+// slider
+var bottom_slider = L.Control.extend({
+    options: {
+        position: 'bottomleft',
+    },
+    onAdd: function (map) {
+        var sliderContainer = L.DomUtil.create('div', 'slider_container');
+		
+		dims_map = map.getPixelBounds();
+		width_map = dims_map.max.x - dims_map.min.x;
+		
+		$(sliderContainer).css("width", 0.9*width_map);
+		
+		$(sliderContainer).css("display", "flex");
+		$(sliderContainer).css("align-items", "center");
+		
+		$(sliderContainer).append('<div id="slider_range" style="width:100%; margin-bottom:2%; margin-left:2%;">');
+		
+		L.DomEvent.disableClickPropagation(sliderContainer);
+		L.DomEvent.disableScrollPropagation(sliderContainer);
+		
+        return sliderContainer;
+    }
+});
+
+map.addControl(new bottom_slider());
+
+$( "#slider_range" ).slider({ 
+	min: minYear,
+	max: maxYear,
+	range: true, 
+	values: [minYear, maxYear],
+	slide: function (event, ui) {
+		geojson.eachLayer(function(layer) {
+			setNumberByCountry(layer.feature.properties);
+			geojson.resetStyle(layer);
+		});
+	}
+});
+
+</script>
+
+</body>
+</html>

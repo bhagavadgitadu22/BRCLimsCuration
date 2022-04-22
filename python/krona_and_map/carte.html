@@ -132,23 +132,9 @@ function onEachFeature(feature, layer) {
     });
 }
 
-var info = L.control();
-
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
-
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = (props ?'<h4>' + props.nombre + ' strains in ' + props.ADMIN + '</h4>': 'Hover over a country');
-};
-
-info.addTo(map);
-
 geojson = L.geoJson(geom, {style: style, onEachFeature: onEachFeature}).addTo(map);
 
+// legend
 var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
@@ -170,6 +156,22 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+// info when we hover on a country
+var info = L.control({position: 'bottomright'});
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = (props ? props.nombre + ' strains in ' + props.ADMIN : 'Hover over a country');
+};
+
+info.addTo(map);
 
 </script>
 
