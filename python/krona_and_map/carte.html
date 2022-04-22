@@ -37,6 +37,17 @@
 			margin: 0 0 5px;
 			color: #777;
 		}
+		.legend {
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
 	</style>
 	
 </head>
@@ -60,17 +71,18 @@ L.tileLayer(
 	noWrap: true
   }).addTo(map);
 
-colorRamp = chroma.scale('RdYlBu').domain([0,0.02,0.3,1]);
+alphas = [0,0.02,0.3,1]
+colorRamp = chroma.scale('RdYlBu').domain(alphas);
 maxAvg = 2750
 var geojson;
 
-function getColor(nom, nombre) {
-  return colorRamp(nombre/maxAvg)
+function getColor(nombre) {
+	return colorRamp(nombre/maxAvg)
 }
 
 function style(feature) {
 	return {
-		fillColor: getColor(feature.properties.ADMIN, feature.properties.nombre),
+		fillColor: getColor(feature.properties.nombre),
 		weight: 1,
 		opacity: 1,
 		color: 'black',
@@ -129,6 +141,25 @@ info.update = function (props) {
 info.addTo(map);
 
 geojson = L.geoJson(geom, {style: style, onEachFeature: onEachFeature}).addTo(map);
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+	var div = L.DomUtil.create('div', 'info legend');
+	var labels = ["Number of strains:"];
+	var from, to;
+
+	for (var i = 0; i < alphas.length; i++) {
+		from = alphas[i]*maxAvg;
+		labels.push('<i style="background:' + getColor(from) + '"></i> '+from);
+	}
+
+	div.innerHTML = labels.join('<br>');
+	return div;
+};
+
+legend.addTo(map);
 
 </script>
 

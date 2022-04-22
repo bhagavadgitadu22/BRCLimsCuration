@@ -19,8 +19,7 @@ def ajustement(pays):
 
     return pays
 
-
-path_to_file = '/home/calvin/Documents/geo-countries_zip/archive/countries.geojson'
+path_to_file = '../../output/geo-countries_zip/archive/countries.geojson'
 with open(path_to_file) as f:
     gj = geojson.load(f)
 
