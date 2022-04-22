@@ -56,27 +56,24 @@ var map = L.map('map').setView(center, 2);
 // set up the OSM layer
 L.tileLayer(
   'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18
+    maxZoom: 18,
+	noWrap: true
   }).addTo(map);
 
-colorRamp = chroma.scale('RdYlBu').domain([1,0]);
+colorRamp = chroma.scale('RdYlBu').domain([0,0.02,0.3,1]);
 maxAvg = 2750
 var geojson;
 
 function getColor(nom, nombre) {
-  if (nom == 'France') {
-  	return 'black'
-  } else {
-  	return colorRamp(nombre/1000)
-  }
+  return colorRamp(nombre/maxAvg)
 }
 
 function style(feature) {
 	return {
 		fillColor: getColor(feature.properties.ADMIN, feature.properties.nombre),
-		weight: 2,
+		weight: 1,
 		opacity: 1,
-		color: 'white',
+		color: 'black',
 		dashArray: '3',
 		fillOpacity: 0.7
 	};
@@ -86,8 +83,8 @@ function highlightFeature(e) {
     var layer = e.target;
 
     layer.setStyle({
-        weight: 5,
-        color: '#666',
+        weight: 2,
+        color: 'black',
         dashArray: '',
         fillOpacity: 0.7
     });
