@@ -73,7 +73,14 @@ L.tileLayer(
 
 alphas = [0,0.02,0.3,1]
 colorRamp = chroma.scale('RdYlBu').domain(alphas);
-maxAvg = 2750
+
+maxAvg = 0
+for (elmt in geom.features) {
+	if (maxAvg < parseInt(geom.features[elmt].properties.nombre)) {
+		maxAvg = parseInt(geom.features[elmt].properties.nombre)
+	}
+}
+
 var geojson;
 
 function getColor(nombre) {
@@ -151,7 +158,10 @@ legend.onAdd = function (map) {
 	var from, to;
 
 	for (var i = 0; i < alphas.length; i++) {
-		from = alphas[i]*maxAvg;
+		from = parseInt(alphas[i]*maxAvg);
+		if (from == 0) {
+			from = 1
+		}
 		labels.push('<i style="background:' + getColor(from) + '"></i> '+from);
 	}
 
