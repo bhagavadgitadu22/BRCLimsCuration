@@ -50,7 +50,7 @@ for (elmt in geom.features) {
 		if (prop != 'ADMIN' & prop != 'ISO_A3' & prop != '' & !(years.includes(parseInt(prop)))) {
 			years.push(parseInt(prop));
 		}
-		if (prop != 'ADMIN' & prop != 'ISO_A3') {
+		if (prop != 'ADMIN' & prop != 'ISO_A3' & prop != '') {
 			sum += parseInt(geom.features[elmt].properties[prop])
 		}
 	}
@@ -61,12 +61,17 @@ var minYear = Math.min(...years);
 var maxYear = Math.max(...years);
 var maxAvg = Math.max(...sums);
 
+var displayDates = false;
+
 var geojson;
 
 function setNumberByCountry(properties) {
 	sum = 0;
 	for (prop in properties) {
 		if (prop != 'ADMIN' & prop != 'ISO_A3') {
+			if (displayDates & prop == '') {
+				sum += parseInt(properties[prop]);
+			}
 			if ($("#slider_range").slider("values")[0] <= parseInt(prop) & $("#slider_range").slider("values")[1] >= parseInt(prop)) {
 				sum += parseInt(properties[prop]);
 			}
@@ -127,6 +132,17 @@ function onEachFeature(feature, layer) {
 
 geojson = L.geoJson(geom, {style: style, onEachFeature: onEachFeature}).addTo(map);
 
+// complement
+var complement = L.control({position: 'bottomright'});
+
+complement.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+	div.innerHTML = '<input type="checkbox" id="nodate" name="nodate" onclick="checkNoDate()"> Strains without a collection date '
+    return div;
+};
+
+complement.addTo(map);
+
 // legend
 var legend = L.control({position: 'bottomright'});
 
@@ -182,7 +198,7 @@ var bottom_slider = L.Control.extend({
 		$(sliderContainer).css("display", "flex");
 		$(sliderContainer).css("align-items", "center");
 		
-		$(sliderContainer).append('<div id="slider_range" style="width:100%; margin-bottom:2%; margin-left:2%;"><div id="custom-handle" class="ui-slider-handle"></div></div>');
+		$(sliderContainer).append('<div id="slider_range" style="width:90%; margin-bottom:2%; margin-left:2%;"><div id="custom-handle" class="ui-slider-handle"></div><div id="custom-handle2" class="ui-slider-handle"></div></div>');
 		
 		L.DomEvent.disableClickPropagation(sliderContainer);
 		L.DomEvent.disableScrollPropagation(sliderContainer);
@@ -195,6 +211,7 @@ map.addControl(new bottom_slider());
 
 $( function() {
     var handle = $( "#custom-handle" );
+	var handle2 = $( "#custom-handle2" );
 
 	$( "#slider_range" ).slider({ 
 		min: minYear,
@@ -202,10 +219,12 @@ $( function() {
 		range: true, 
 		values: [minYear, maxYear],
 		create: function() {
-			handle.text( $( this ).slider( "value" ) );
+			handle.text( $(this).slider("values")[0] );
+			handle2.text( $(this).slider("values")[1] );
 		},
 		slide: function (event, ui) {
-			handle.text( ui.value );
+			handle.text( ui.values[0] );
+			handle2.text( ui.values[1] );
 
 			geojson.eachLayer(function(layer) {
 				setNumberByCountry(layer.feature.properties);
@@ -217,7 +236,21 @@ $( function() {
 	});
 });
 
+function checkNoDate() {
+	var checkbox = document.getElementById('nodate');
+	if (checkbox.checked == true) {
+		displayDates = true;
+	} else {
+		displayDates = false;
+	}
 
+	geojson.eachLayer(function(layer) {
+		setNumberByCountry(layer.feature.properties);
+		layer.setStyle({
+			fillColor: getColor(numberByCountry[layer.feature.properties.ADMIN])
+		});
+	})
+}
 
 </script>
 

@@ -18,10 +18,10 @@ html, body {
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
+    color: #555;
 }
 .legend {
     line-height: 18px;
-    color: #555;
 }
 .legend i {
     width: 18px;
@@ -62,7 +62,7 @@ html, body {
     background: #1abc9c;
     cursor: pointer;
 }
-#custom-handle {
+#custom-handle,#custom-handle2 {
     width: 3em;
     height: 1.6em;
     top: 50%;
