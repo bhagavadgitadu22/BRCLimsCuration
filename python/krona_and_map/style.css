@@ -62,3 +62,11 @@ html, body {
     background: #1abc9c;
     cursor: pointer;
 }
+#custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+}

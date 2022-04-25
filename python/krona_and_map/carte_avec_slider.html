@@ -67,12 +67,8 @@ function setNumberByCountry(properties) {
 	sum = 0;
 	for (prop in properties) {
 		if (prop != 'ADMIN' & prop != 'ISO_A3') {
-			console.log($("#slider_range").slider("values")[0]);
-			console.log($("#slider_range").slider("values")[1]);
-			console.log(parseInt(prop));
-			console.log('');
 			if ($("#slider_range").slider("values")[0] <= parseInt(prop) & $("#slider_range").slider("values")[1] >= parseInt(prop)) {
-				sum += parseInt(geom.features[elmt].properties[prop])
+				sum += parseInt(properties[prop]);
 			}
 		}
 	}
@@ -186,7 +182,7 @@ var bottom_slider = L.Control.extend({
 		$(sliderContainer).css("display", "flex");
 		$(sliderContainer).css("align-items", "center");
 		
-		$(sliderContainer).append('<div id="slider_range" style="width:100%; margin-bottom:2%; margin-left:2%;">');
+		$(sliderContainer).append('<div id="slider_range" style="width:100%; margin-bottom:2%; margin-left:2%;"><div id="custom-handle" class="ui-slider-handle"></div></div>');
 		
 		L.DomEvent.disableClickPropagation(sliderContainer);
 		L.DomEvent.disableScrollPropagation(sliderContainer);
@@ -197,18 +193,31 @@ var bottom_slider = L.Control.extend({
 
 map.addControl(new bottom_slider());
 
-$( "#slider_range" ).slider({ 
-	min: minYear,
-	max: maxYear,
-	range: true, 
-	values: [minYear, maxYear],
-	slide: function (event, ui) {
-		geojson.eachLayer(function(layer) {
-			setNumberByCountry(layer.feature.properties);
-			geojson.resetStyle(layer);
-		});
-	}
+$( function() {
+    var handle = $( "#custom-handle" );
+
+	$( "#slider_range" ).slider({ 
+		min: minYear,
+		max: maxYear,
+		range: true, 
+		values: [minYear, maxYear],
+		create: function() {
+			handle.text( $( this ).slider( "value" ) );
+		},
+		slide: function (event, ui) {
+			handle.text( ui.value );
+
+			geojson.eachLayer(function(layer) {
+				setNumberByCountry(layer.feature.properties);
+				layer.setStyle({
+					fillColor: getColor(numberByCountry[layer.feature.properties.ADMIN])
+				});
+			})
+		}
+	});
 });
+
+
 
 </script>
 
