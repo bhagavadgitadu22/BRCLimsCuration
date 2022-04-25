@@ -36,7 +36,6 @@ for country in reversed(gj['features']):
 
     boo = False
     for nb_p_pa in nombres_par_pays[1:]:
-        nb = nb_p_pa[0]
         pa = ajustement(nb_p_pa[1])
 
         if pa in pays_geojson or pa.split(' (')[0] in pays_geojson:
@@ -44,14 +43,11 @@ for country in reversed(gj['features']):
 
             nbs = nb_p_pa[0].split('|')
             for nb in nbs:
-                country["properties"]["nombre"] = nb
-        
-    if "nombre" not in country["properties"]:
-        country["properties"]["nombre"] = 0
+                country["properties"][nb.split(':')[0]] = nb.split(':')[1]
 
     # finalement on garde tous les pays même ceux où pas de souche
     #if not(boo):
     #    gj['features'].remove(country)
 
-with open('../../output/countries_with_numbers.geojson', 'w') as f:
+with open('../../output/countries_with_dates.geojson', 'w') as f:
     geojson.dump(gj, f)
