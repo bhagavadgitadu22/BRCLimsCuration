@@ -39,7 +39,6 @@ html, body {
     border-radius: 5px;  
     background: #797979;
     outline: none;
-    opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
     margin-bottom: 10px;
@@ -65,8 +64,10 @@ html, body {
 #custom-handle,#custom-handle2 {
     width: 3em;
     height: 1.6em;
-    top: 50%;
+    top: 5%;
     margin-top: -.8em;
     text-align: center;
-    line-height: 1.6em;
+    line-height: 2em;
+    font: 16px Arial, Helvetica, sans-serif;
+    padding-top: 8px;
 }

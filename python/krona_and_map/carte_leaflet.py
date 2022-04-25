@@ -44,9 +44,10 @@ for country in reversed(gj['features']):
             nbs = nb_p_pa[0].split('|')
             for nb in nbs:
                 country["properties"][nb.split(':')[0]] = nb.split(':')[1]
-    
-    if not(boo):
-        gj['features'].remove(country)
+
+    # finalement on garde tous les pays même ceux où pas de souche
+    #if not(boo):
+    #    gj['features'].remove(country)
 
 with open('../../output/countries_with_dates.geojson', 'w') as f:
     geojson.dump(gj, f)

@@ -24,7 +24,6 @@
 <script type="text/javascript" src="countries_with_dates.js"></script>
 
 <script>
-
 // center of the map
 var center = [0, 0];
 
@@ -33,7 +32,7 @@ var map = L.map('map').setView(center, 2);
 
 // set up the OSM layer
 L.tileLayer(
-  'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
 	noWrap: true
   }).addTo(map);
@@ -132,19 +131,22 @@ function onEachFeature(feature, layer) {
 
 geojson = L.geoJson(geom, {style: style, onEachFeature: onEachFeature}).addTo(map);
 
-// complement
-var complement = L.control({position: 'bottomright'});
+// info when we hover on a country
+var info = L.control({position: 'topright'});
 
-complement.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-	div.innerHTML = '<input type="checkbox" id="nodate" name="nodate" onclick="checkNoDate()"> Strains without a collection date '
-    return div;
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
 };
 
-complement.addTo(map);
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = (props ? numberByCountry[props.ADMIN] + ' strains in ' + props.ADMIN : 'Hover over a country');
+};
 
 // legend
-var legend = L.control({position: 'bottomright'});
+var legend = L.control({position: 'topright'});
 
 legend.onAdd = function (map) {
 
@@ -164,28 +166,22 @@ legend.onAdd = function (map) {
 	return div;
 };
 
-legend.addTo(map);
+// complement
+var complement = L.control({position: 'bottomright'});
 
-// info when we hover on a country
-var info = L.control({position: 'bottomright'});
-
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
-
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = (props ? numberByCountry[props.ADMIN] + ' strains in ' + props.ADMIN : 'Hover over a country');
+complement.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+	div.innerHTML = '<input type="checkbox" id="nodate" name="nodate" onclick="checkNoDate()"> Strains without a collection date '
+    return div;
 };
 
 info.addTo(map);
+legend.addTo(map);
 
 // slider
 var bottom_slider = L.Control.extend({
     options: {
-        position: 'bottomleft',
+        position: 'bottomright',
     },
     onAdd: function (map) {
         var sliderContainer = L.DomUtil.create('div', 'slider_container');
@@ -193,12 +189,15 @@ var bottom_slider = L.Control.extend({
 		dims_map = map.getPixelBounds();
 		width_map = dims_map.max.x - dims_map.min.x;
 		
+		dims_map = map.getPixelBounds();
+		width_map = dims_map.max.x - dims_map.min.x;
+		
 		$(sliderContainer).css("width", 0.9*width_map);
-		
-		$(sliderContainer).css("display", "flex");
-		$(sliderContainer).css("align-items", "center");
-		
-		$(sliderContainer).append('<div id="slider_range" style="width:90%; margin-bottom:2%; margin-left:2%;"><div id="custom-handle" class="ui-slider-handle"></div><div id="custom-handle2" class="ui-slider-handle"></div></div>');
+		$(sliderContainer).css("margin-right", "5%");
+		$(sliderContainer).css("margin-bottom", "1%");
+		$(sliderContainer).css("margin-top", "1%");
+
+		$(sliderContainer).append('<div id="slider_range" class="slider_play" style="width:100%;"><div id="custom-handle" class="ui-slider-handle"></div><div id="custom-handle2" class="ui-slider-handle"></div></div>');
 		
 		L.DomEvent.disableClickPropagation(sliderContainer);
 		L.DomEvent.disableScrollPropagation(sliderContainer);
@@ -208,6 +207,7 @@ var bottom_slider = L.Control.extend({
 });
 
 map.addControl(new bottom_slider());
+complement.addTo(map);
 
 $( function() {
     var handle = $( "#custom-handle" );
