@@ -18,11 +18,11 @@ for record in genus_cip:
     found = False
     for elmt in genus_complete:
         if elmt[0] == genus:
-            line = [record[0]]
+            line = [record[-1], record[0]]
             for x in list(reversed(elmt)):
                 line.append(x)
-            line.append(record[2])
-            line.append(record[3])
+            line.append(record[2].replace("'", '').replace('"', ''))
+            line.append(record[3].replace("'", '').replace('"', ''))
             
             lines.append(line)
             found = True

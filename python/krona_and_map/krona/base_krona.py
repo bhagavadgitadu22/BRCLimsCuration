@@ -3,15 +3,17 @@ import csv
 def addFather(line_genus, nodes_cleared, names_cleared, father):
     fatherName = names_cleared[father][0]
     grandFather = nodes_cleared[father][0]
+    typeGrandFather = nodes_cleared[father][1]
 
     if grandFather != '1':
-        line_genus.append(fatherName)
+        if typeGrandFather in ['domain', 'phylum', 'class', 'order', 'family', 'genus', 'superkingdom']:
+            line_genus.append(fatherName)
         line_genus = addFather(line_genus, nodes_cleared, names_cleared, grandFather)
 
     return line_genus
 
 print("nodes_cleared")
-f = open('/home/calvin/Documents/new_taxdump/nodes.dmp', 'r', newline='')
+f = open('../../output/new_taxdump/nodes.dmp', 'r', newline='')
 records = csv.reader(f, delimiter='|')
 nodes = [record[:3] for record in records]
 f.close()
@@ -34,7 +36,7 @@ for node in nodes:
 print(cat)
 
 print("names_cleared")
-f = open('/home/calvin/Documents/new_taxdump/names.dmp', 'r', newline='')
+f = open('../../output/new_taxdump/names.dmp', 'r', newline='')
 records = csv.reader(f, delimiter='|')
 names = [record for record in records]
 f.close()
