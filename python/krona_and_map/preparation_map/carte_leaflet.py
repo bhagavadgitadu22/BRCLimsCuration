@@ -31,6 +31,7 @@ nombres_par_pays = [record for record in records]
 f.close()
 
 list_pays = []
+count_countries = 0
 for country in reversed(gj['features']):
     pays_geojson = country["properties"]["ADMIN"]
 
@@ -45,6 +46,8 @@ for country in reversed(gj['features']):
             nbs = nb_p_pa[0].split('|')
             for nb in nbs:
                 country["properties"]["nombre"] = nb
+
+            count_countries += 1
         
     if "nombre" not in country["properties"]:
         country["properties"]["nombre"] = 0
@@ -52,6 +55,8 @@ for country in reversed(gj['features']):
     # finalement on garde tous les pays même ceux où pas de souche
     #if not(boo):
     #    gj['features'].remove(country)
+
+print(count_countries)
 
 with open('../../output/countries_with_numbers.geojson', 'w') as f:
     geojson.dump(gj, f)
