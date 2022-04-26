@@ -62,14 +62,14 @@ var displayDates = false;
 
 var geojson;
 
-function setNumberByCountry(properties) {
+function setNumberByCountry(properties, beginning, ending) {
 	sum = 0;
 	for (prop in properties) {
 		if (prop != 'ADMIN' & prop != 'ISO_A3') {
 			if (displayDates & prop == '') {
 				sum += parseInt(properties[prop]);
 			}
-			if ($("#slider_range").slider("values")[0] <= parseInt(prop) & $("#slider_range").slider("values")[1] >= parseInt(prop)) {
+			if (beginning <= parseInt(prop) & ending >= parseInt(prop)) {
 				sum += parseInt(properties[prop]);
 			}
 		}
@@ -229,7 +229,7 @@ $( function() {
 			handle2.text( ui.values[1] );
 
 			geojson.eachLayer(function(layer) {
-				setNumberByCountry(layer.feature.properties);
+				setNumberByCountry(layer.feature.properties, ui.values[0], ui.values[1]);
 				layer.setStyle({
 					fillColor: getColor(numberByCountry[layer.feature.properties.ADMIN])
 				});
@@ -247,7 +247,7 @@ function checkNoDate() {
 	}
 
 	geojson.eachLayer(function(layer) {
-		setNumberByCountry(layer.feature.properties);
+		setNumberByCountry(layer.feature.properties, $("#slider_range").slider("values")[0], $("#slider_range").slider("values")[1]);
 		layer.setStyle({
 			fillColor: getColor(numberByCountry[layer.feature.properties.ADMIN])
 		});
