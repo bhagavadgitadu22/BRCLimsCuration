@@ -12,8 +12,8 @@ def get_cursor(db_name):
     return conn.cursor()
 
 cursor = get_cursor("new_db")
-cursor.execute(open("../envoi_souches/mirri_biblio_par_id.sql", "r").read())
-cursor.execute(open("../envoi_souches/mirri.sql", "r").read())
+cursor.execute(open("../envoi_souches/mirri/mirri_biblio_par_id.sql", "r").read())
+cursor.execute(open("../envoi_souches/mirri/mirri.sql", "r").read())
 records = cursor.fetchall()
 
 
@@ -45,7 +45,7 @@ for elmt in biblis:
             biblis_par_id[int_id].append(numero_bibli)
 
 # gestion des géographies
-cursor.execute(open("../envoi_souches/mirri_geography.sql", "r").read())
+cursor.execute(open("../envoi_souches/mirri/mirri_geography.sql", "r").read())
 records_pays = cursor.fetchall()
 
 pays_par_id = {}
@@ -55,6 +55,11 @@ for record in records_pays:
     ids_elmt = record[2]
     pays = record[0]
     lieu_precis = record[1]
+
+    if str(pays) == 'None':
+        pays = 'Unknown'
+    if lieu_precis == '':
+        lieu_precis = 'Unknown'
 
     numero_pays += 1
     list = [numero_pays, pays, '', '', lieu_precis]

@@ -13,8 +13,8 @@ def get_cursor(db_name):
     return conn.cursor()
 
 cursor = get_cursor("new_db")
-cursor.execute(open("../envoi_souches/mirri_last_version_souches_cip.sql", "r").read())
-cursor.execute(open("../envoi_souches/mirri_biblio.sql", "r").read())
+cursor.execute(open("../envoi_souches/mirri/mirri_last_version_souches_cip.sql", "r").read())
+cursor.execute(open("../envoi_souches/mirri/mirri_biblio.sql", "r").read())
 records = cursor.fetchall()
 
 pattern = '^([0-9a-zA-ZÀ-ÿ .()\',-0-9]+),[ ]*([0-9]{4}),[ ]*([^,])+(,|:)[ ]*(S?e?[0-9-–]+A?)$'

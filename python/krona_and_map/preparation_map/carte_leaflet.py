@@ -17,7 +17,7 @@ def ajustement(pays):
     elif pays == 'Cabo Verde':
         return "Cape Verde"
     elif pays == 'Korea (Republic of)':
-        return "Korea"
+        return "South Korea"
 
     return pays
 
@@ -42,10 +42,7 @@ for country in reversed(gj['features']):
 
         if pa in pays_geojson or pa.split(' (')[0] in pays_geojson:
             boo = True
-
-            nbs = nb_p_pa[0].split('|')
-            for nb in nbs:
-                country["properties"]["nombre"] = nb
+            country["properties"]["nombre"] = nb
 
             count_countries += 1
         

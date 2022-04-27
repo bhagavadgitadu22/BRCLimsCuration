@@ -17,7 +17,7 @@ def ajustement(pays):
     elif pays == 'Cabo Verde':
         return "Cape Verde"
     elif pays == 'Korea (Republic of)':
-        return "Korea"
+        return "South Korea"
 
     return pays
 
