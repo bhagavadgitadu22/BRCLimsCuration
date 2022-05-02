@@ -12,12 +12,11 @@ SELECT
 	(SELECT MAX(don_code)+row FROM t_donneedico WHERE don_dic_id = 3755), 
 	(SELECT MAX(don_pos)+row*10 FROM t_donneedico WHERE don_dic_id = 3755), 
 	species, don_parent
-FROM (SELECT ROW_NUMBER() OVER() AS row, short_denom, genus, 
-	tdd_genus.don_code AS don_parent, species
+FROM (SELECT ROW_NUMBER() OVER() AS row, split_part(name_taxo, ' ', 2) AS species, 
+	tdd_genus.don_code AS don_parent
 	FROM new_elmts_dicos
 	JOIN t_donneedico AS tdd_genus
-	ON tdd_genus.don_lib = genus
+	ON tdd_genus.don_lib = split_part(name_taxo, ' ', 1)
 	AND don_dic_id = 3755
 	AND tdd_genus.xxx_sup_dat IS NULL
-	WHERE species != '' AND subspecies = '') AS a;
-
+	WHERE type_taxo = 'species') AS a;

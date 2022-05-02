@@ -11,7 +11,7 @@ SELECT
 	(SELECT xxx_id FROM t_utilisateur WHERE usr_log = 'superadmin'), 3755, 
 	(SELECT MAX(don_code)+row FROM t_donneedico WHERE don_dic_id = 3755), 
 	(SELECT MAX(don_pos)+row*10 FROM t_donneedico WHERE don_dic_id = 3755), 
-	genus, 0
-FROM (SELECT ROW_NUMBER() OVER() AS row, *
+	name_taxo, 0
+FROM (SELECT ROW_NUMBER() OVER() AS row, name_taxo
 	  FROM new_elmts_dicos
-	  WHERE species = '') AS a;
+	  WHERE type_taxo = 'genus') AS a;
