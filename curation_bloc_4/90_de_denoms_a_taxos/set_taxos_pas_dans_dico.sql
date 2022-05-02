@@ -25,7 +25,7 @@ END)
 ORDER BY short_denom;
 
 SELECT ROW_NUMBER() OVER() AS row, short_denom, genus, 
-tdd_genus.xxx_id AS don_parent, species AS don_lib, tdd_species.xxx_id, subspecies
+tdd_genus.don_code AS don_parent, species AS don_lib, tdd_species.xxx_id, subspecies
 INTO new_species_dico
 FROM new_elmts_dicos
 JOIN t_donneedico AS tdd_genus
@@ -44,8 +44,11 @@ SELECT
 	(SELECT xxx_id FROM t_utilisateur WHERE usr_log = 'superadmin'), 3755, 
 	(SELECT MAX(don_code)+row FROM t_donneedico WHERE don_dic_id = 3755), 
 	(SELECT MAX(don_pos)+row*10 FROM t_donneedico WHERE don_dic_id = 3755), 
-	don_lib, don_parent
-FROM new_species_dico;
+	new_species_dico.don_lib, new_species_dico.don_parent, tdd_genus.don_lib
+FROM new_species_dico
+LEFT JOIN t_donneedico AS tdd_genus
+ON new_species_dico.don_parent = tdd_genus.don_code
+AND tdd_genus.don_dic_id = 3755;
 
 INSERT INTO t_donneedico( 
 	xxx_cre_dat, xxx_cre_usr_id, 

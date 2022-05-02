@@ -1,0 +1,40 @@
+DROP TABLE IF EXISTS missing_taxos;
+DROP TABLE IF EXISTS new_elmts_dicos;
+
+-- on garde les dénoms sans taxos qui n'existent pas dans le dictionnaire des taxos
+SELECT short_denom, genus, species, subspecies
+INTO missing_taxos
+FROM denoms_sans_taxos
+LEFT JOIN chemins_taxonomie
+ON short_denom = path
+WHERE path IS NULL
+GROUP BY short_denom, genus, species, subspecies;
+
+UPDATE taxonomy
+SET sp_epithet = ''
+WHERE sp_epithet IS NULL;
+
+UPDATE taxonomy
+SET subsp_epithet = ''
+WHERE subsp_epithet IS NULL;
+
+-- croisement avec taxonomy pour voir ce qui existe dans lpsn
+SELECT short_denom, genus, species, subspecies, CASE
+	WHEN sp_epithet = '' THEN genus_name
+	WHEN subsp_epithet = '' THEN CONCAT(genus_name, ' ', sp_epithet)
+	ELSE CONCAT(genus_name, ' ', sp_epithet, ' ', subsp_epithet)
+END
+INTO new_elmts_dicos
+FROM missing_taxos
+JOIN taxonomy
+ON short_denom = (CASE
+	WHEN sp_epithet = '' THEN genus_name
+	WHEN subsp_epithet = '' THEN CONCAT(genus_name, ' ', sp_epithet)
+	ELSE CONCAT(genus_name, ' ', sp_epithet, ' ', subsp_epithet)
+END)
+GROUP BY short_denom, genus, species, subspecies, CASE
+	WHEN sp_epithet = '' THEN genus_name
+	WHEN subsp_epithet = '' THEN CONCAT(genus_name, ' ', sp_epithet)
+	ELSE CONCAT(genus_name, ' ', sp_epithet, ' ', subsp_epithet)
+END
+ORDER BY short_denom;
