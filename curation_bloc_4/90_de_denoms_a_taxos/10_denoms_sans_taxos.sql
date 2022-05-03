@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS denoms_sans_taxos;
-DROP TABLE IF EXISTS new_taxos;
 
+-- on recupere les denominations ou la taxonomie n'est pas définie
+-- en separant genre, espèce, sous-espèce
 SELECT *, CASE
 	WHEN species = '' THEN genus
 	WHEN subspecies = '' THEN CONCAT(genus, ' ', species)
@@ -25,16 +26,3 @@ WHERE xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
 AND sch_taxonomie IS NULL
 AND LOWER(sch_denomination) NOT SIMILAR TO '%(unnamed|pas de souche|corynéforme|unidentified|essai|doublon|inconnue|ommited)%'
 AND sch_denomination SIMILAR TO '[A-Z]+%') AS a;
-
-SELECT denoms_sans_taxos.xxx_id AS sch_id, 
-chemins_taxonomie.sch_taxonomie AS path_id, 
-short_denom, path
-INTO new_taxos
-FROM denoms_sans_taxos
-JOIN chemins_taxonomie
-ON short_denom = path;
-
-UPDATE t_souche
-SET sch_taxonomie = path_id
-FROM new_taxos
-WHERE t_souche.xxx_id = sch_id;
