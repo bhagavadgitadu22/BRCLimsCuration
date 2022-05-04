@@ -1,6 +1,5 @@
 DROP TABLE IF EXISTS strains_classees;
 DROP TABLE IF EXISTS refs_equis_a_garder;
-DROP TABLE IF EXISTS new_refs_equis;
 DROP TABLE IF EXISTS refs_equis_a_supprimer;
 
 SELECT xxx_id, sch_references_equi, arr[nr] AS ref_equi, nr AS number_row, svl_valeur AS strain_designation
