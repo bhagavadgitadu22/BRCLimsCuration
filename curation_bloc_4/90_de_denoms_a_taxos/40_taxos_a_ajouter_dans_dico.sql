@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS list_of_taxos;
 DROP TABLE IF EXISTS missing_taxos;
 DROP TABLE IF EXISTS new_elmts_dicos;
 
-SELECT genus AS name_taxo, 'genus' AS type_taxo
+SELECT genus AS name_taxo, 'genus'::text AS type_taxo
 INTO list_of_taxos
 FROM denoms_sans_taxos
 GROUP BY genus;

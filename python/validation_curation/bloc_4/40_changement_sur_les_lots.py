@@ -100,10 +100,10 @@ def main():
     c = 0
     count_id_missing = 0
     for id in ids:
-        idx = ids.index(id)
+        if id in souches_curated:
+            id_curated = ids_curated.index(id)
 
-        if idx in souches_curated:
-            if souches[idx] != souches_curated[idx]:
+            if souches[id] != souches_curated[id_curated]:
                 ids_lots_modifies.append(id)
         else:
             count_id_missing += 1
