@@ -15,8 +15,10 @@ FROM new_taxos
 WHERE t_souche.xxx_id = sch_id;
 
 -- ce qu'il manque encore
+/*
 SELECT *
 FROM denoms_sans_taxos
 LEFT JOIN chemins_taxonomie
 ON short_denom = path
 WHERE path IS NULL;
+*/

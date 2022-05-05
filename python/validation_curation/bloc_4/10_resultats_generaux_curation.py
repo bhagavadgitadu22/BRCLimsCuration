@@ -50,7 +50,7 @@ def get_cursor(db_name):
     return conn.cursor()
 
 def get_all_souches(c):
-    c.execute(open("../curation_bloc_3/validation_curation/0_toutes_souches.sql", "r").read())
+    c.execute(open("../curation_bloc_4/validation_curation/0_toutes_souches.sql", "r").read())
     records = c.fetchall()
     
     return records
@@ -58,7 +58,7 @@ def get_all_souches(c):
 def main():
     # on établit les connections avec les 2 bdds
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -94,24 +94,32 @@ def main():
     print("")
 
     # on sauvegarde les ids archivés dans un excel
-    fa = open('../../output/souches_creees.csv', 'w', newline='')
+    fa = open('../../output/souches_supprimees.csv', 'w', newline='')
     writera = csv.writer(fa, delimiter=';')
-    writera.writerows(map(lambda x: [x], [elem[0] for elem in schs_apparus]))
+    writera.writerows(map(lambda x: [x], [elem[0] for elem in schs_supprimes]))
     fa.close()
+
+    count_id_missing = 0
 
     # puis l'on prend la liste de ce que l'on a archivé
     schs_archives = []
     schs_archives_hors_cip = []
     i = 0
     for id in ids:
-        i_curated = ids_curated.index(id)
+        if id in ids_curated:
+            i_curated = ids_curated.index(id)
 
-        if souches[i][3] is None and souches_curated[i_curated][3] is not None:
-            if souches[i][2] == 401 and souches_curated[i_curated][2] == 401:
-                schs_archives.append(souches[i])
-            else:
-                schs_archives_hors_cip.append(souches[i])
+            if souches[i][3] is None and souches_curated[i_curated][3] is not None:
+                if souches[i][2] == 401 and souches_curated[i_curated][2] == 401:
+                    schs_archives.append(souches[i])
+                else:
+                    schs_archives_hors_cip.append(souches[i])
+        else:
+            count_id_missing += 1
         i += 1
+
+    print("count_id_missing")
+    print(count_id_missing)
 
     print("ids_archives")
     print([elmt[1] for elmt in schs_archives])
@@ -119,20 +127,6 @@ def main():
     print("ids_archives_hors_cip")
     print([elmt[1] for elmt in schs_archives_hors_cip])
     print("")
-
-    # on sauvegarde les ids archivés dans un excel
-    wb = Workbook()
-
-    sheet = wb.create_sheet("ids_archives")
-    sheet.append(["Identifiant CIP"])
-
-    for elmt in schs_archives:
-        sheet.append([elmt[1]])
-
-    style_sheet(sheet)
-
-    del wb["Sheet"]
-    wb.save(str("../../output/ids_archives_lors_de_curation.xlsx"))
 
     souches_a_garder = []
     for sch in souches:
@@ -153,9 +147,9 @@ def main():
     souches_archives_modifiees = []
     souches_modifiees_hors_cip = []
 
-    cursor.execute(open("../curation_bloc_3/validation_curation/10_parenteles_taxonomie.sql", "r").read())
-    cursor_curated.execute(open("../curation_bloc_3/validation_curation/10_parenteles_taxonomie.sql", "r").read())
-    str_base = open("../curation_bloc_2/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
+    cursor.execute(open("../curation_bloc_4/validation_curation/10_parenteles_taxonomie.sql", "r").read())
+    cursor_curated.execute(open("../curation_bloc_4/validation_curation/10_parenteles_taxonomie.sql", "r").read())
+    str_base = open("../curation_bloc_4/validation_curation/20_toutes_souches_avec_infos.sql", "r").read()
 
     i = 0
     for sch in souches_a_garder:
@@ -167,7 +161,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-10] == 401 and record_curated[len(record_curated)-10] == 401:
+            if record[len(record)-11] == 401 and record_curated[len(record_curated)-11] == 401:
                 if record[7] is None:
                     souches_modifiees.append(record)
                 else:

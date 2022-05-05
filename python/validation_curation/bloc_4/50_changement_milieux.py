@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -60,58 +60,81 @@ def write_sheet(wb, name, dico, legende):
 
 def main():
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
-    str_mil = 'SELECT t_milieu_souche.xxx_id AS inter_id, t_milieu.xxx_id AS milieu_id, mil_numero, mil_designation_fr, mil_designation_en, t_souche.xxx_id AS souche_id, sch_identifiant, sch_version FROM t_milieu_souche JOIN t_milieu ON msc_mil_id = t_milieu.xxx_id JOIN t_souche ON msc_sch_id = t_souche.xxx_id'
-    cursor.execute(str_mil)
+    cursor.execute('SELECT * FROM t_milieu ORDER BY xxx_id')
     souches = cursor.fetchall()
-    cursor_curated.execute(str_mil)
+
+    cursor_curated.execute('SELECT * FROM t_milieu ORDER BY xxx_id')
     souches_curated = cursor_curated.fetchall()
 
     # dont on extrait les ids
     ids = [record[0] for record in souches]
     ids_curated = [record[0] for record in souches_curated]
 
-    inter_suppr = []
-    inter_modif = []
+    # pour vérifier qu'autant de milieux après et avant
+    print("Nombre de milieux avant : "+str(len(ids)))
+    print("Nombre de milieux après : "+str(len(ids_curated)))
+    print("")
+
+    ids_milieux_disparus = []
+    ids_milieux_apparus = []
+    ids_milieux_modifies = []
+
+    for id_c in ids_curated:
+        if id_c not in ids:
+            ids_milieux_disparus.append(id_c)
+
+    print("ids_milieux_disparus")
+    print(ids_milieux_disparus)
+    print("")
+
+    for id in ids:
+        if id not in ids_curated:
+            ids_milieux_apparus.append(id)
+
+    print("ids_milieux_apparus")
+    print(ids_milieux_apparus)
+    print("")
 
     c = 0
     for id in ids:
         idx = ids.index(id)
 
-        if id not in ids_curated:
-            row_suppr = [elmt for elmt in souches[idx]]
-            inter_suppr.append(row_suppr)
-        else:
-            idx_curated = ids_curated.index(id)
-
-            if souches[idx] != souches_curated[idx_curated]:
-                row_modif = []
-                for ij in range(len(souches[idx])):
-                    row_modif.append(souches[idx][ij])
-                    row_modif.append(souches_curated[idx_curated][ij])
-                inter_modif.append(row_modif)
+        if souches[idx] != souches_curated[idx]:
+            ids_milieux_modifies.append(id)
 
         if c%1000 == 0:
             print(c)
         c += 1
 
-    for id_curated in ids_curated:
-        if id_curated not in ids:
+    print("ids_milieux_modifies")
+    print(ids_milieux_modifies)
+    print("")
+
+    # puis l'on compare les éléments un par un
+    milieux_archives = []
+
+    sql_lot = 'SELECT xxx_id, mil_numero, mil_designation_fr, mil_designation_en, xxx_sup_dat FROM t_milieu'
+
+    for id in ids_milieux_modifies:
+        cursor.execute(sql_lot+' WHERE t_milieu.xxx_id = '+str(id))
+        record_pure = cursor.fetchone()
+
+        cursor_curated.execute(sql_lot+' WHERE t_milieu.xxx_id = '+str(id))
+        record_cured = cursor_curated.fetchone()
+
+        if record_pure != record_cured:
+            # lot supprimé car c'était une fiche de spécification
+            row_milieu = [record_pure[1], record_pure[2], record_pure[3], record_pure[4], record_cured[4]]
+            milieux_archives.append(row_milieu)
+            bool = True
+        if not(bool):
             print("bizarre, vraiment bizarre...")
-
+    
     wb = Workbook()
-
-    legende = ["inter_id", "milieu_id", "mil_numero", "mil_designation_fr", "mil_designation_en", "souche_id", "sch_identifiant", "sch_version"]
-    legende_long = []
-    for l in legende:
-        legende_long.append(l)
-        legende_long.append(l+"_cured")
-        
-    write_sheet(wb, "inter_suppr", inter_suppr, legende)
+    write_sheet(wb, "lots_archives", milieux_archives, ["mil_numero", "mil_designation_fr", "mil_designation_en", "Ancienne date de suppression", "Nouvelle date de suppression"])
     del wb["Sheet"]
-
-    write_sheet(wb, "inter_modif", inter_modif, legende_long)
-    wb.save(str("../../output/changements_sur_les_inters_milieux.xlsx"))
+    wb.save(str("../../output/changements_sur_les_milieux.xlsx"))
 
 main()

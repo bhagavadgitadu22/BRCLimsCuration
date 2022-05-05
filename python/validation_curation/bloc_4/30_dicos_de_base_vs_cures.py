@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -97,7 +97,7 @@ def main():
     dicos = {}
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
     # taxonomie
     sql_taxo = "SELECT t_donneedico.xxx_id, don_lib, t_donneedico.xxx_sup_dat FROM t_donneedico JOIN t_dico ON don_dic_id = t_dico.xxx_id WHERE dic_nom = 'Taxonomie' AND dic_grp_collection = '[401]'"

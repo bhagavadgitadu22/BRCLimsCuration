@@ -1,6 +1,7 @@
 \cd 10_collections_de_cip
 \echo 10_collections_de_cip
 \i 10_last_version_souches_cip.sql
+\i 20_table_taxonomie_lpsn.sql
 
 \cd ../20_origine
 \echo 20_origine
@@ -9,9 +10,9 @@
 \i 25_virer_only_human_aussi.sql
 \i 30_virer_animal_de_isole_a_partir_de.sql
 
-\cd ../10_import_csv
+\cd ../30_pathos
 \echo 30_pathos
-\i 10_quelques_taxonomies_a_virer.sql
+\i 10_import_csv.sql
 \i 20_compa.sql
 
 \cd ../40_milieux
@@ -37,7 +38,6 @@
 \cd ../90_de_denoms_a_taxos
 \echo 90_de_denoms_a_taxos
 \i 10_denoms_sans_taxos.sql
-\i 20_table_taxonomie_lpsn.sql
 \i 30_parenteles_taxonomie.sql
 \i 40_taxos_a_ajouter_dans_dico.sql
 \i 50_ajout_genus.sql
@@ -48,6 +48,6 @@
 
 \cd ../10_collections_de_cip
 \echo 10_collections_de_cip
-\i 20_suppression_tables_inutiles.sql
+\i 30_suppression_tables_inutiles.sql
 
 \cd ..

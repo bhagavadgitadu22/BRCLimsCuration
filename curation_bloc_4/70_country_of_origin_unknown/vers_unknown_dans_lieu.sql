@@ -10,9 +10,13 @@ AND t_collection.xxx_id = 413
 AND t_donneedico.xxx_sup_dat IS NOT NULL
 AND don_lib = 'Unknown';
 
-SELECT sch_lieu_precis FROM t_souche
-WHERE xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
+/*
+SELECT don_lib, sch_lieu_precis FROM t_souche
+LEFT JOIN t_donneedico 
+ON sch_lieu = t_donneedico.xxx_id
+WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
 AND sch_lieu_precis LIKE '%Country of origin unknown%';
+*/
 
 UPDATE t_souche
 SET sch_lieu = (SELECT dic_id FROM lieu_unknown),

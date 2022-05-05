@@ -41,7 +41,7 @@ def style_sheet(sheet):
 
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
-                                  password="hercule1821",
+                                  password="postgres",
                                   host="localhost",
                                   port="5432",
                                   database=db_name)
@@ -60,12 +60,12 @@ def write_sheet(wb, name, dico, legende):
 
 def main():
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured")
+    cursor_curated = get_cursor("restart_db_cured2")
 
-    cursor.execute('SELECT * FROM t_milieu ORDER BY xxx_id')
+    cursor.execute('SELECT * FROM t_lot ORDER BY xxx_id')
     souches = cursor.fetchall()
 
-    cursor_curated.execute('SELECT * FROM t_milieu ORDER BY xxx_id')
+    cursor_curated.execute('SELECT * FROM t_lot ORDER BY xxx_id')
     souches_curated = cursor_curated.fetchall()
 
     # dont on extrait les ids
@@ -73,68 +73,74 @@ def main():
     ids_curated = [record[0] for record in souches_curated]
 
     # pour vérifier qu'autant de lots après et avant
-    print("Nombre de milieux avant : "+str(len(ids)))
-    print("Nombre de milieux après : "+str(len(ids_curated)))
+    print("Nombre de lots avant : "+str(len(ids)))
+    print("Nombre de lots après : "+str(len(ids_curated)))
     print("")
 
-    ids_milieux_disparus = []
-    ids_milieux_apparus = []
-    ids_milieux_modifies = []
+    ids_lots_disparus = []
+    ids_lots_apparus = []
+    ids_lots_modifies = []
 
     for id_c in ids_curated:
         if id_c not in ids:
-            ids_milieux_disparus.append(id_c)
+            ids_lots_apparus.append(id_c)
 
-    print("ids_milieux_disparus")
-    print(ids_milieux_disparus)
+    print("ids_lots_apparus")
+    print(ids_lots_apparus)
     print("")
 
     for id in ids:
         if id not in ids_curated:
-            ids_milieux_apparus.append(id)
+            ids_lots_disparus.append(id)
 
-    print("ids_milieux_apparus")
-    print(ids_milieux_apparus)
+    print("ids_lots_disparus")
+    print(ids_lots_disparus)
     print("")
 
     c = 0
+    count_id_missing = 0
     for id in ids:
         idx = ids.index(id)
 
-        if souches[idx] != souches_curated[idx]:
-            ids_milieux_modifies.append(id)
+        if idx in souches_curated:
+            if souches[idx] != souches_curated[idx]:
+                ids_lots_modifies.append(id)
+        else:
+            count_id_missing += 1
 
         if c%1000 == 0:
             print(c)
         c += 1
 
-    print("ids_milieux_modifies")
-    print(ids_milieux_modifies)
+    print("count_lots_missing")
+    print(count_id_missing)
+
+    print("ids_lots_modifies")
+    print(ids_lots_modifies)
     print("")
 
     # puis l'on compare les éléments un par un
-    milieux_archives = []
+    lots_archives = []
 
-    sql_lot = 'SELECT xxx_id, mil_numero, mil_designation_fr, mil_designation_en, xxx_sup_dat FROM t_milieu'
+    sql_lot = 'SELECT t_souche.xxx_id, sch_identifiant, sch_version, t_lot.xxx_id, lot_numero, t_lot.xxx_sup_dat, don_lib, lot_qte_stock FROM t_lot LEFT JOIN t_souche ON lot_sch_id = t_souche.xxx_id LEFT JOIN t_donneedico ON lot_type = t_donneedico.xxx_id'
 
-    for id in ids_milieux_modifies:
-        cursor.execute(sql_lot+' WHERE t_milieu.xxx_id = '+str(id))
+    for id in ids_lots_modifies:
+        cursor.execute(sql_lot+' WHERE t_lot.xxx_id = '+str(id))
         record_pure = cursor.fetchone()
 
-        cursor_curated.execute(sql_lot+' WHERE t_milieu.xxx_id = '+str(id))
+        cursor_curated.execute(sql_lot+' WHERE t_lot.xxx_id = '+str(id))
         record_cured = cursor_curated.fetchone()
 
-        if record_pure != record_cured:
+        if record_pure[5] != record_cured[5]:
             # lot supprimé car c'était une fiche de spécification
-            row_milieu = [record_pure[1], record_pure[2], record_pure[3], record_pure[4], record_cured[4]]
-            milieux_archives.append(row_milieu)
+            lots_archives.append([record_pure[1], record_pure[2], record_pure[4], record_pure[5], record_pure[6], record_pure[7]])
             bool = True
         if not(bool):
             print("bizarre, vraiment bizarre...")
     
     wb = Workbook()
-    write_sheet(wb, "lots_archives", milieux_archives, ["mil_numero", "mil_designation_fr", "mil_designation_en", "Ancienne date de suppression", "Nouvelle date de suppression"])
+    write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancienne version", "Ancien numéro de lot", "Ancienne date de suppression du lot", "Ancien type de lot", "Ancienne quantité"])
     del wb["Sheet"]
-    wb.save(str("../../output/changements_sur_les_milieux.xlsx"))
+    wb.save(str("../../output/changements_sur_les_lots.xlsx"))
 
 main()
