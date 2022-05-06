@@ -66,10 +66,10 @@ def write_excel(name, legendes, differences, filename):
         write_sheet(wb, elmt, legendes[elmt], differences[elmt])
 
     del wb["Sheet"]
-    wb.save(str("../../output/"+filename+".xlsx"))
+    wb.save(str("../../output/bloc_4/"+filename+".xlsx"))
 
 def main():
-    f = open('../../output/cip_modifies.csv', 'r', newline='')
+    f = open('../../output/bloc_4/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("restart_db_pure")

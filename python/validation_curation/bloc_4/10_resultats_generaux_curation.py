@@ -94,9 +94,9 @@ def main():
     print("")
 
     # on sauvegarde les ids archivés dans un excel
-    fa = open('../../output/souches_supprimees.csv', 'w', newline='')
+    fa = open('../../output/bloc_4/souches_supprimees.csv', 'w', newline='')
     writera = csv.writer(fa, delimiter=';')
-    writera.writerows(map(lambda x: [x], [elem[0] for elem in schs_supprimes]))
+    writera.writerows(map(lambda x: [x], [elem[1] for elem in schs_supprimes]))
     fa.close()
 
     count_id_missing = 0
@@ -161,7 +161,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-11] == 401 and record_curated[len(record_curated)-11] == 401:
+            if record[len(record)-12] == 401 and record_curated[len(record_curated)-12] == 401:
                 if record[7] is None:
                     souches_modifiees.append(record)
                 else:
@@ -182,7 +182,7 @@ def main():
     print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
     print([elem[22] for elem in souches_modifiees_hors_cip])
 
-    f = open('../../output/cip_modifies.csv', 'w', newline='')
+    f = open('../../output/bloc_4/cip_modifies.csv', 'w', newline='')
     writer = csv.writer(f, delimiter=';')
     writer.writerows(map(lambda x: [x], [elem[0] for elem in souches_modifiees]))
     f.close()
