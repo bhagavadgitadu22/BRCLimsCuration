@@ -73,7 +73,7 @@ def main():
     rows = csv.reader(f, delimiter=';')
 
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     name = ["taxonomie", "origine", "refs_equis", "pathogenicite", "localisation", "autres_collections"]
     legendes = {}

@@ -60,7 +60,7 @@ def write_sheet(wb, name, dico, legende):
 
 def main():
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     str_mil = 'SELECT t_milieu_souche.xxx_id AS inter_id, t_milieu.xxx_id AS milieu_id, mil_numero, mil_designation_fr, mil_designation_en, t_souche.xxx_id AS souche_id, sch_identifiant, sch_version FROM t_milieu_souche JOIN t_milieu ON msc_mil_id = t_milieu.xxx_id JOIN t_souche ON msc_sch_id = t_souche.xxx_id'
     cursor.execute(str_mil)

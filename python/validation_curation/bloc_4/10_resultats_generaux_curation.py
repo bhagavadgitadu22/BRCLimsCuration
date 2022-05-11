@@ -58,7 +58,7 @@ def get_all_souches(c):
 def main():
     # on établit les connections avec les 2 bdds
     cursor = get_cursor("restart_db_pure")
-    cursor_curated = get_cursor("restart_db_cured2")
+    cursor_curated = get_cursor("restart_db_cured")
 
     # on récupère toutes les souches de la bdd
     souches = get_all_souches(cursor)
@@ -96,7 +96,7 @@ def main():
     # on sauvegarde les ids archivés dans un excel
     fa = open('../../output/souches_supprimees.csv', 'w', newline='')
     writera = csv.writer(fa, delimiter=';')
-    writera.writerows(map(lambda x: [x], [elem[0] for elem in schs_supprimes]))
+    writera.writerows(map(lambda x: [x], [elem[1] for elem in schs_supprimes]))
     fa.close()
 
     count_id_missing = 0
@@ -161,7 +161,7 @@ def main():
         record_curated = cursor_curated.fetchone()
 
         if record != record_curated:
-            if record[len(record)-11] == 401 and record_curated[len(record_curated)-11] == 401:
+            if record[len(record)-12] == 401 and record_curated[len(record_curated)-12] == 401:
                 if record[7] is None:
                     souches_modifiees.append(record)
                 else:
