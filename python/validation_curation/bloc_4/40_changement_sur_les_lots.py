@@ -97,28 +97,28 @@ def main():
     print(ids_lots_disparus)
     print("")
 
-    # c = 0
-    # count_id_missing = 0
-    # for id in ids:
-    #     if id in ids_curated:
-    #         idx = ids.index(id)
-    #         idx_curated = ids_curated.index(id)
+    c = 0
+    count_id_missing = 0
+    for id in ids:
+        if id in ids_curated:
+            idx = ids.index(id)
+            idx_curated = ids_curated.index(id)
 
-    #         if souches[idx] != souches_curated[idx_curated]:
-    #             ids_lots_modifies.append(id)
-    #     else:
-    #         count_id_missing += 1
+            if souches[idx] != souches_curated[idx_curated]:
+                ids_lots_modifies.append(id)
+        else:
+            count_id_missing += 1
 
-    #     if c%1000 == 0:
-    #         print(str(c)+" : "+str(count_id_missing))
-    #     c += 1
+        if c%1000 == 0:
+            print(str(c)+" : "+str(count_id_missing))
+        c += 1
 
-    # print("count_lots_missing")
-    # print(count_id_missing)
+    print("count_lots_missing")
+    print(count_id_missing)
 
-    # print("ids_lots_modifies")
-    # print(ids_lots_modifies)
-    # print("")
+    print("ids_lots_modifies")
+    print(ids_lots_modifies)
+    print("")
 
     # puis l'on compare les éléments un par un
     lots_archives = []
@@ -133,6 +133,6 @@ def main():
     wb = Workbook()
     write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancienne version", "Ancien numéro de lot", "Ancienne date de suppression du lot", "Ancien type de lot", "Ancienne quantité"])
     del wb["Sheet"]
-    wb.save(str("../../output/changements_sur_les_lots.xlsx"))
+    wb.save(str("../../output/bloc_4/changements_sur_les_lots.xlsx"))
 
 main()

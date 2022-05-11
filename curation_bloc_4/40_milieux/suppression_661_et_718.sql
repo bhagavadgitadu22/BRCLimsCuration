@@ -12,11 +12,19 @@ OR mil_numero = '661';
 -- de 661 à 13
 UPDATE t_milieu_souche
 SET msc_mil_id = 1024411
+WHERE msc_mil_id = 1028983
+AND (msc_sch_id, 1024411) NOT IN (SELECT msc_sch_id, msc_mil_id FROM t_milieu_souche);
+
+DELETE FROM t_milieu_souche
 WHERE msc_mil_id = 1028983;
 
 -- de 718 à 751A
 UPDATE t_milieu_souche
 SET msc_mil_id = 6978809
+WHERE msc_mil_id = 1029507
+AND (msc_sch_id, 6978809) NOT IN (SELECT msc_sch_id, msc_mil_id FROM t_milieu_souche);
+
+DELETE FROM t_milieu_souche
 WHERE msc_mil_id = 1029507;
 
 UPDATE t_milieu 

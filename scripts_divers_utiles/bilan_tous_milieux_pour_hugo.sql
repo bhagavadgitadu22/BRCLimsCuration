@@ -1,6 +1,6 @@
 SELECT mil_numero, mil_designation_fr, mil_commentaire, mil_commentaire_compo, 
 ARRAY_AGG(DISTINCT partial_ingredient) AS partial_recette, ARRAY_AGG(DISTINCT full_ingredient) AS full_recette, 
-ARRAY_AGG(DISTINCT sch_identifiant) AS liste_souches
+array_length(ARRAY_AGG(DISTINCT sch_identifiant), 1), ARRAY_AGG(DISTINCT sch_identifiant) AS liste_souches
 
 FROM (SELECT mil_numero, mil_designation_fr, mil_commentaire, mil_commentaire_compo, 
 sch_identifiant,
@@ -10,7 +10,7 @@ FROM t_milieu
 
 LEFT JOIN t_milieu_souche
 ON msc_mil_id = t_milieu.xxx_id
-LEFT JOIN t_souche
+LEFT JOIN (SELECT * FROM t_souche WHERE xxx_sup_dat IS NULL) AS t_souche
 ON t_souche.xxx_id = msc_sch_id
 
 LEFT JOIN t_milieu_composition

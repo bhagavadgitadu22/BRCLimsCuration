@@ -9,7 +9,7 @@ CREATE TABLE pathos_ue (
 );
 
 COPY pathos_ue (taxo, classe, remarque, souscat)
-FROM 'C:/Users/Public/Documents/pathogenecite_ue_2019_utf.csv'
+FROM '/tmp/pathogenecite_ue_2019_utf.csv'
 DELIMITER ';' CSV HEADER;
 
 UPDATE pathos_ue

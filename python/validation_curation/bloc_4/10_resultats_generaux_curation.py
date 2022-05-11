@@ -94,7 +94,7 @@ def main():
     print("")
 
     # on sauvegarde les ids archivés dans un excel
-    fa = open('../../output/souches_supprimees.csv', 'w', newline='')
+    fa = open('../../output/bloc_4/souches_supprimees.csv', 'w', newline='')
     writera = csv.writer(fa, delimiter=';')
     writera.writerows(map(lambda x: [x], [elem[1] for elem in schs_supprimes]))
     fa.close()
@@ -182,7 +182,7 @@ def main():
     print(str(len(souches_modifiees_hors_cip))+" modifiees hors cip")
     print([elem[22] for elem in souches_modifiees_hors_cip])
 
-    f = open('../../output/cip_modifies.csv', 'w', newline='')
+    f = open('../../output/bloc_4/cip_modifies.csv', 'w', newline='')
     writer = csv.writer(f, delimiter=';')
     writer.writerows(map(lambda x: [x], [elem[0] for elem in souches_modifiees]))
     f.close()
