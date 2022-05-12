@@ -15,7 +15,7 @@ WITH RECURSIVE children (xxx_id, don_lib, level, don_code, name_path, don_dic_id
 			t_donneedico tdd
 		INNER JOIN children t0 ON t0.don_code = tdd.don_parent AND t0.don_dic_id = tdd.don_dic_id)
 ) SELECT level, children.xxx_id AS sch_taxonomie, don_lib, don_dic_id, 
-ARRAY_TO_STRING(name_path, ' -> ') AS path, ARRAY_TO_STRING(num_path, ' ') AS id_path, 
+ARRAY_TO_STRING(name_path, ' ') AS path, ARRAY_TO_STRING(num_path, ' ') AS id_path, 
 (regexp_matches(dic_grp_collection, '\[([0-9]+)\]'))[1]::integer AS grp_collection
 INTO chemins_taxonomie
 FROM children
