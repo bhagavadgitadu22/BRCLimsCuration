@@ -5,7 +5,7 @@ def ajustement(pays):
     if pays == 'Viet Nam':
         return "Vietnam"
     elif pays == 'United Kingdom of Great Britain and Northern Ireland':
-        return "United Kingdom"
+        return "England"
     elif pays == 'Russian Federation':
         return "Russia"
     elif pays == 'Czechia':
@@ -18,22 +18,25 @@ def ajustement(pays):
         return "Cape Verde"
     elif pays == 'Korea (Republic of)':
         return "South Korea"
+    elif pays == 'United States of America':
+        return "USA"
 
     return pays
 
-path_to_file = '../../output/geo-countries_zip/archive/countries.geojson'
+path_to_file = 'preparation_map/world.geojson'
 with open(path_to_file) as f:
     gj = geojson.load(f)
 
-f = open('../../output/countries_brclims.csv', 'r', newline='')
+f = open('preparation_map/countries_brclims.csv', 'r', newline='')
 records = csv.reader(f, delimiter=',')
 nombres_par_pays = [record for record in records]
 f.close()
 
 list_pays = []
 count_countries = 0
+countries_used = []
 for country in reversed(gj['features']):
-    pays_geojson = country["properties"]["ADMIN"]
+    pays_geojson = country["properties"]["name"]
 
     boo = False
     for nb_p_pa in nombres_par_pays[1:]:
@@ -45,15 +48,15 @@ for country in reversed(gj['features']):
             country["properties"]["nombre"] = nb
 
             count_countries += 1
+            countries_used.append(nb_p_pa[1])
         
     if "nombre" not in country["properties"]:
         country["properties"]["nombre"] = 0
 
-    # finalement on garde tous les pays même ceux où pas de souche
-    #if not(boo):
-    #    gj['features'].remove(country)
-
 print(count_countries)
+for nb_p_pa in nombres_par_pays[1:]:
+    if nb_p_pa[1] not in countries_used:
+        print(nb_p_pa[1])
 
-with open('../../output/countries_with_numbers.geojson', 'w') as f:
+with open('map/countries_with_numbers.geojson', 'w') as f:
     geojson.dump(gj, f)
