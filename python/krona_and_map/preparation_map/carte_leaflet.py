@@ -5,29 +5,27 @@ def ajustement(pays):
     if pays == 'Viet Nam':
         return "Vietnam"
     elif pays == 'United Kingdom of Great Britain and Northern Ireland':
-        return "England"
+        return "United Kingdom"
     elif pays == 'Russian Federation':
         return "Russia"
-    elif pays == 'Czechia':
-        return "Czech Republic"
     elif pays == 'Syrian Arab Republic':
         return "Syria"
-    elif pays == 'Côte d\'Ivoire':
+    elif 'Ivoire' in pays:
         return "Ivory Coast"
-    elif pays == 'Cabo Verde':
-        return "Cape Verde"
     elif pays == 'Korea (Republic of)':
         return "South Korea"
     elif pays == 'United States of America':
-        return "USA"
+        return "United States"
 
     return pays
 
-path_to_file = 'preparation_map/world.geojson'
-with open(path_to_file) as f:
+# TO MODIFY: latest version of the geojson available at: https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_sovereignty.geojson
+path_to_file = 'krona_and_map/preparation_map/ne_50m_admin_0_sovereignty.geojson'
+with open(path_to_file, encoding='utf8') as f:
     gj = geojson.load(f)
 
-f = open('preparation_map/countries_brclims.csv', 'r', newline='')
+# TO MODIFY: ma requete sql à l'origine de ce csv: SELECT COUNT(*), don_lib FROM t_souche JOIN t_donneedico ON sch_lieu = t_donneedico.xxx_id WHERE sch_col_id IN (SELECT xxx_id FROM t_collection WHERE col_clg_id = 401) AND t_souche.xxx_sup_dat IS NULL AND sch_catalogue IS True AND sch_mot IS False GROUP BY don_lib;
+f = open('krona_and_map/preparation_map/countries_brclims.csv', 'r', newline='')
 records = csv.reader(f, delimiter=',')
 nombres_par_pays = [record for record in records]
 f.close()
@@ -36,7 +34,7 @@ list_pays = []
 count_countries = 0
 countries_used = []
 for country in reversed(gj['features']):
-    pays_geojson = country["properties"]["name"]
+    pays_geojson = country["properties"]["ADMIN"]
 
     boo = False
     for nb_p_pa in nombres_par_pays[1:]:
@@ -58,5 +56,6 @@ for nb_p_pa in nombres_par_pays[1:]:
     if nb_p_pa[1] not in countries_used:
         print(nb_p_pa[1])
 
-with open('map/countries_with_numbers.geojson', 'w') as f:
+# TO MODIFY: location of the geojson file
+with open('krona_and_map/map/countries_with_numbers.geojson', 'w') as f:
     geojson.dump(gj, f)

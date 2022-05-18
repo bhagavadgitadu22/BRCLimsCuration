@@ -6,7 +6,7 @@
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 <div class="map">
-  <h1>Numbers of bacteries by country</h1>
+  <!-- TO MODIFY: size of the inner map -->
   <svg id="my_dataviz" width="800" height="450"></svg>
 </div>
 
@@ -28,18 +28,19 @@ h1 {
   letter-spacing: 0.1;
 }
 
+/* TO MODIFY: width and height of the map */
 .map {
-  padding: 20px;
   background-color: #FFFFFF;
   border: 1px solid #4D8DC4;
   box-shadow: 1px 1px 15px #000000;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  left: 0%;
+  top: 0%;
+  width: 100%;
+  height: 100%;
 }
 
-div.tooltip {   
+div.tooltip {
   position: absolute;
   padding: 7px;
   font-size: 0.8em;
@@ -48,7 +49,7 @@ div.tooltip {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.25);
-}  
+}
 
 .background {
   fill: transparent;
@@ -65,14 +66,13 @@ const svg = d3.select("svg"),
 	width = svg.attr("width"),
 	height = svg.attr("height"),
 	path = d3.geoPath(),
-	data = d3.map(),
-	worldmap = "countries_with_numbers.geojson";
+	data = d3.map();
 
 let centered, world;
 
 // style of geographic projection and scaling
-const projection = d3.geoAitoff()
-	.scale(130)
+const projection = d3.geoEckert4()
+	.scale(140)
 	.translate([width / 2, height / 2]);
 
 // Define color scale
@@ -86,8 +86,9 @@ const tooltip = d3.select("body").append("div")
 	.style("opacity", 0);
 
 // Load external data and boot
+// TO MODIFY: location of the geojson file
 d3.queue()
-	.defer(d3.json, worldmap)
+	.defer(d3.json, "countries_with_numbers.geojson")
 	.await(ready);
 
 // Add clickable background
@@ -108,17 +109,17 @@ function ready(error, topo) {
 			.transition()
 			.duration(200)
 			.style("opacity", .5)
-			.style("stroke", "transparent");
+			.style("stroke-width", "0.5")
 		d3.select(this)
 			.transition()
 			.duration(200)
 			.style("opacity", 1)
-			.style("stroke", "black");
+			.style("stroke-width", "1");
 		tooltip.style("left", (d3.event.pageX + 15) + "px")
 			.style("top", (d3.event.pageY - 28) + "px")
 			.transition().duration(400)
 			.style("opacity", 1)
-			.text(d.properties.name + ' : ' + d.properties.nombre);
+			.text(d.properties.ADMIN + ' : ' + d.properties.nombre);
 	}
 
 	let mouseLeave = function() {
@@ -126,14 +127,14 @@ function ready(error, topo) {
 			.transition()
 			.duration(200)
 			.style("opacity", 1)
-			.style("stroke", "transparent");
+			.style("stroke-width", "0.5");
 		tooltip.transition().duration(300)
 			.style("opacity", 0);
 	}
 
 	// Draw the map
 	world = svg.append("g")
-    .attr("class", "world");
+    	.attr("class", "world");
 	world.selectAll("path")
 		.data(topo.features)
 		.enter()
@@ -144,7 +145,7 @@ function ready(error, topo) {
 
 		//retrieve the name of the country from data
 		.attr("data-name", function(d) {
-			return d.properties.name
+			return d.properties.ADMIN
 		})
 
 		// set the color of each country
@@ -153,7 +154,8 @@ function ready(error, topo) {
 		})
 
 		// add a class, styling and mouseover/mouseleave and click functions
-		.style("stroke", "transparent")
+		.style("stroke", "black")
+		.style("stroke-width", "0.5")
 		.attr("class", function(d) {
 			return "Country"
 		})
@@ -208,6 +210,17 @@ function ready(error, topo) {
 		});
 
 	legend.append("text").attr("x", 15).attr("y", 260).text("Number of strains :").attr("font-weight", "bold");
+	
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on('zoom', zoomed);
+
+	svg.call(zoom);
+}
+
+function zoomed() {
+    world.selectAll('path') // To prevent stroke width from scaling
+    	.attr('transform', d3.event.transform);
 }
 
 // Zoom functionality
@@ -233,6 +246,5 @@ function click(d) {
   world.transition()
       .duration(750)
       .attr("transform", "translate(" + x + "," + y + ") scale(" + k + ")" );
-  
 }
 </script>
