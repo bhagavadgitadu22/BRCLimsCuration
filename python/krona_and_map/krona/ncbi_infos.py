@@ -27,19 +27,27 @@ def inTree(dico, result, nombre):
             dico[result[0]] = nombre
     return dico
 
-def addNodes(dico, root):
+def countElements(dico):
     totalLocal = 0
     for elmt in dico:
         if isinstance(dico[elmt], int):
             totalLocal += dico[elmt]
         else:
-            node = ET.SubElement(root, "node", name=elmt)
-            totalLocal += addNodes(dico[elmt], node)
+            totalLocal += countElements(dico[elmt])
+    return totalLocal
 
-    # à ce stade le noeud est terminé je peux compter le nombre d'éléments dans root
+def addNodes(dico, root):
+    totalLocal = countElements(dico)
     number = ET.SubElement(root, "grams")
     ET.SubElement(number, "val").text = str(totalLocal)
-    return totalLocal
+    
+    for elmt in dico:
+        if not(isinstance(dico[elmt], int)):
+            if elmt != '':
+                node = ET.SubElement(root, "node", name=elmt)
+                addNodes(dico[elmt], node)
+            else:
+                addNodes(dico[elmt], root)
 
 ncbi = NCBITaxa()
 # ncbi.update_taxonomy_database()
@@ -88,12 +96,11 @@ root = ET.Element("krona")
 attr = ET.SubElement(root, "attributes", magnitude="grams")
 ET.SubElement(attr, "attribute", display="Number").text = "grams"
 
-ET.SubElement(root, "color", attribute="grams", valueStart="0", valueEnd="55", hueStart="120", hueEnd="240")
-
 dat = ET.SubElement(root, "datasets")
 ET.SubElement(dat, "dataset").text = "CIP"
 
-addNodes(dico, root)
+firstNode = ET.SubElement(root, "node", name="Taxonomy")
+addNodes(dico, firstNode)
 
 tree = ET.ElementTree(root)
 ET.indent(tree, '  ')
