@@ -28,13 +28,18 @@ def inTree(dico, result, nombre):
     return dico
 
 def addNodes(dico, root):
+    totalLocal = 0
     for elmt in dico:
         if isinstance(dico[elmt], int):
-            number = ET.SubElement(root, "grams")
-            ET.SubElement(number, "val").text = str(dico[elmt])
+            totalLocal += dico[elmt]
         else:
             node = ET.SubElement(root, "node", name=elmt)
-            dico[elmt] = addNodes(dico[elmt], node)
+            totalLocal += addNodes(dico[elmt], node)
+
+    # à ce stade le noeud est terminé je peux compter le nombre d'éléments dans root
+    number = ET.SubElement(root, "grams")
+    ET.SubElement(number, "val").text = str(totalLocal)
+    return totalLocal
 
 ncbi = NCBITaxa()
 # ncbi.update_taxonomy_database()
