@@ -13,6 +13,29 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
+def inTree(dico, result, nombre):
+    if result[0] in dico:
+        if len(result) > 1:
+            dico[result[0]] = inTree(dico[result[0]], result[1:], nombre)
+        else:
+            print("element dans dico mais pas de suite bizarre...")
+    else:
+        if len(result) > 1:
+            dico[result[0]] = {}
+            dico[result[0]] = inTree(dico[result[0]], result[1:], nombre)
+        else:
+            dico[result[0]] = nombre
+    return dico
+
+def addNodes(dico, root):
+    for elmt in dico:
+        if isinstance(dico[elmt], int):
+            number = ET.SubElement(root, "grams")
+            ET.SubElement(number, "val").text = str(dico[elmt])
+        else:
+            node = ET.SubElement(root, "node", name=elmt)
+            dico[elmt] = addNodes(dico[elmt], node)
+
 ncbi = NCBITaxa()
 # ncbi.update_taxonomy_database()
 
@@ -30,7 +53,6 @@ for taxoBRC in taxosBRC:
 taxIds = ncbi.get_name_translator(all_genus)
 print(taxIds)
 
-results = []
 dico = {}
 for taxoBRC in taxosBRC:
     nombre = taxoBRC[0]
@@ -54,25 +76,20 @@ for taxoBRC in taxosBRC:
         result.append(species)
         result.append(subspecies)
 
-        
-        results.append(result)
-
-
-
-f = open('../../output/genus_complete.csv', 'w', newline='')
-writer = csv.writer(f, delimiter=';')
-writer.writerows(results)
-f.close()
+        dico = inTree(dico, result, nombre)
 
 root = ET.Element("krona")
 
 attr = ET.SubElement(root, "attributes", magnitude="grams")
-ET.SubElement(attr, "attribute", display="Number").text = "number"
+ET.SubElement(attr, "attribute", display="Number").text = "grams"
 
-dat = ET.SubElement(root, "datasets", magnitude="grams")
+ET.SubElement(root, "color", attribute="grams", valueStart="0", valueEnd="55", hueStart="120", hueEnd="240")
+
+dat = ET.SubElement(root, "datasets")
 ET.SubElement(dat, "dataset").text = "CIP"
 
+addNodes(dico, root)
 
 tree = ET.ElementTree(root)
-tree.write("filename.xml")
-
+ET.indent(tree, '  ')
+tree.write("krona_and_map/krona/filename.xml", encoding="utf-8", xml_declaration=True)
