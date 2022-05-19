@@ -3,6 +3,7 @@ import csv
 import psycopg2
 import xml.etree.cElementTree as ET
 
+# TO MODIFY: les références à ma bdd locale
 def get_cursor(db_name):
     conn = psycopg2.connect(user="postgres",
                                   password="postgres",
@@ -50,9 +51,12 @@ def addNodes(dico, root):
                 addNodes(dico[elmt], root)
 
 ncbi = NCBITaxa()
-# ncbi.update_taxonomy_database()
+ncbi.update_taxonomy_database()
 
+# TO MODIFY: référence à mon fichier SQL que tu devras modifier pour aller chercher les taxonomies de ta base OWEY
 str_sql = open("krona_and_map/krona/krona_taxos.sql", "r").read()
+
+# TO MODIFY: référence à ma base de données locale
 cursor = get_cursor("restart_db_cured")
 cursor.execute(str_sql)
 records_cip = cursor.fetchall()
@@ -104,4 +108,22 @@ addNodes(dico, firstNode)
 
 tree = ET.ElementTree(root)
 ET.indent(tree, '  ')
+# TO MODIFY: création d'un fichier XML chemin à ajuster
 tree.write("krona_and_map/krona/filename.xml", encoding="utf-8", xml_declaration=True)
+
+# TO MODIFY: lecture de l'ancien fichier krona chemin à modifier
+beginning = ""
+with open("krona_and_map/krona/krona.html", 'r') as file:
+    data = file.read().replace('\n', '')
+    beginning = data[0:str.find(data, '<krona>')]
+
+following = ""
+# TO MODIFY: lecture du fichier XML chemin à ajuster
+with open("krona_and_map/krona/filename.xml", 'r') as file:
+    data = file.read().replace('\n', '')
+    following = data[str.find(data, '<krona>'):]
+
+# TO MODIFY: réécriture de l'ancien fichier krona chemin à modifier
+writtenFile = open("krona_and_map/krona/krona.html", "w")
+writtenFile.write(beginning+following+'</div></body></html>')
+writtenFile.close()
