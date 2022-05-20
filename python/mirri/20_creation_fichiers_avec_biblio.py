@@ -12,13 +12,14 @@ def get_cursor(db_name):
     return conn.cursor()
 
 cursor = get_cursor("new_db")
+cursor.execute(open("../envoi_souches/mirri/extract_date_function.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri/mirri_biblio_par_id.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri/mirri.sql", "r").read())
 records = cursor.fetchall()
 
 
 # gestion des biblis
-f_biblis = open('../../output/bilan_biblis.csv', 'r', encoding="utf-8", newline='')
+f_biblis = open('../../output/mirri/bilan_biblis.csv', 'r', encoding="utf-8", newline='')
 biblis = csv.reader(f_biblis, delimiter=';')
 
 biblis_par_id = {}
@@ -85,17 +86,17 @@ for record in records:
 
     rows_strains.append(row)
 
-f_strains = open('../../output/sheet_strains.csv', 'w', encoding="utf-8", newline='')
+f_strains = open('../../output/mirri/sheet_strains.csv', 'w', encoding="utf-8", newline='')
 writer_strains = csv.writer(f_strains, delimiter=';')
 writer_strains.writerows(rows_strains)
 f_strains.close()
 
-f_literature = open('../../output/sheet_literature.csv', 'w', encoding="utf-8", newline='')
+f_literature = open('../../output/mirri/sheet_literature.csv', 'w', encoding="utf-8", newline='')
 writer_literature = csv.writer(f_literature, delimiter=';')
 writer_literature.writerows(correspondances_biblis)
 f_literature.close()
 
-f_pays = open('../../output/sheet_pays.csv', 'w', encoding="utf-8", newline='')
+f_pays = open('../../output/mirri/sheet_pays.csv', 'w', encoding="utf-8", newline='')
 writer_pays = csv.writer(f_pays, delimiter=';')
 writer_pays.writerows(correspondances_pays)
 f_pays.close()

@@ -1,6 +1,6 @@
 SELECT mil_numero, mil_designation_en, COUNT(*), ARRAY_AGG(sch_identifiant)
 FROM t_milieu
-JOIN t_milieu_souche
+JOIN (SELECT * FROM t_milieu_souche WHERE msc_standard IS True) AS tms
 ON msc_mil_id = t_milieu.xxx_id
 JOIN t_souche
 ON t_souche.xxx_id = msc_sch_id

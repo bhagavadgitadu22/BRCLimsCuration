@@ -79,7 +79,7 @@ for record in records:
 
     biblis.append(list)
 
-f_biblis = open('../../output/bilan_biblis.csv', 'w', encoding="utf-8", newline='')
+f_biblis = open('../../output/mirri/bilan_biblis.csv', 'w', encoding="utf-8", newline='')
 writer_biblis = csv.writer(f_biblis, delimiter=';')
 writer_biblis.writerows(biblis)
 f_biblis.close()
