@@ -31,5 +31,4 @@ FROM t_collection
 WHERE col_clg_id = 401)
 AND t_souche.xxx_sup_dat IS NULL
 ORDER BY sch_cpt_id, sch_version DESC) AS a
-ORDER BY RANDOM()
-LIMIT 200;
+ORDER BY RANDOM();

@@ -51,13 +51,13 @@ def addNodes(dico, root):
                 addNodes(dico[elmt], root)
 
 ncbi = NCBITaxa()
-ncbi.update_taxonomy_database()
+#ncbi.update_taxonomy_database()
 
 # TO MODIFY: référence à mon fichier SQL que tu devras modifier pour aller chercher les taxonomies de ta base OWEY
 str_sql = open("krona_and_map/krona/krona_taxos.sql", "r").read()
 
 # TO MODIFY: référence à ma base de données locale
-cursor = get_cursor("restart_db_cured")
+cursor = get_cursor("new_db")
 cursor.execute(str_sql)
 records_cip = cursor.fetchall()
 
@@ -70,7 +70,10 @@ for taxoBRC in taxosBRC:
 taxIds = ncbi.get_name_translator(all_genus)
 print(taxIds)
 
+print(len(taxosBRC))
+
 dico = {}
+lines = []
 for taxoBRC in taxosBRC:
     nombre = taxoBRC[0]
     genus = taxoBRC[1]
@@ -93,7 +96,17 @@ for taxoBRC in taxosBRC:
         result.append(species)
         result.append(subspecies)
 
+        line = [nombre]
+        for e in result:
+            line.append(e)
+        lines.append(line)
+
         dico = inTree(dico, result, nombre)
+
+fw = open('../../output/taxos_virus.csv', 'w', newline='')
+wf = csv.writer(fw, delimiter=';', lineterminator='\n')
+wf.writerows(lines)
+fw.close()
 
 root = ET.Element("krona")
 

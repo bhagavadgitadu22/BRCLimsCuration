@@ -12,7 +12,7 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
-cursor = get_cursor("new_db")
+cursor = get_cursor("new_db2")
 cursor.execute(open("../envoi_souches/mirri/mirri_last_version_souches_cip.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri/mirri_biblio.sql", "r").read())
 records = cursor.fetchall()

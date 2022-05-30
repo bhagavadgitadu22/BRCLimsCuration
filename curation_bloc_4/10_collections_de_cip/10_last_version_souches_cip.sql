@@ -27,6 +27,6 @@ ON t_lieu.xxx_id = sch_lieu
 WHERE sch_col_id IN
 (SELECT xxx_id
 FROM t_collection
-WHERE col_clg_id = 401)
+WHERE col_clg_id = 410)
 AND t_souche.xxx_sup_dat IS NULL
 ORDER BY sch_cpt_id, sch_version DESC;
