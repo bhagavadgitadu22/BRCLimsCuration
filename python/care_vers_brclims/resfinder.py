@@ -10,7 +10,7 @@ def redimension_cell_width(ws):
     for row in ws.rows:
         for cell in row:
             if cell.value:
-                line_max = max([len(str(elmt)) for elmt in cell.value.split('\n')])
+                line_max = len(str(cell.value))
                 max_ = max((dims.get(cell.column_letter, 0), line_max))
                 dims[cell.column_letter] = max_
     for col, value in dims.items():
@@ -77,8 +77,8 @@ classes_rb.append('Polymyxin')
 if len(genes_rb) != len(classes_rb):
     print("trouble!")
 
-# local_path = 'C:/Users/mboutrou/Documents/'
-local_path = '/mnt/gaia/my_home/'
+local_path = 'C:/Users/mboutrou/Documents/'
+#local_path = '/mnt/gaia/my_home/'
 path = local_path+'TR _AMR_database_pour_CARE'
 dir_list = os.listdir(path)
 
@@ -163,9 +163,9 @@ for genus in genus_par_classe:
         g_i = header2[i]
 
         if c_i in genus_par_classe[genus] and g_i in genus_par_classe[genus][c_i]:
-            row.append(str(genus_par_classe[genus][c_i][g_i]))
+            row.append(genus_par_classe[genus][c_i][g_i])
         else:
-            row.append(str(0))
+            row.append(0)
 
     rows.append(row)
 
@@ -193,30 +193,30 @@ for genus in genes_par_classes_par_genus:
         c_i = header3[i]
 
         if c_i in genes_par_classes_par_genus[genus]:
-            row.append(str(len(genes_par_classes_par_genus[genus][c_i])))
+            row.append(len(genes_par_classes_par_genus[genus][c_i]))
             sum += len(genes_par_classes_par_genus[genus][c_i])
         else:
-            row.append(str(0))
+            row.append(0)
 
-    row.append(str(sum))
+    row.append(sum)
     rows.append(row)
 
-row_final = ["Total par classe"]
+row_final = ["All genera combined"]
 sum_final = 0
 for i in range(1, len(header3)):
     c_i = header3[i]
 
     if c_i in genes_par_classes:
-        row_final.append(str(len(genes_par_classes[c_i])))
+        row_final.append(len(genes_par_classes[c_i]))
         sum_final += len(genes_par_classes[c_i])
     else:
-        row_final.append(str(0))
+        row_final.append(0)
 
-row_final.append(str(sum_final))
+row_final.append(sum_final)
 rows.append(row_final)
 
 sheet = wb.create_sheet("Statistics")
-header3.append("Total par genre")
+header3.append("All classes combined")
 sheet.append(header3)
 for row in rows:
     sheet.append(row)
@@ -225,9 +225,9 @@ total_resfinder = ["Total ResFinder"]
 sum_res = 0
 for i in range(1, len(header3)-1):
     c_f = header3[i]
-    total_resfinder.append(str(classes_rb.count(c_f)))
+    total_resfinder.append(classes_rb.count(c_f))
     sum_res += classes_rb.count(c_f)
-total_resfinder.append(str(sum_res))
+total_resfinder.append(sum_res)
 sheet.append(total_resfinder) 
 
 redimension_cell_width(sheet)
