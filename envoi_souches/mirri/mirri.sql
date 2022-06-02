@@ -2,47 +2,47 @@ SELECT t_souche.xxx_id, CASE
 	WHEN sch_identifiant LIKE '%CRBIP%' THEN REPLACE(sch_identifiant, '.', ' ')
 	ELSE sch_identifiant
 END AS identifiant, sch_references_equi, '1' AS restrictions_on_use,
-'1' AS nagoya, '', '', '', 
+'1' AS nagoya,
 CASE
 	WHEN t_pathogenicite.pto_lib IS NOT NULL THEN t_pathogenicite.pto_lib
 	ELSE '1'
-END AS statut, '', '', 'Bacteria', 
-CONCAT((string_to_array(sch_denomination, ' '))[1], ' ', (string_to_array(sch_denomination, ' '))[2], CASE
-	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN CONCAT(' subsp. ', (string_to_array(sch_denomination, ' '))[3])
+END AS risk_group, 'Bacteria', 
+(string_to_array(sch_denomination, ' '))[1] AS genus, (string_to_array(sch_denomination, ' '))[2] AS species, CASE
+	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN (string_to_array(sch_denomination, ' '))[3]
 	ELSE ''
-END) AS taxon_name,
+END AS subspecies,
 CASE
 	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[A-Z]{1}[a-z]+' THEN CONCAT('var.', (string_to_array(sch_denomination, ' '))[3])
 	ELSE ''
-END AS infrasubspecific, '', 
+END AS infrasubspecific,
 CASE
 	WHEN sch_type IS True THEN 'Type'
 	ELSE ''
-END AS statut, sch_historique, 
+END AS sch_type, sch_historique, 
 t_deposant.don_lib, 
 extract_date(t_ddr.dvl_valeur) AS date_depot, 
-'', extract_date(sch_dat_prelevement), 
-'', extract_date(sch_dat_isolement), 
-extract_date(sch_dat_acquisition), '', 
+extract_date(sch_dat_prelevement), 
+extract_date(sch_dat_isolement), 
+extract_date(sch_dat_acquisition), 
 sch_temperature_incubation, 
 array_to_string(ARRAY_AGG(mil_numero), '/') AS milieux,
 CASE
 	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 'Agar'
 	ELSE 'Cryo'
 END AS form_of_supply, t_sd.svl_valeur AS strain_designation, 
-'', '', t_lieu.don_lib, 
+t_lieu.don_lib, 
 CASE
 	WHEN sch_ogm IS False THEN 1
 	ELSE 2
-END AS gmo, '', '', '', sch_bibliographie, 
-'', '', '', '', '', '', '', '', '', '', 
+END AS gmo, sch_bibliographie,
 CASE
 	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de != '' THEN CONCAT(t_origine.don_lib, ', ', sch_isole_a_partir_de)
 	WHEN t_origine.don_lib IS NULL AND sch_isole_a_partir_de != '' THEN sch_isole_a_partir_de
 	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de = '' THEN t_origine.don_lib
 	ELSE ''
-END AS origine, '',  '',  '',  '', 
-CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS original_site
+END AS origine,
+CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS original_site,
+sch_lieu_precis
 FROM t_souche
 
 LEFT JOIN t_pathogenicite
