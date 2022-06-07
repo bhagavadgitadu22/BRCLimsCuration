@@ -1,5 +1,5 @@
 SELECT t_souche.xxx_id, CASE
-	WHEN sch_identifiant LIKE '%CRBIP%' THEN REPLACE(sch_identifiant, '.', ' ')
+	WHEN sch_identifiant LIKE '%CRBIP%' THEN REPLACE(sch_identifiant, 'CRBIP', 'CRBIP ')
 	ELSE sch_identifiant
 END AS identifiant, sch_references_equi, '1' AS restrictions_on_use,
 '1' AS nagoya,
@@ -7,10 +7,10 @@ CASE
 	WHEN t_pathogenicite.pto_lib IS NOT NULL THEN t_pathogenicite.pto_lib
 	ELSE '1'
 END AS risk_group, 'Bacteria', 
-(string_to_array(sch_denomination, ' '))[1] AS genus, (string_to_array(sch_denomination, ' '))[2] AS species, CASE
-	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN (string_to_array(sch_denomination, ' '))[3]
+(string_to_array(sch_denomination, ' '))[1] AS genus, CONCAT ((string_to_array(sch_denomination, ' '))[2], CASE
+	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN CONCAT(' subsp. ', (string_to_array(sch_denomination, ' '))[3])
 	ELSE ''
-END AS subspecies,
+END) AS species, '',
 CASE
 	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[A-Z]{1}[a-z]+' THEN CONCAT('var.', (string_to_array(sch_denomination, ' '))[3])
 	ELSE ''
@@ -32,8 +32,8 @@ CASE
 END AS form_of_supply, t_sd.svl_valeur AS strain_designation, 
 t_lieu.don_lib, 
 CASE
-	WHEN sch_ogm IS False THEN 1
-	ELSE 2
+	WHEN sch_ogm IS False THEN 0
+	ELSE 1
 END AS gmo, sch_bibliographie,
 CASE
 	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de != '' THEN CONCAT(t_origine.don_lib, ', ', sch_isole_a_partir_de)
