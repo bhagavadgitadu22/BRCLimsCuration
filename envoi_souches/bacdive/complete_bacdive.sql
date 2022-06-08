@@ -1,10 +1,9 @@
 SELECT CASE
 	WHEN sch_identifiant LIKE '%CRBIP%' THEN REPLACE(sch_identifiant, 'CRBIP', 'CRBIP ')
 	ELSE sch_identifiant
-END AS identifiant, 
+END AS identifier, 
 sch_references_equi AS equivalent_references,
 t_sd.svl_valeur AS strain_designation, 
-t_ba.svl_valeur AS basonym, 
 
 (string_to_array(sch_denomination, ' '))[1] AS genus, 
 (string_to_array(sch_denomination, ' '))[2] AS species, 
@@ -16,6 +15,7 @@ CASE
 	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[A-Z]{1}[a-z]+' THEN CONCAT('var. ', (string_to_array(sch_denomination, ' '))[3])
 	ELSE ''
 END AS infrasubspecific,
+t_ba.svl_valeur AS basonym, 
 
 CASE
 	WHEN t_pathogenicite.pto_lib IS NOT NULL THEN t_pathogenicite.pto_lib
@@ -35,8 +35,8 @@ extract_date(t_ddr.dvl_valeur) AS deposital_date,
 extract_date(sch_dat_acquisition) AS add_on_catalog_date, 
 
 sch_temperature_incubation AS incubation_temperature, 
-sch_atmosphere_incubation AS incubation_atmosphere, 
-sch_temps_culture AS incubation_atmosphere, 
+t_atm.don_lib AS incubation_atmosphere, 
+sch_temps_culture AS time_of_culture, 
 array_to_string(ARRAY_AGG(mil_designation_en), E';\n') AS growth_media,
 CASE
 	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 'Lyo'
@@ -57,16 +57,20 @@ LEFT JOIN t_pathogenicite
 ON t_pathogenicite.xxx_id = sch_pto_id
 LEFT JOIN t_donneedico AS t_deposant
 ON sch_depositaire = t_deposant.xxx_id
+LEFT JOIN t_donneedico AS t_atm
+ON sch_atmosphere_incubation = t_atm.xxx_id
 LEFT JOIN t_donneedico AS t_conservation
 ON sch_conservation = t_conservation.xxx_id
 LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
 		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
 		   WHERE att_nom = 'Strain Designation') AS t_sd
+ON t_sd.att_col_id = t_souche.sch_col_id
+AND t_sd.svl_entite_id = t_souche.xxx_id
 LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
 		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
 		   WHERE att_nom = 'Basonyme') AS t_ba
-ON t_sd.att_col_id = t_souche.sch_col_id
-AND t_sd.svl_entite_id = t_souche.xxx_id
+ON t_ba.att_col_id = t_souche.sch_col_id
+AND t_ba.svl_entite_id = t_souche.xxx_id
 LEFT JOIN (SELECT att_col_id, dvl_entite_id, dvl_valeur FROM t_attribut 
 		   LEFT JOIN t_date_val ON t_date_val.dvl_att_id = t_attribut.xxx_id
 		   WHERE att_nom = 'Date de réception') AS t_ddr
@@ -87,5 +91,5 @@ AND sch_mot IS False
 GROUP BY t_souche.xxx_id, sch_identifiant, sch_references_equi, t_pathogenicite.pto_lib, sch_denomination, sch_type, 
 sch_historique, t_deposant.don_lib, t_ddr.dvl_valeur, sch_dat_prelevement, t_origine.don_lib, sch_isole_a_partir_de, 
 sch_dat_isolement, sch_dat_acquisition, sch_temperature_incubation, t_lieu.don_lib, t_conservation.don_lib, 
-t_sd.svl_valeur, sch_ogm, sch_bibliographie
+t_sd.svl_valeur, sch_ogm, sch_bibliographie, t_ba.svl_valeur, t_atm.don_lib
 ORDER BY t_souche.xxx_id;
