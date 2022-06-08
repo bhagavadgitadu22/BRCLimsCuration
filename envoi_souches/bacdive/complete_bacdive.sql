@@ -1,53 +1,58 @@
-SELECT t_souche.xxx_id, CASE
+SELECT CASE
 	WHEN sch_identifiant LIKE '%CRBIP%' THEN REPLACE(sch_identifiant, 'CRBIP', 'CRBIP ')
 	ELSE sch_identifiant
-END AS identifiant, sch_references_equi, '1' AS restrictions_on_use,
-'1' AS nagoya,
+END AS identifiant, 
+sch_references_equi AS equivalent_references,
+t_sd.svl_valeur AS strain_designation, 
+t_ba.svl_valeur AS basonym, 
+
+(string_to_array(sch_denomination, ' '))[1] AS genus, 
+(string_to_array(sch_denomination, ' '))[2] AS species, 
+CASE
+	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN (string_to_array(sch_denomination, ' '))[3]
+	ELSE ''
+END AS subspecies,
+CASE
+	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[A-Z]{1}[a-z]+' THEN CONCAT('var. ', (string_to_array(sch_denomination, ' '))[3])
+	ELSE ''
+END AS infrasubspecific,
+
 CASE
 	WHEN t_pathogenicite.pto_lib IS NOT NULL THEN t_pathogenicite.pto_lib
 	ELSE '1'
-END AS risk_group, 'Bacteria', 
-(string_to_array(sch_denomination, ' '))[1] AS genus, CONCAT ((string_to_array(sch_denomination, ' '))[2], CASE
-	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[a-z]+' THEN CONCAT(' subsp. ', (string_to_array(sch_denomination, ' '))[3])
-	ELSE ''
-END) AS species, '',
-CASE
-	WHEN (string_to_array(sch_denomination, ' '))[3] SIMILAR TO '[A-Z]{1}[a-z]+' THEN CONCAT('var.', (string_to_array(sch_denomination, ' '))[3])
-	ELSE ''
-END AS infrasubspecific,
-CASE
-	WHEN sch_type IS True THEN 'Type'
-	ELSE ''
-END AS sch_type, sch_historique, 
-t_deposant.don_lib, 
-extract_date(t_ddr.dvl_valeur) AS date_depot, 
-extract_date(sch_dat_prelevement), 
-extract_date(sch_dat_isolement), 
-extract_date(sch_dat_acquisition), 
-sch_temperature_incubation, 
-CASE 
-	WHEN array_to_string(ARRAY_AGG(mil_numero), '/') != '' THEN array_to_string(ARRAY_AGG(mil_numero), '/')
-	ELSE '-1'
-END AS milieux,
-CASE
-	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 'Agar'
-	ELSE 'Cryo'
-END AS form_of_supply, t_sd.svl_valeur AS strain_designation, 
-t_lieu.don_lib, 
+END AS risk_group, 
+sch_type AS type_strain,
 CASE
 	WHEN sch_ogm IS False THEN 0
 	ELSE 1
-END AS gmo, sch_bibliographie,
-CASE
-	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de != '' THEN CONCAT(t_origine.don_lib, ', ', sch_isole_a_partir_de)
-	WHEN t_origine.don_lib IS NULL AND sch_isole_a_partir_de != '' THEN sch_isole_a_partir_de
-	WHEN t_origine.don_lib IS NOT NULL AND sch_isole_a_partir_de = '' THEN t_origine.don_lib
-	ELSE ''
-END AS origine,
-CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS original_site,
-sch_lieu_precis
-FROM t_souche
+END AS gmo, 
 
+sch_historique AS history,
+extract_date(sch_dat_prelevement) AS collection_date, 
+extract_date(sch_dat_isolement) AS isolation_date, 
+t_deposant.don_lib AS depositor,
+extract_date(t_ddr.dvl_valeur) AS deposital_date, 
+extract_date(sch_dat_acquisition) AS add_on_catalog_date, 
+
+sch_temperature_incubation AS incubation_temperature, 
+sch_atmosphere_incubation AS incubation_atmosphere, 
+sch_temps_culture AS incubation_atmosphere, 
+array_to_string(ARRAY_AGG(mil_designation_en), E';\n') AS growth_media,
+CASE
+	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 'Lyo'
+	ELSE 'Cryo'
+END AS form_of_supply, 
+
+t_lieu.don_lib AS country_of_origin, 
+sch_lieu_precis AS specific_origin,
+t_origine.don_lib AS origin_category,
+sch_isole_a_partir_de AS specific_origin,
+
+sch_bibliographie AS literature,
+
+CONCAT('https://catalogue-crbip.pasteur.fr/fiche_catalogue.xhtml?crbip=', sch_identifiant) AS link_to_the_catalog
+
+FROM t_souche
 LEFT JOIN t_pathogenicite
 ON t_pathogenicite.xxx_id = sch_pto_id
 LEFT JOIN t_donneedico AS t_deposant
@@ -57,6 +62,9 @@ ON sch_conservation = t_conservation.xxx_id
 LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
 		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
 		   WHERE att_nom = 'Strain Designation') AS t_sd
+LEFT JOIN (SELECT att_col_id, svl_entite_id, svl_valeur FROM t_attribut 
+		   LEFT JOIN t_string_val ON t_string_val.svl_att_id = t_attribut.xxx_id
+		   WHERE att_nom = 'Basonyme') AS t_ba
 ON t_sd.att_col_id = t_souche.sch_col_id
 AND t_sd.svl_entite_id = t_souche.xxx_id
 LEFT JOIN (SELECT att_col_id, dvl_entite_id, dvl_valeur FROM t_attribut 

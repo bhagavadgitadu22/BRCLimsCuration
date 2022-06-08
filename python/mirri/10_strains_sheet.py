@@ -1,8 +1,5 @@
-from curses import COLOR_YELLOW
-from pandas import date_range
 import psycopg2
 
-from mirri.validation.excel_validator import validate_mirri_excel
 from mirri.entities.date_range import DateRange
 from mirri.entities.publication import Publication
 from mirri.entities.strain import StrainMirri
@@ -12,7 +9,7 @@ from mirri.entities.growth_medium import GrowthMedium
 import pycountry
 from mirri.io.writers.mirri_excel import write_mirri_excel
 from mirri.validation.entity_validators import validate_strain
-from mirri.settings import (NO_RESTRICTION, NAGOYA_NO_RESTRICTIONS, CRYO)
+from mirri.settings import (NO_RESTRICTION, NAGOYA_NO_RESTRICTIONS)
 
 def get_growth_media(cursor):
     sql = open("../envoi_souches/mirri/mirri_milieux.sql", "r", encoding='utf-8').read()
@@ -20,6 +17,10 @@ def get_growth_media(cursor):
     media = cursor.fetchall()
 
     gms = {}
+    gm0 = GrowthMedium()
+    gm0.acronym = '-1'
+    gm0.description = 'No medium specified'
+    gms['-1'] = gm0
     for medium in media:
         gm = GrowthMedium()
         gm.acronym = medium[0]
@@ -95,8 +96,12 @@ def serialize_strain(row, bibli_tot):
         strain.isolation.date = newDateRange(row[16])
     if row[17] != '':
         strain.catalog_inclusion_date = newDateRange(row[17])
+
+    if row[18].replace('°C', '') != '':
+        strain.growth.recommended_temp = {"min":row[18].replace('°C', '') , "max":row[18].replace('°C', '') }
+    else:
+        strain.growth.recommended_temp = {"min":-1, "max":-1}
     
-    strain.growth.recommended_temp = {"min":row[18], "max":row[18]}
     strain.growth.recommended_media = [row[19]]
     
     strain.form_of_supply = [row[20]]
@@ -111,21 +116,6 @@ def serialize_strain(row, bibli_tot):
         strain.collect.location.country = pyinstance.alpha_3
 
     strain.genetics.gmo = bool(row[23])
-
-    # bibliography
-    # biblios = row[24].replace('\n', '').split(';')
-    # publis = []
-    # for bibli in biblios:
-    #     if 'doi:' in bibli:
-    #         doi = bibli.split('doi:')[1].replace(" ", "")
-    #         publis.append(Publication(data={"record_id":'1', "record_name":'1', "pub_doi":doi}))
-    #     elif 'pmid:' in bibli:
-    #         pmid = bibli.split('pmid:')[1].replace(" ", "")
-    #         publis.append(Publication(data={"record_id":'1', "record_name":'1', "":pmid}))
-    #     else:
-    #         publis.append(Publication(data={"record_id":'1', "record_name":'1', "full_reference":bibli}))
-    # strain.publications = publis
-    # print(strain.publications)
 
     strain.isolation.substrate_host_of_isolation = row[25]
     strain.remarks = row[26]
@@ -145,18 +135,20 @@ connection = psycopg2.connect(user="postgres",
                                 password="postgres",
                                 host="localhost",
                                 port="5432",
-                                database="restart_db_cured")
+                                database="brc_db")
 connection.autocommit = True
 
 # create a cursor to perform database operations
 cursor = connection.cursor()
 
-obj_path = '/home/calvin/Documents/mirri/'
+#obj_path = '/home/calvin/Documents/mirri/'
+obj_path = 'C:/Users/mboutrou/Documents/mirri/'
 out_path = obj_path+'brclims_excel.xlsx'
 
 bibli_tot = []
 
-cursor.execute(open("../envoi_souches/mirri/mirri_last_version_souches_cip.sql", "r", encoding='utf-8').read())
+souches_concernees = "../envoi_souches/mirri/mirri_last_version_souches_pcc.sql"
+cursor.execute(open(souches_concernees, "r", encoding='utf-8').read())
 cursor.execute(open("../envoi_souches/mirri/extract_date_function.sql", "r", encoding='utf-8').read())
 
 growth_media = get_growth_media(cursor)
@@ -171,4 +163,3 @@ for row_strain in rows:
     strains.append(strain_serialized)
 
 write_mirri_excel(path=out_path, strains=strains, growth_media=growth_media.values(), version="20200601")
-validate_mirri_excel(open(out_path, 'rb'))
