@@ -15,7 +15,7 @@ def get_cursor(db_name):
 client = bacdive.BacdiveClient('martin.boutroux@pasteur.fr', 'hercule1821')
 
 cursor = get_cursor("brc_db")
-cursor.execute(open("../analyse/souches_sans_pays_avec_dsm.sql", 'r').read())
+cursor.execute(open("../analyse/souches_sans_origines_avec_dsm.sql", 'r').read())
 records = cursor.fetchall()
 
 good = 0
@@ -41,15 +41,12 @@ for record in records:
         # Entries can be further filtered using a list of keys (e.g. ['keywords'])
         for strain in client.retrieve():
             if 'isolation' in strain['Isolation, sampling and environmental information']:
-                country = ''
-                location = ''
-                if 'country' in strain['Isolation, sampling and environmental information']['isolation']:
-                    country = strain['Isolation, sampling and environmental information']['isolation']['country']
-                if 'geographic location' in strain['Isolation, sampling and environmental information']['isolation']:
-                    location = strain['Isolation, sampling and environmental information']['isolation']['geographic location']
+                origin = ''
+                if 'sample type' in strain['Isolation, sampling and environmental information']['isolation']:
+                    origin = strain['Isolation, sampling and environmental information']['isolation']['sample type']
 
-                if country != '' or location != '':
-                    row = [record[0], record[1], record[2], country, location]
+                if origin != '':
+                    row = [record[0], record[1], record[2], origin]
                     rows.append(row)
 
     i += 1
@@ -61,7 +58,7 @@ print(good)
 print(bad)
 print(weird)
 
-f_genomes = open('../../output/souches_cip_sans_pays.csv', 'w', newline='')
+f_genomes = open('../../output/souches_cip_sans_origine.csv', 'w', newline='')
 writer_genomes = csv.writer(f_genomes, delimiter=';')
 writer_genomes.writerows(rows)
 f_genomes.close()
