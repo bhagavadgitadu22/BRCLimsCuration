@@ -44,7 +44,7 @@ CASE
 END AS form_of_supply, 
 
 t_lieu.don_lib AS country_of_origin, 
-sch_lieu_precis AS specific_origin,
+sch_lieu_precis AS specific_location_of_origin,
 t_origine.don_lib AS origin_category,
 sch_isole_a_partir_de AS specific_origin,
 
