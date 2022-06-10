@@ -13,6 +13,6 @@ WHERE country != '';
 
 UPDATE t_souche
 SET sch_lieu = dico_id,
-	sch_lieu_precis = precision
+	sch_lieu_precis = CONCAT(UPPER(LEFT(precision, 1)), RIGHT(precision, -1))
 FROM new_countries_cip
 WHERE t_souche.xxx_id = sch_id;

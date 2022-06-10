@@ -12,6 +12,6 @@ AND t_donneedico.xxx_sup_dat IS NULL;
 
 UPDATE t_souche
 SET sch_origine = dico_id,
-	sch_isole_a_partir_de = isole
+	sch_isole_a_partir_de = CONCAT(UPPER(LEFT(isole, 1)), RIGHT(isole, -1))
 FROM new_origines_cip
 WHERE t_souche.xxx_id = sch_id;
