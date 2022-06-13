@@ -5,7 +5,8 @@ sch_identifiant,
 CASE WHEN t_1546.xxx_id IS NULL THEN 'N'
 	ELSE 'Y'
 END AS genome,
-t_1546.cpr_com
+t_1546.cpr_com,
+p2m, date
 INTO souches_avec_infos
 FROM last_version_souches_cip
 
