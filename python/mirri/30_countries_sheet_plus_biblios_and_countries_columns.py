@@ -11,7 +11,7 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
-cursor = get_cursor("new_db")
+cursor = get_cursor("brc_db")
 cursor.execute(open("../envoi_souches/mirri/extract_date_function.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri/mirri_biblio_par_id.sql", "r").read())
 cursor.execute(open("../envoi_souches/mirri/mirri.sql", "r").read())
@@ -75,14 +75,14 @@ rows_strains = []
 for record in records:
     xxx_id = record[0]
     row = [r for r in record[1:]]
-    row[30] = pays_par_id[xxx_id]
+    row[25] = pays_par_id[xxx_id]
     refs = ""
     if xxx_id in biblis_par_id:
         for ref in biblis_par_id[xxx_id]:
             if refs != '':
                 refs += ';'
             refs += str(ref)
-    row[35] = refs
+    row[26] = refs
 
     rows_strains.append(row)
 

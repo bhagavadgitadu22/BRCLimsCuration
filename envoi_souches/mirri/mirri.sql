@@ -25,7 +25,10 @@ extract_date(sch_dat_prelevement),
 extract_date(sch_dat_isolement), 
 extract_date(sch_dat_acquisition), 
 sch_temperature_incubation, 
-array_to_string(ARRAY_AGG(mil_numero), '/') AS milieux,
+CASE 
+	WHEN array_to_string(ARRAY_AGG(mil_numero), '/') != '' THEN array_to_string(ARRAY_AGG(mil_numero), '/')
+	ELSE '-1'
+END AS milieux,
 CASE
 	WHEN t_conservation.don_lib = 'Stockage Lyophilisat' THEN 'Agar'
 	ELSE 'Cryo'

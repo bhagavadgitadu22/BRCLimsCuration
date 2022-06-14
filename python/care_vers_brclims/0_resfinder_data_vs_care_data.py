@@ -5,6 +5,7 @@ from os.path import isfile, join
 from openpyxl.workbook.workbook import Workbook
 from openpyxl.styles import Border, Side, Alignment, Font
 
+### 0 - functions to style the Excel file
 def redimension_cell_width(ws):
     dims = {}
     for row in ws.rows:
@@ -57,11 +58,14 @@ def merge_headers(sheet, header):
         else:
             count += 1
 
+
+### I - we read the phenotypes.txt file of the resfinder database from the internet
 lines = []
 link = "https://bitbucket.org/genomicepidemiology/resfinder_db/raw/fa32d9a3cf0c12ec70ca4e90c45c0d590ee810bd/phenotypes.txt"
 with urllib.request.urlopen(link) as url:
     s = str(url.read())
-    # I'm guessing this would output the html source code ?
+    
+    # then we analyse it to get the genes and the classes associated to each gene
     genes_rb = []
     classes_rb = []
     for elmt in s.split('\\n'):
@@ -74,9 +78,12 @@ with urllib.request.urlopen(link) as url:
 genes_rb.append('mcr-1')
 classes_rb.append('Polymyxin')
 
+# background check: we must have as many genes as groups of classes
 if len(genes_rb) != len(classes_rb):
     print("trouble!")
 
+
+### II - then we open the CARE files with the results of the genotypes obtained in resfinder
 local_path = 'C:/Users/mboutrou/Documents/'
 #local_path = '/mnt/gaia/my_home/'
 path = local_path+'TR _AMR_database_pour_CARE'
@@ -86,6 +93,7 @@ genus_par_classe = {}
 names_classes = {}
 genes_par_classes_par_genus = {}
 genes_par_classes = {}
+# there is one file for each genus
 for f in dir_list:
     genus = f.split('.')[0]
     print(genus)
@@ -96,22 +104,23 @@ for f in dir_list:
     xlsx = pd.ExcelFile(path+'/'+f)
     sheet_names = xlsx.sheet_names  # see all sheet names
 
-    # je lis les feuilles de l'excel en cours une à une
+    # I try to locate the genotype column located in one of the sheets
     for sheet_name in sheet_names:
         sheet = pd.read_excel(xlsx, sheet_name)
         
-        # on récupère les numéros des 3 colonnes d'intérêt
         col_care = -1
         for col in range(len(sheet.columns)):
             if sheet.columns[col] == 'Genotype':
                 col_care = col
         
         if col_care != -1:
-            # pour chaque ligne de données je récupère l'identifiant intéressant (care ou rm) et le numéro wgs
             for i in range(1, len(sheet)):
+                # then for each line I explode the genotypes cell to get the different genes listed
                 care_id = sheet.iloc[i, col_care]
                 genes = care_id.split(', ')
 
+                # and I add one occurence of this gene on the list of genes for this genus (genes_genus)
+                # and also one occurence for the corresponding class of genes on the list of classes for this genus
                 for gene in genes:
                     gene = gene.replace('oqx', 'Oqx')
                     gene = gene.replace('strA', 'aph(3\'\')-Ib')
@@ -140,13 +149,15 @@ for f in dir_list:
                         if gene not in genes_par_classes[classe]:
                             genes_par_classes[classe].append(gene)
 
-
     genus_par_classe[genus] = genes_genus
 
-# création de l'excel
+
+### III - then I can start creating the final Excel
 wb = Workbook()
 
-# feuille1
+# we create the first sheet
+# the different genes are the headline and the different genus are the headrow
+# each cell contain the number of occurence for the genus at the beginning of the row and the gene at the top of the column
 header = [""]
 header2 = [""]
 for n_c in names_classes:
@@ -175,12 +186,14 @@ sheet.append(header2)
 for row in rows:
     sheet.append(row)
 
+# and then we style the sheet
 redimension_cell_width(sheet)
 borders_cells(sheet)
 style_sheet(sheet)
 merge_headers(sheet, header)
 
-# feuille2
+# we create the second sheet
+# it's the same thing than the first sheet but with the classes instead of the genes as the headline
 header3 = list(set(header))
 header3.sort()
 
@@ -230,11 +243,12 @@ for i in range(1, len(header3)-1):
 total_resfinder.append(sum_res)
 sheet.append(total_resfinder) 
 
+# we style the sheet
 redimension_cell_width(sheet)
 borders_cells(sheet)
 style_sheet2(sheet)
 
-# sauvegarde de l'excel
+# then finally we save the Excel
 del wb["Sheet"]
 path_excel = local_path+'bilan_genes.xlsx'
 wb.save(str(path_excel))
