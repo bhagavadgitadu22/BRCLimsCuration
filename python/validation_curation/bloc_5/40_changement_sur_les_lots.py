@@ -133,6 +133,6 @@ def main():
     wb = Workbook()
     write_sheet(wb, "lots_archives", lots_archives, ["Ancien identifiant", "Ancienne version", "Ancien numéro de lot", "Ancienne date de suppression du lot", "Ancien type de lot", "Ancienne quantité"])
     del wb["Sheet"]
-    wb.save(str("../../output/bloc_4/changements_sur_les_lots.xlsx"))
+    wb.save(str("../../output/bloc_5/changements_sur_les_lots.xlsx"))
 
 main()

@@ -7,4 +7,4 @@ SET identifiant = TRIM(REGEXP_REPLACE(REPLACE(REPLACE(REPLACE(identifiant, 'CIP'
 
 DELETE
 FROM infos_p2m
-WHERE p2m = '';
+WHERE p2m = '' OR p2m NOT SIMILAR TO '(16|17)%';
