@@ -7,10 +7,6 @@ LEFT JOIN chemins_taxonomie
 ON chemins_taxonomie.sch_taxonomie = t_souche.sch_taxonomie
 LEFT JOIN t_donneedico AS t_lieu
 ON sch_lieu = t_lieu.xxx_id
-LEFT JOIN t_milieu_souche
-ON t_souche.xxx_id = msc_sch_id
-LEFT JOIN t_milieu
-ON msc_mil_id = t_milieu.xxx_id
 
 LEFT JOIN (SELECT * FROM t_carac_phenotypique_resultat AS t_cpr_1546
 JOIN t_carac_phenotypique AS t_cp_1546
