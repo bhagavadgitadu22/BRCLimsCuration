@@ -1,4 +1,7 @@
 SELECT * FROM t_souche
+LEFT JOIN (SELECT ars_sch_id, don_lib FROM t_article_souche
+LEFT JOIN t_donneedico ON ars_article = t_donneedico.xxx_id) AS tas
+ON tas.ars_sch_id = t_souche.xxx_id
 JOIN (SELECT xxx_id AS sch_col_id, col_clg_id FROM t_collection) AS tc
 ON t_souche.sch_col_id = tc.sch_col_id
 LEFT JOIN (SELECT sch_taxonomie, path, id_path FROM chemins_taxonomie) AS t_taxo

@@ -75,8 +75,10 @@ def main():
     cursor = get_cursor("restart_db_pure")
     cursor_curated = get_cursor("restart_db_cured")
 
-    name = ["localisation", "isole_a_partir_de", "genome_1546", "featured_collections"]
+    name = ["article", "taxonomie", "localisation", "isole_a_partir_de", "genome_1546", "featured_collections"]
     legendes = {}
+    legendes["article"] = ["Identifiant CIP", "Version", "Ancien article", "Nouvel article"]
+    legendes["taxonomie"] = ["Identifiant CIP", "Version", "Ancienne taxonomie", "Nouvelle taxonomie"]
     legendes["localisation"] = ["Identifiant CIP", "Version", "Ancien pays", "Nouveau pays", "Ancien lieu précis", "Nouveau lieu précis", "Ancien dico", "Nouveau dico"]
     legendes["isole_a_partir_de"] = ["Identifiant CIP", "Version", "Ancienne origine", "Nouvelle origine", "Ancien isolé à partir de", "Nouveau isolé à partir de"]
     legendes["genome_1546"] = ["Identifiant CIP", "Version", "Ancien code", "Nouveau code", "Ancien résultat", "Nouveau résultat", "Ancien commentaire", "Nouveau commentaire"]
@@ -100,6 +102,14 @@ def main():
 
         identifiant_cip = record[22]
         version = str(record[28])
+
+        # taxonomie
+        if record[len(record)-20] != record_curated[len(record)-20]:
+            differences["article"].append([identifiant_cip, version, record[len(record)-20], record_curated[len(record)-20]])
+
+        # taxonomie
+        if record[len(record)-16] != record_curated[len(record)-16]:
+            differences["taxonomie"].append([identifiant_cip, version, record[len(record)-16], record_curated[len(record)-16]])
 
         # localisation
         if record[len(record)-10] != record_curated[len(record)-10] or record[47] != record_curated[47]:
@@ -172,15 +182,16 @@ def main():
 
             differences["featured_collections"].append(row)
 
-        # idx_modified = [len(record)-6, len(record)-5, 89, len(record)-3, len(record)-2, 69, 12, 13, 27, 64, len(record)-9, len(record)-8, 47, 86, 15, len(record)-11, len(record)-10, 76]
-        # # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
-        # for i_record in range(len(record)):
-        #     if i_record not in idx_modified and record[i_record] != record_curated[i_record]:
-        #         print(identifiant_cip)
-        #         print(i_record)
-        #         print(record[i_record])
-        #         print(record_curated[i_record])
-        #         print("")
+        idx_modified = [len(record)-20, len(record)-16, len(record)-10, len(record)-9, 47, len(record)-13, len(record)-12, 69, len(record)-1, len(record)-2, len(record)-3, len(record)-6, len(record)-5, len(record)-7, len(record)-15, len(record)-17, len(record)-11, 15, len(record)-14, 13, 12, len(record)-4]
+        # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
+        for i_record in range(len(record)):
+            if i_record not in idx_modified and record[i_record] != record_curated[i_record]:
+                print(identifiant_cip)
+                print(i_record)
+                print(len(record)-i_record)
+                print(record[i_record])
+                print(record_curated[i_record])
+                print("")
 
         if i%1000 == 0:
             print(str(i)+" souches traitees")

@@ -13,3 +13,9 @@ DROP TABLE IF EXISTS souches_avec_infos;
 
 DROP TABLE IF EXISTS panels_crbip;
 DROP TABLE IF EXISTS panels_crbip_grouped;
+
+DROP TABLE IF EXISTS articles_ogm_par_erreur;
+DROP TABLE IF EXISTS ids_souches;
+
+DROP TABLE IF EXISTS chemins_taxonomie;
+DROP TABLE IF EXISTS nombre_par_taxos;
