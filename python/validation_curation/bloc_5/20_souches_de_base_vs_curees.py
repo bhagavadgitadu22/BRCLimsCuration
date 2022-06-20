@@ -130,7 +130,7 @@ def main():
             codes_cured = record_curated[len(record)-3]
             resultats_cured = record_curated[len(record)-2]
             commentaires_cured = record_curated[len(record)-1]
-
+            
             for i_elmt in range(len(codes_cured)):
                 code_cured = codes_cured[i_elmt]
 
