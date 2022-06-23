@@ -19,3 +19,5 @@ DROP TABLE IF EXISTS ids_souches;
 
 DROP TABLE IF EXISTS chemins_taxonomie;
 DROP TABLE IF EXISTS nombre_par_taxos;
+
+DROP TABLE IF EXISTS doublons_utilisateurs;

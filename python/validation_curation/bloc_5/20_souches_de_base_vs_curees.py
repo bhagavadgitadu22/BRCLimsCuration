@@ -68,6 +68,22 @@ def write_excel(name, legendes, differences, filename):
     del wb["Sheet"]
     wb.save(str("../../output/bloc_5/"+filename+".xlsx"))
 
+def champ_usr(i_usr):
+    match i_usr:
+        case 4:
+            return 'xxx_cre_usr_id'
+        case 6:
+            return 'xxx_maj_usr_id'
+        case 8:
+            return 'xxx_sup_usr_id'
+        case 16:
+            return 'sch_auteur_acquisition'
+        case 63:
+            return 'sch_qualite_approbateur'
+
+        case _:
+            return 'AIE'
+
 def main():
     f = open('../../output/bloc_5/cip_modifies.csv', 'r', newline='')
     rows = csv.reader(f, delimiter=';')
@@ -75,7 +91,7 @@ def main():
     cursor = get_cursor("restart_db_pure")
     cursor_curated = get_cursor("restart_db_cured")
 
-    name = ["article", "taxonomie", "localisation", "isole_a_partir_de", "genome_1546", "featured_collections"]
+    name = ["article", "taxonomie", "localisation", "isole_a_partir_de", "genome_1546", "featured_collections", "users"]
     legendes = {}
     legendes["article"] = ["Identifiant CIP", "Version", "Ancien article", "Nouvel article"]
     legendes["taxonomie"] = ["Identifiant CIP", "Version", "Ancienne taxonomie", "Nouvelle taxonomie"]
@@ -83,6 +99,7 @@ def main():
     legendes["isole_a_partir_de"] = ["Identifiant CIP", "Version", "Ancienne origine", "Nouvelle origine", "Ancien isolé à partir de", "Nouveau isolé à partir de"]
     legendes["genome_1546"] = ["Identifiant CIP", "Version", "Ancien code", "Nouveau code", "Ancien résultat", "Nouveau résultat", "Ancien commentaire", "Nouveau commentaire"]
     legendes["featured_collections"] = ["Identifiant CIP", "Version", "Ancienne valeur", "Nouvelle valeur"]
+    legendes["users"] = ["Identifiant CIP", "Version", "Champ", "Ancien nom", "Ancien prénom", "Nouveau nom", "Nouveau prénom"]
     differences = {}
     for elmt in name:
         differences[elmt] = []
@@ -182,7 +199,30 @@ def main():
 
             differences["featured_collections"].append(row)
 
-        idx_modified = [len(record)-20, len(record)-16, len(record)-10, len(record)-9, 47, len(record)-13, len(record)-12, 69, len(record)-1, len(record)-2, len(record)-3, len(record)-6, len(record)-5, len(record)-7, len(record)-15, len(record)-17, len(record)-11, 15, len(record)-14, 13, 12, len(record)-4]
+        # utilisateurs
+        i_usrs = []
+        if record[4] != record_curated[4]:
+            i_usrs.append(4)
+        if record[6] != record_curated[6]:
+            i_usr.append(6)
+        if record[8] != record_curated[8]:
+            i_usrs.append(8)
+        if record[16] != record_curated[16]:
+            i_usrs.append(16)
+        if record[63] != record_curated[63]:
+            i_usrs.append(63)
+
+        if i_usrs != []:
+            for i_usr in i_usrs:
+                cursor.execute("SELECT usr_nom, usr_prenom FROM t_utilisateur WHERE xxx_id = "+str(record[i_usr]))
+                nom_pure = cursor.fetchone()
+                cursor.execute("SELECT usr_nom, usr_prenom FROM t_utilisateur WHERE xxx_id = "+str(record_curated[i_usr]))
+                nom_cured = cursor.fetchone()
+
+                row = [identifiant_cip, version, champ_usr(i_usr), nom_pure[0], nom_pure[1], nom_cured[0], nom_cured[1]]
+                differences["users"].append(row)
+
+        idx_modified = [len(record)-20, len(record)-16, len(record)-10, len(record)-9, 47, len(record)-13, len(record)-12, 69, len(record)-1, len(record)-2, len(record)-3, len(record)-6, len(record)-5, len(record)-7, len(record)-15, len(record)-17, len(record)-11, 15, len(record)-14, 13, 12, len(record)-4, 4, 6, 8, 16, 63]
         # on s'occupe de souches qui ont d'autres champs qui différent pour comprendre ce qui cloche
         for i_record in range(len(record)):
             if i_record not in idx_modified and record[i_record] != record_curated[i_record]:

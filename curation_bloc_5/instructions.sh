@@ -38,6 +38,10 @@
 \i 20_update_taxos.sql
 \i 30_taxos_inutilisees.sql
 
+\cd ../70_utilisateurs
+\echo 70_utilisateurs
+\i suppression_users.sql
+
 \cd ../10_collections_de_cip
 \echo 10_collections_de_cip
 \i 30_suppression_tables_inutiles.sql

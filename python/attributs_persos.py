@@ -32,20 +32,19 @@ def get_cursor(db_name):
 
     return conn.cursor()
 
+cursor = get_cursor("restart_db_cured")
 
-cursor = get_cursor("db")
-
-liste_attributs = 'SELECT att_nom, att_typ FROM t_attribut GROUP BY att_nom, att_typ;'
+liste_attributs = 'SELECT att_nom, att_typ, att_filtre FROM t_attribut WHERE xxx_sup_dat IS NULL GROUP BY att_filtre, att_nom, att_typ;'
 cursor.execute(liste_attributs)
 records = cursor.fetchall()
-attributs = [[record[0].replace("'", "''"), record[1]] for record in records]
+attributs = [[record[0].replace("'", "''"), record[1], record[2]] for record in records]
 
-str_string = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT svl_valeur), ';') FROM t_attribut LEFT JOIN t_string_val ON svl_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
-str_date = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT dvl_valeur), ';') FROM t_attribut LEFT JOIN t_date_val ON dvl_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
-str_boolean = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT bvl_valeur), ';') FROM t_attribut LEFT JOIN t_boolean_val ON bvl_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
-str_memo = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT mvl_valeur), ';') FROM t_attribut LEFT JOIN t_memo_val ON mvl_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
-str_dico_liste = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT don_lib), ';') FROM t_attribut LEFT JOIN t_dico_liste_val ON dlv_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id JOIN t_donneedico ON dlv_valeur = t_donneedico.xxx_id WHERE att_nom = '"
-str_dico_arbre_val = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT don_lib), ';') FROM t_attribut LEFT JOIN t_dico_arbre_val_val ON dlv_att_id = t_attribut.xxx_id JOIN t_collection ON att_col_id = t_collection.xxx_id JOIN t_donneedico ON dav_valeur = t_donneedico.xxx_id WHERE att_nom = '"
+str_string = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT svl_valeur), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_string_val ON svl_att_id = t_attribut.xxx_id JOIN t_souche ON svl_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
+str_date = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT dvl_valeur), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_date_val ON dvl_att_id = t_attribut.xxx_id JOIN t_souche ON dvl_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
+str_boolean = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT bvl_valeur), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_boolean_val ON bvl_att_id = t_attribut.xxx_id JOIN t_souche ON bvl_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
+str_memo = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT mvl_valeur), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_memo_val ON mvl_att_id = t_attribut.xxx_id JOIN t_souche ON mvl_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id WHERE att_nom = '"
+str_dico_liste = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT don_lib), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_dico_liste_val ON dlv_att_id = t_attribut.xxx_id JOIN t_souche ON dlv_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id JOIN t_donneedico ON dlv_valeur = t_donneedico.xxx_id WHERE att_nom = '"
+str_dico_arbre_val = "SELECT col_descr, COUNT(*), array_to_string(ARRAY_AGG(DISTINCT don_lib), ';'), array_to_string(ARRAY_AGG(DISTINCT sch_identifiant), ';') FROM t_attribut JOIN t_dico_arbre_val_val ON dlv_att_id = t_attribut.xxx_id JOIN t_souche ON dlv_entite_id = t_souche.xxx_id AND t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip) JOIN t_collection ON att_col_id = t_collection.xxx_id JOIN t_donneedico ON dav_valeur = t_donneedico.xxx_id WHERE att_nom = '"
 str_end = "' GROUP BY col_descr;"
 
 liste = {}
@@ -53,6 +52,7 @@ nom_cols = []
 for elmt in attributs:
     attr = elmt[0]
     type = elmt[1]
+    place = elmt[2]
 
     line = {}
 
@@ -74,7 +74,7 @@ for elmt in attributs:
     records2 = cursor.fetchall()
 
     for r in records2:
-        line[r[0]] = [r[1], r[2]]
+        line[r[0]] = [r[1], r[2], r[3]]
 
         if r[0] not in nom_cols:
             nom_cols.append(r[0])
@@ -84,30 +84,34 @@ for elmt in attributs:
 wb = Workbook()
 sheet = wb["Sheet"]
 
-cols = ['Attribut', 'Type', 'Total']
+cols = ['Attribut', 'Type', 'Place', 'Total']
 nom_cols.sort()
 for nc in nom_cols:
     cols.append(nc)
     cols.append('Valeurs')
+    cols.append('Souches')
 sheet.append(cols)
 
 for elmt in attributs:
     attr = elmt[0]
     type = elmt[1]
-    row = [attr, type, 0]
+    place = elmt[2]
+    row = [attr, type, place, 0]
     total = 0
 
     for nc in nom_cols:
         row.append(0)
         row.append('')
+        row.append('')
 
     for coll in liste[attr]:
         idx = nom_cols.index(coll)
-        row[idx*2+3] = liste[attr][coll][0]
-        row[idx*2+3+1] = liste[attr][coll][1]
+        row[idx*3+4] = liste[attr][coll][0]
+        row[idx*3+4+1] = liste[attr][coll][1]
+        row[idx*3+4+2] = liste[attr][coll][2]
         total += liste[attr][coll][0]
 
-    row[2] = total
+    row[3] = total
 
     sheet.append(row)
 
