@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS ids_souches;
 
 COPY articles_ogm_par_erreur (identifier)
-FROM 'C:/Users/Public/Documents/articles_ogm_par_erreur.csv'
+FROM '/csv/50_articles_ogm/articles_ogm_par_erreur.csv'
 DELIMITER ';';
 
 DELETE FROM articles_ogm_par_erreur WHERE identifier = '';

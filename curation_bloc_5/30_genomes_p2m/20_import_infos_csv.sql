@@ -1,5 +1,5 @@
 COPY infos_p2m (identifiant, lot, p2m, date)
-FROM 'C:/Users/Public/Documents/infos_de_p2m_utf8.csv'
+FROM '/csv/30_genomes_p2m/infos_de_p2m_utf8.csv'
 DELIMITER ';';
 
 UPDATE infos_p2m
