@@ -57,7 +57,7 @@ ncbi = NCBITaxa()
 str_sql = open("krona_and_map/krona/krona_taxos.sql", "r").read()
 
 # TO MODIFY: référence à ma base de données locale
-cursor = get_cursor("new_db")
+cursor = get_cursor("brc_db")
 cursor.execute(str_sql)
 records_cip = cursor.fetchall()
 
@@ -70,10 +70,7 @@ for taxoBRC in taxosBRC:
 taxIds = ncbi.get_name_translator(all_genus)
 print(taxIds)
 
-print(len(taxosBRC))
-
 dico = {}
-lines = []
 for taxoBRC in taxosBRC:
     nombre = taxoBRC[0]
     genus = taxoBRC[1]
@@ -81,10 +78,13 @@ for taxoBRC in taxosBRC:
     subspecies = taxoBRC[3]
 
     if genus not in taxIds:
-        print("fake:", genus)
+        if genus.lower() in taxIds:
+            genus = genus.lower()
+        else:
+            print(genus, ' ', nombre)
     else:
-        if len(taxIds[genus]) > 1:
-            print("too many entries in ncbi:", genus)
+        #if len(taxIds[genus]) > 1:
+            #print("too many entries in ncbi:", genus)
         
         taxId = taxIds[genus][0]
         lineage = ncbi.get_lineage(taxId)
@@ -96,17 +96,7 @@ for taxoBRC in taxosBRC:
         result.append(species)
         result.append(subspecies)
 
-        line = [nombre]
-        for e in result:
-            line.append(e)
-        lines.append(line)
-
         dico = inTree(dico, result, nombre)
-
-fw = open('../../output/taxos_virus.csv', 'w', newline='')
-wf = csv.writer(fw, delimiter=';', lineterminator='\n')
-wf.writerows(lines)
-fw.close()
 
 root = ET.Element("krona")
 
@@ -120,7 +110,7 @@ firstNode = ET.SubElement(root, "node", name="Taxonomy")
 addNodes(dico, firstNode)
 
 tree = ET.ElementTree(root)
-ET.indent(tree, '  ')
+#ET.indent(tree, '  ')
 # TO MODIFY: création d'un fichier XML chemin à ajuster
 tree.write("krona_and_map/krona/filename.xml", encoding="utf-8", xml_declaration=True)
 

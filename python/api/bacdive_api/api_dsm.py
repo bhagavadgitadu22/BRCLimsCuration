@@ -4,7 +4,7 @@ client = bacdive.BacdiveClient('martin.boutroux@pasteur.fr', 'hercule1821')
 
 # the search method fetches all BacDive-IDs matching your query
 # and returns the number of IDs found
-query = {"taxonomy": "Aspergillus"}
+query = {"taxonomy": "Chryseobacterium"}
 count = client.search(**query)
 print(count, 'strains found.')
 
