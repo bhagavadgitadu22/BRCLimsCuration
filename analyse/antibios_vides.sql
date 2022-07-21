@@ -1,6 +1,5 @@
-SELECT t_souche.xxx_id, sch_identifiant,
-t_donneedico.don_lib AS genre_antibio, ant_dat_realisation, ant_com,
-amt_ordre, tddtest.don_lib AS amt_test,
+SELECT sch_identifiant, sch_denomination,
+t_donneedico.don_lib AS genre_antibio, tddtest.don_lib AS amt_test,
 tddres.don_lib AS anr_resultat, anr_diametre
 FROM t_souche
 JOIN t_antibiogramme
@@ -21,6 +20,7 @@ LEFT JOIN t_donneedico AS tddres
 ON anr_resultat = tddres.xxx_id
 
 WHERE t_souche.xxx_id IN (SELECT xxx_id FROM last_version_souches_cip)
-AND sch_mot IS False
-AND anr_resultat IS NULL AND anr_diametre = ''
+AND LOWER(sch_denomination) LIKE '%streptococcus%'
+AND LOWER(tddtest.don_lib) LIKE '%cefotaxime%'
+AND tddres.don_lib = 'R'
 ORDER BY t_souche.xxx_id, t_donneedico.don_lib, amt_ordre;

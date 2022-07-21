@@ -1,8 +1,10 @@
+/*
 SELECT t_souche.xxx_id, panels
 /*, (SELECT col_clg_id FROM t_collection WHERE xxx_id = sch_col_id) */
 FROM panels_crbip_grouped
 JOIN t_souche
 ON REPLACE(identifiant, 'CIP1', 'CIP 1') = sch_identifiant;
+*/
 
 INSERT INTO t_string_val (svl_entite_id, svl_att_id, svl_valeur)
 SELECT t_souche.xxx_id, t_attribut.xxx_id, panels

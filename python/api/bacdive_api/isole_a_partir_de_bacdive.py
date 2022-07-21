@@ -33,6 +33,20 @@ for record in records:
         bad += 1
     elif count > 1:
         weird += 1
+
+        print(record[0] + ' ' + record[2])
+        for strain in client.retrieve():
+            denom_dsm = ''
+            if 'species' in strain['Name and taxonomic classification']:
+                denom_dsm = strain['Name and taxonomic classification']['species']
+            if 'isolation' in strain['Isolation, sampling and environmental information']:
+                origin = ''
+                if 'sample type' in strain['Isolation, sampling and environmental information']['isolation']:
+                    origin = strain['Isolation, sampling and environmental information']['isolation']['sample type']
+
+                if origin != '':
+                    print(record[3] + ' ' + denom_dsm)
+                    print(origin)
     else:
         good += 1
 
@@ -40,13 +54,16 @@ for record in records:
         # and returns the full entry as dict
         # Entries can be further filtered using a list of keys (e.g. ['keywords'])
         for strain in client.retrieve():
+            denom_dsm = ''
+            if 'species' in strain['Name and taxonomic classification']:
+                denom_dsm = strain['Name and taxonomic classification']['species']
             if 'isolation' in strain['Isolation, sampling and environmental information']:
                 origin = ''
                 if 'sample type' in strain['Isolation, sampling and environmental information']['isolation']:
                     origin = strain['Isolation, sampling and environmental information']['isolation']['sample type']
 
                 if origin != '':
-                    row = [record[0], record[1], record[2], origin]
+                    row = [record[0], record[3], denom_dsm, (record[3]!=denom_dsm), record[1], record[2], origin]
                     rows.append(row)
 
     i += 1
